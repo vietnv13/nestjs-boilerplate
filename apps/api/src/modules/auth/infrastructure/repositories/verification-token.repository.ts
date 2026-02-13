@@ -12,13 +12,6 @@ import type {
 } from "@/modules/auth/application/ports/verification-token.repository.port";
 import type { DrizzleDb } from "@/shared-kernel/infrastructure/db/db.port";
 
-/**
- * Drizzle VerificationToken Repository implementation
- *
- * Manages temporary verification token persistence
- * Compatible with better-auth verifications table
- * Feature: Only one valid token per identifier
- */
 @Injectable()
 export class VerificationTokenRepositoryImpl implements VerificationTokenRepository {
   constructor(
@@ -62,7 +55,7 @@ export class VerificationTokenRepositoryImpl implements VerificationTokenReposit
       return null;
     }
 
-    return this.toEntity(result[0]);
+    return this.toEntity(result[0] as any);
   }
 
   async findByIdentifier(identifier: string): Promise<VerificationToken | null> {
@@ -76,7 +69,7 @@ export class VerificationTokenRepositoryImpl implements VerificationTokenReposit
       return null;
     }
 
-    return this.toEntity(result[0]);
+    return this.toEntity(result[0] as any);
   }
 
   async delete(id: string): Promise<boolean> {

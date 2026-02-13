@@ -20,7 +20,7 @@ export class AuthIdentityRepositoryImpl implements AuthIdentityRepository {
   constructor(
     @Inject(DB_TOKEN)
     private readonly db: DrizzleDb,
-  ) {}
+  ) { }
 
   async save(identity: AuthIdentity): Promise<void> {
     const data = {
@@ -42,9 +42,9 @@ export class AuthIdentityRepositoryImpl implements AuthIdentityRepository {
     await (existing
       ? this.db.update(accountsTable).set(data).where(eq(accountsTable.id, identity.id))
       : this.db.insert(accountsTable).values({
-          ...data,
-          createdAt: identity.createdAt,
-        }));
+        ...data,
+        createdAt: identity.createdAt,
+      }));
   }
 
   async findById(id: string): Promise<AuthIdentity | null> {
@@ -58,7 +58,7 @@ export class AuthIdentityRepositoryImpl implements AuthIdentityRepository {
       return null;
     }
 
-    return this.toDomain(result[0]);
+    return this.toDomain(result[0] as any);
   }
 
   async findByUserId(userId: string): Promise<AuthIdentity[]> {
@@ -84,7 +84,7 @@ export class AuthIdentityRepositoryImpl implements AuthIdentityRepository {
       return null;
     }
 
-    return this.toDomain(result[0]);
+    return this.toDomain(result[0] as any);
   }
 
   async findByProviderAndIdentifier(
@@ -106,7 +106,7 @@ export class AuthIdentityRepositoryImpl implements AuthIdentityRepository {
       return null;
     }
 
-    return this.toDomain(result[0]);
+    return this.toDomain(result[0] as any);
   }
 
   async findByIdentifier(accountId: string): Promise<AuthIdentity | null> {
@@ -120,7 +120,7 @@ export class AuthIdentityRepositoryImpl implements AuthIdentityRepository {
       return null;
     }
 
-    return this.toDomain(result[0]);
+    return this.toDomain(result[0] as any);
   }
 
   async existsByIdentifier(accountId: string): Promise<boolean> {

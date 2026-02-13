@@ -11,12 +11,6 @@ import type {
 } from "@/shared-kernel/application/ports/user.repository.port";
 import type { DrizzleDb } from "@/shared-kernel/infrastructure/db/db.port";
 
-/**
- * Drizzle User Repository implementation
- *
- * Manages user core data persistence
- * Adapted from better-auth schema
- */
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {
   constructor(
@@ -40,7 +34,7 @@ export class UserRepositoryImpl implements UserRepository {
       })
       .returning();
 
-    return this.toEntity(result[0]);
+    return this.toEntity(result[0] as any);
   }
 
   async findById(id: string): Promise<User | null> {
@@ -50,7 +44,7 @@ export class UserRepositoryImpl implements UserRepository {
       return null;
     }
 
-    return this.toEntity(result[0]);
+    return this.toEntity(result[0] as any);
   }
 
   async setBanned(id: string, banned: boolean, reason?: string, expires?: Date): Promise<boolean> {

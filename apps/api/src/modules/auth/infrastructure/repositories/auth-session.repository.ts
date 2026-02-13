@@ -8,12 +8,6 @@ import { DB_TOKEN } from "@/shared-kernel/infrastructure/db/db.port";
 import type { AuthSessionRepository } from "@/modules/auth/application/ports/auth-session.repository.port";
 import type { DrizzleDb } from "@/shared-kernel/infrastructure/db/db.port";
 
-/**
- * Drizzle AuthSession Repository implementation
- *
- * Manages user session (Refresh Token) persistence
- * Compatible with better-auth schema
- */
 @Injectable()
 export class AuthSessionRepositoryImpl implements AuthSessionRepository {
   constructor(
@@ -57,7 +51,7 @@ export class AuthSessionRepositoryImpl implements AuthSessionRepository {
       return null;
     }
 
-    return this.toDomain(result[0]);
+    return this.toDomain(result[0] as any);
   }
 
   async findByToken(token: string): Promise<AuthSession | null> {
@@ -71,7 +65,7 @@ export class AuthSessionRepositoryImpl implements AuthSessionRepository {
       return null;
     }
 
-    return this.toDomain(result[0]);
+    return this.toDomain(result[0] as any);
   }
 
   async findActiveByUserId(userId: string): Promise<AuthSession[]> {
