@@ -1,4 +1,4 @@
-import { IsBoolean, IsOptional, IsString, MaxLength } from 'class-validator'
+import { IsBoolean, IsOptional, IsString, MaxLength } from "class-validator";
 
 /**
  * Update Todo DTO
@@ -14,7 +14,7 @@ export class UpdateTodoDto {
   @IsString()
   @IsOptional()
   @MaxLength(200)
-  title?: string
+  title?: string;
 
   /**
    * Todo description
@@ -23,7 +23,7 @@ export class UpdateTodoDto {
   @IsString()
   @IsOptional()
   @MaxLength(1000)
-  description?: string
+  description?: string;
 
   /**
    * Completed status
@@ -31,5 +31,5 @@ export class UpdateTodoDto {
    */
   @IsBoolean()
   @IsOptional()
-  isCompleted?: boolean
+  isCompleted?: boolean;
 }

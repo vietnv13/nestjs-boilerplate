@@ -1,12 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common'
-import { sessionsTable } from '@workspace/database'
-import { eq, lt } from 'drizzle-orm'
+import { Inject, Injectable } from "@nestjs/common";
+import { sessionsTable } from "@workspace/database";
+import { eq, lt } from "drizzle-orm";
 
-import { AuthSession } from '@/modules/auth/domain/entities/auth-session.entity'
-import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
+import { AuthSession } from "@/modules/auth/domain/entities/auth-session.entity";
+import { DB_TOKEN } from "@/shared-kernel/infrastructure/db/db.port";
 
-import type { AuthSessionRepository } from '@/modules/auth/application/ports/auth-session.repository.port'
-import type { DrizzleDb } from '@/shared-kernel/infrastructure/db/db.port'
+import type { AuthSessionRepository } from "@/modules/auth/application/ports/auth-session.repository.port";
+import type { DrizzleDb } from "@/shared-kernel/infrastructure/db/db.port";
 
 /**
  * Drizzle AuthSession Repository implementation
@@ -31,9 +31,9 @@ export class AuthSessionRepositoryImpl implements AuthSessionRepository {
       userAgent: session.userAgent,
       createdAt: session.createdAt,
       updatedAt: new Date(),
-    }
+    };
 
-    const existing = await this.findById(session.id)
+    const existing = await this.findById(session.id);
 
     await (existing
       ? this.db
@@ -43,7 +43,7 @@ export class AuthSessionRepositoryImpl implements AuthSessionRepository {
             updatedAt: new Date(),
           })
           .where(eq(sessionsTable.id, session.id))
-      : this.db.insert(sessionsTable).values(data))
+      : this.db.insert(sessionsTable).values(data));
   }
 
   async findById(id: string): Promise<AuthSession | null> {
@@ -51,13 +51,13 @@ export class AuthSessionRepositoryImpl implements AuthSessionRepository {
       .select()
       .from(sessionsTable)
       .where(eq(sessionsTable.id, id))
-      .limit(1)
+      .limit(1);
 
     if (result.length === 0) {
-      return null
+      return null;
     }
 
-    return this.toDomain(result[0]!)
+    return this.toDomain(result[0]);
   }
 
   async findByToken(token: string): Promise<AuthSession | null> {
@@ -65,58 +65,54 @@ export class AuthSessionRepositoryImpl implements AuthSessionRepository {
       .select()
       .from(sessionsTable)
       .where(eq(sessionsTable.token, token))
-      .limit(1)
+      .limit(1);
 
     if (result.length === 0) {
-      return null
+      return null;
     }
 
-    return this.toDomain(result[0]!)
+    return this.toDomain(result[0]);
   }
 
   async findActiveByUserId(userId: string): Promise<AuthSession[]> {
-    const now = new Date()
+    const now = new Date();
     const results = await this.db
       .select()
       .from(sessionsTable)
-      .where(eq(sessionsTable.userId, userId))
+      .where(eq(sessionsTable.userId, userId));
 
     return results
       .map((record) => this.toDomain(record))
-      .filter((session) => session.expiresAt > now)
+      .filter((session) => session.expiresAt > now);
   }
 
   async findAllByUserId(userId: string): Promise<AuthSession[]> {
     const results = await this.db
       .select()
       .from(sessionsTable)
-      .where(eq(sessionsTable.userId, userId))
+      .where(eq(sessionsTable.userId, userId));
 
-    return results.map((record) => this.toDomain(record))
+    return results.map((record) => this.toDomain(record));
   }
 
   async delete(id: string): Promise<boolean> {
-    const result = await this.db
-      .delete(sessionsTable)
-      .where(eq(sessionsTable.id, id))
+    const result = await this.db.delete(sessionsTable).where(eq(sessionsTable.id, id));
 
-    return (result.rowCount ?? 0) > 0
+    return (result.rowCount ?? 0) > 0;
   }
 
   async deleteAllByUserId(userId: string): Promise<number> {
-    const result = await this.db
-      .delete(sessionsTable)
-      .where(eq(sessionsTable.userId, userId))
+    const result = await this.db.delete(sessionsTable).where(eq(sessionsTable.userId, userId));
 
-    return result.rowCount ?? 0
+    return result.rowCount ?? 0;
   }
 
   async deleteExpired(): Promise<number> {
     const result = await this.db
       .delete(sessionsTable)
-      .where(lt(sessionsTable.expiresAt, new Date()))
+      .where(lt(sessionsTable.expiresAt, new Date()));
 
-    return result.rowCount ?? 0
+    return result.rowCount ?? 0;
   }
 
   private toDomain(record: typeof sessionsTable.$inferSelect): AuthSession {
@@ -128,6 +124,6 @@ export class AuthSessionRepositoryImpl implements AuthSessionRepository {
       record.ipAddress ?? null,
       record.userAgent ?? null,
       record.createdAt,
-    )
+    );
   }
 }

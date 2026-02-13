@@ -1,4 +1,4 @@
-import type { RulesConfig } from '@eslint/core'
+import type { RulesConfig } from "@eslint/core";
 
 /**
  * Rule override options
@@ -7,7 +7,7 @@ export interface OptionsOverrides {
   /**
    * Custom rule overrides
    */
-  overrides?: Partial<RulesConfig>
+  overrides?: Partial<RulesConfig>;
 }
 
 /**
@@ -18,7 +18,7 @@ export interface OptionsStylistic {
    * Enable stylistic rules
    * @default true
    */
-  stylistic?: boolean
+  stylistic?: boolean;
 }
 
 /**
@@ -28,7 +28,7 @@ export interface OptionsFiles {
   /**
    * Custom file patterns
    */
-  files?: string[]
+  files?: string[];
 }
 
 /**
@@ -71,7 +71,7 @@ export interface OptionsTypeScript {
    * })
    * ```
    */
-  tsconfigRootDir?: string
+  tsconfigRootDir?: string;
 }
 
 /**
@@ -82,5 +82,5 @@ export interface OptionsReact {
    * React version
    * @default 'detect'
    */
-  version?: string
+  version?: string;
 }

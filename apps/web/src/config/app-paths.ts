@@ -1,15 +1,15 @@
 export const appPaths = {
   home: {
-    getHref: () => '/',
+    getHref: () => "/",
   },
   auth: {
     register: {
       getHref: (redirectTo?: string | null) =>
-        `/register${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`,
+        `/register${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
     login: {
       getHref: (redirectTo?: string | null) =>
-        `/login${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`,
+        `/login${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
   },
-} as const
+} as const;

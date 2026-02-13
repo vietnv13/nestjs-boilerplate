@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 /**
  * RFC 9457 Problem Details standard error response
@@ -21,77 +21,77 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
  */
 export class ProblemDetailsDto {
   @ApiProperty({
-    description: 'Problem type URI (should dereference to human-readable docs)',
-    example: 'https://api.example.com/errors/validation-failed',
+    description: "Problem type URI (should dereference to human-readable docs)",
+    example: "https://api.example.com/errors/validation-failed",
   })
-  type: string
+  type: string;
 
   @ApiProperty({
-    description: 'Short, human-readable summary',
-    example: 'Request validation failed',
+    description: "Short, human-readable summary",
+    example: "Request validation failed",
   })
-  title: string
+  title: string;
 
   @ApiProperty({
-    description: 'HTTP status code',
+    description: "HTTP status code",
     example: 422,
   })
-  status: number
+  status: number;
 
   @ApiPropertyOptional({
-    description: 'Detailed explanation specific to this occurrence',
-    example: 'Submitted data failed business rule validation',
+    description: "Detailed explanation specific to this occurrence",
+    example: "Submitted data failed business rule validation",
   })
-  detail?: string
+  detail?: string;
 
   @ApiPropertyOptional({
-    description: 'URI reference where problem occurred',
-    example: '/api/users',
+    description: "URI reference where problem occurred",
+    example: "/api/users",
   })
-  instance?: string
+  instance?: string;
 
   // ========== Extension fields (application-specific) ==========
 
   @ApiPropertyOptional({
-    description: 'Request tracking ID',
-    example: 'req_xyz789',
+    description: "Request tracking ID",
+    example: "req_xyz789",
   })
-  request_id?: string
+  request_id?: string;
 
   @ApiPropertyOptional({
-    description: 'Correlation ID (business transaction tracking)',
-    example: 'corr_shop_session_abc123',
+    description: "Correlation ID (business transaction tracking)",
+    example: "corr_shop_session_abc123",
   })
-  correlation_id?: string
+  correlation_id?: string;
 
   @ApiPropertyOptional({
-    description: 'Distributed trace ID (W3C Trace Context)',
-    example: '4bf92f3577b34da6a3ce929d0e0e4736',
+    description: "Distributed trace ID (W3C Trace Context)",
+    example: "4bf92f3577b34da6a3ce929d0e0e4736",
   })
-  trace_id?: string
+  trace_id?: string;
 
   @ApiPropertyOptional({
-    description: 'Error timestamp (ISO 8601 format)',
-    example: '2024-11-03T10:30:00Z',
+    description: "Error timestamp (ISO 8601 format)",
+    example: "2024-11-03T10:30:00Z",
   })
-  timestamp?: string
+  timestamp?: string;
 
   // ========== Validation error extensions ==========
 
   @ApiPropertyOptional({
-    description: 'Field-level errors (for validation errors)',
+    description: "Field-level errors (for validation errors)",
     type: [Object],
     example: [
       {
-        field: 'email',
-        pointer: '/email',
-        code: 'INVALID_FORMAT',
-        message: 'Invalid email format',
-        expected_format: 'user@domain.com',
+        field: "email",
+        pointer: "/email",
+        code: "INVALID_FORMAT",
+        message: "Invalid email format",
+        expected_format: "user@domain.com",
       },
     ],
   })
-  errors?: FieldError[]
+  errors?: FieldError[];
 }
 
 /**
@@ -105,34 +105,34 @@ export interface FieldError {
   /**
    * Field name
    */
-  field: string
+  field: string;
 
   /**
    * JSON Pointer (RFC 6901) to specific field
    * e.g., /email, /address/city
    */
-  pointer: string
+  pointer: string;
 
   /**
    * Machine-readable error code (UPPER_SNAKE_CASE)
    * e.g., INVALID_FORMAT, REQUIRED_FIELD, TOO_SHORT
    */
-  code: string
+  code: string;
 
   /**
    * Human-readable error message
    */
-  message: string
+  message: string;
 
   /**
    * Constraint details (optional)
    * e.g., { min: 8, max: 100, provided: 5 }
    */
-  constraints?: Record<string, unknown>
+  constraints?: Record<string, unknown>;
 
   /**
    * Expected format (optional)
    * e.g., 'user@domain.com', 'YYYY-MM-DD'
    */
-  expected_format?: string
+  expected_format?: string;
 }

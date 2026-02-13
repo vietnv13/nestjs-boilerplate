@@ -1,10 +1,10 @@
-import { fixupPluginRules } from '@eslint/compat'
-import dependPlugin from 'eslint-plugin-depend'
+import { fixupPluginRules } from "@eslint/compat";
+import dependPlugin from "eslint-plugin-depend";
 
-import { GLOB_SRC } from '../utils'
+import { GLOB_SRC } from "../utils";
 
-import type { OptionsOverrides } from '../types'
-import type { ESLint, Linter } from 'eslint'
+import type { OptionsOverrides } from "../types";
+import type { ESLint, Linter } from "eslint";
 
 /**
  * Depend configuration options
@@ -19,19 +19,19 @@ export interface DependOptions extends OptionsOverrides {
    *
    * @default ['native', 'microutilities', 'preferred']
    */
-  presets?: ('native' | 'microutilities' | 'preferred')[]
+  presets?: ("native" | "microutilities" | "preferred")[];
 
   /**
    * Custom banned module list
    * @default []
    */
-  modules?: string[]
+  modules?: string[];
 
   /**
    * Allowed module list (even if in presets)
    * @default []
    */
-  allowed?: string[]
+  allowed?: string[];
 }
 
 /**
@@ -78,23 +78,23 @@ export interface DependOptions extends OptionsOverrides {
  * ```
  */
 export function depend(options: DependOptions = {}): Linter.Config[] {
-  const { presets = [], modules = [], allowed = [], overrides = {} } = options
+  const { presets = [], modules = [], allowed = [], overrides = {} } = options;
 
   return [
     {
-      name: 'depend/rules',
+      name: "depend/rules",
       files: [GLOB_SRC],
       plugins: {
         depend: fixupPluginRules(dependPlugin as unknown as ESLint.Plugin),
       },
       rules: {
-        'depend/ban-dependencies': [
-          'error',
+        "depend/ban-dependencies": [
+          "error",
           {
-            presets: ['native', 'microutilities', 'preferred', ...presets],
+            presets: ["native", "microutilities", "preferred", ...presets],
             modules,
             allowed: [
-              'dotenv', // Required by drizzle.config.ts and utility scripts
+              "dotenv", // Required by drizzle.config.ts and utility scripts
               ...allowed,
             ],
           },
@@ -103,5 +103,5 @@ export function depend(options: DependOptions = {}): Linter.Config[] {
         ...overrides,
       },
     },
-  ]
+  ];
 }

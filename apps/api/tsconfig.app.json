@@ -6,16 +6,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": [
-    "src/**/*",
-    "scripts/seed.ts",
-    "*.config.ts",
-    "*.config.mts"
-  ],
-  "exclude": [
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/__tests__/**/*",
-    "src/metadata.ts"
-  ]
+  "include": ["src/**/*", "scripts/seed.ts", "*.config.ts", "*.config.mts"],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts", "**/__tests__/**/*", "src/metadata.ts"]
 }

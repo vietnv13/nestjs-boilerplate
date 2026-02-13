@@ -8,21 +8,21 @@ export abstract class BaseDomainEvent {
   /**
    * Event occurrence time
    */
-  readonly occurredAt: Date
+  readonly occurredAt: Date;
 
   /**
    * Aggregate root ID
    */
-  readonly aggregateId: string
+  readonly aggregateId: string;
 
   /**
    * Event type (for event routing)
    */
-  abstract readonly eventType: string
+  abstract readonly eventType: string;
 
   constructor(aggregateId: string) {
-    this.aggregateId = aggregateId
-    this.occurredAt = new Date()
+    this.aggregateId = aggregateId;
+    this.occurredAt = new Date();
   }
 
   /**
@@ -33,6 +33,6 @@ export abstract class BaseDomainEvent {
       eventType: this.eventType,
       aggregateId: this.aggregateId,
       occurredAt: this.occurredAt,
-    }
+    };
   }
 }

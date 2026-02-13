@@ -1,9 +1,4 @@
-import {
-  index,
-  pgTable,
-  text,
-  timestamp,
-} from 'drizzle-orm/pg-core'
+import { index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 /**
  * Auth Verification Tokens table definition
@@ -14,15 +9,15 @@ import {
  * - Deleted immediately after verification
  */
 export const verificationsTable = pgTable(
-  'verifications',
+  "verifications",
   {
     // Primary key (text, generated using nanoid)
-    id: text('id').primaryKey(),
+    id: text("id").primaryKey(),
 
     // Better Auth required fields
-    identifier: text('identifier').notNull(), // Email/phone number
-    value: text('value').notNull(), // Token value (Better Auth requires naming as 'value')
-    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    identifier: text("identifier").notNull(), // Email/phone number
+    value: text("value").notNull(), // Token value (Better Auth requires naming as 'value')
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
 
     // Extended field: type differentiation - no need for type as identifier exists
     // type: text('type', {
@@ -30,27 +25,24 @@ export const verificationsTable = pgTable(
     // }),
 
     // Timestamps
-    createdAt: timestamp('created_at', { withTimezone: true })
+    createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
-    updatedAt: timestamp('updated_at', { withTimezone: true })
+    updatedAt: timestamp("updated_at", { withTimezone: true })
       .notNull()
       .defaultNow()
       .$onUpdate(() => new Date()),
   },
-  (table) => [
-    index('verifications_identifier_idx').on(table.identifier),
-  ],
-)
+  (table) => [index("verifications_identifier_idx").on(table.identifier)],
+);
 
 /**
  * AuthVerificationToken database type (inferred from table)
  */
-export type VerificationTokenDatabase
-  = typeof verificationsTable.$inferSelect
+export type VerificationTokenDatabase = typeof verificationsTable.$inferSelect;
 
 /**
  * Insert AuthVerificationToken type (inferred from table)
  */
-export type InsertVerificationTokenDatabase
-  = typeof verificationsTable.$inferInsert
+export type InsertVerificationTokenDatabase =
+  typeof verificationsTable.$inferInsert;

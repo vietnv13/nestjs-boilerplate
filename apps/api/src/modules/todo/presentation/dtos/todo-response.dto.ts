@@ -3,20 +3,20 @@
  */
 export class TodoResponseDto {
   /** Todo ID */
-  id: string
+  id: string;
 
   /** Title */
-  title: string
+  title: string;
 
   /** Description */
-  description: string | null
+  description: string | null;
 
   /** Completed status */
-  isCompleted: boolean
+  isCompleted: boolean;
 
   /** Created at */
-  createdAt: Date
+  createdAt: Date;
 
   /** Updated at */
-  updatedAt: Date
+  updatedAt: Date;
 }

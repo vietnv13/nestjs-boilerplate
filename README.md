@@ -1,14 +1,3 @@
-# NestJS + React Full-Stack Boilerplate
-
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/oNo500/nestjs-boilerplate.svg)](https://github.com/oNo500/nestjs-boilerplate/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/oNo500/nestjs-boilerplate.svg)](https://github.com/oNo500/nestjs-boilerplate/pulls)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
-
----
-
-A production-ready full-stack **Monorepo Boilerplate** powered by **NestJS**, **React 19**, **Drizzle ORM**, and **Turborepo** — everything you need to build modern web applications efficiently.
-
 ## 📦 Project Structure
 
 ```bash
@@ -43,8 +32,6 @@ A production-ready full-stack **Monorepo Boilerplate** powered by **NestJS**, **
 ### Install Dependencies
 
 ```bash
-git clone https://github.com/oNo500/nestjs-boilerplate.git
-cd nestjs-boilerplate
 pnpm install
 ```
 
@@ -66,7 +53,7 @@ Update the `.env` files with your local configuration, including `DATABASE_URL`,
 ### Start Database Services
 
 ```bash
-docker-compose -f docker/docker-compose.yml up -d
+docker-compose -f docker-compose.yml up -d
 ```
 
 ### Run Database Migrations and Seed Data
@@ -87,18 +74,3 @@ pnpm db:seed
 ```bash
 pnpm start
 ```
-
----
-
-## 📌 Roadmap
-
-- [ ] Integrate **Single Sign-On (SSO)** module
-- [x] ~~Add **Vitest** for unit testing and write test cases~~
-- [ ] Document **deployment guides**, including Docker and CI/CD automation
-- [ ] Expand and refine **project documentation**
-
----
-
-## 📄 License
-
-This project is open-sourced under the **MIT License**. See the [LICENSE](./LICENSE) file for details.

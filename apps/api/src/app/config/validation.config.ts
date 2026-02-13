@@ -1,8 +1,4 @@
-import {
-  ValidationPipe,
-  UnprocessableEntityException,
-  HttpStatus,
-} from '@nestjs/common'
+import { ValidationPipe, UnprocessableEntityException, HttpStatus } from "@nestjs/common";
 
 /**
  * Global validation pipe config
@@ -23,7 +19,7 @@ export function createValidationPipe(): ValidationPipe {
     stopAtFirstError: false,
     errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
     exceptionFactory: (errors) => {
-      return new UnprocessableEntityException(errors)
+      return new UnprocessableEntityException(errors);
     },
-  })
+  });
 }

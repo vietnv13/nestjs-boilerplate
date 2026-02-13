@@ -3,22 +3,22 @@
  */
 export class SessionItemDto {
   /** Session ID */
-  id: string
+  id: string;
 
   /** Creation time */
-  createdAt: Date
+  createdAt: Date;
 
   /** Expiration time */
-  expiresAt: Date
+  expiresAt: Date;
 
   /** IP address */
-  ipAddress: string | null
+  ipAddress: string | null;
 
   /** User agent */
-  userAgent: string | null
+  userAgent: string | null;
 
   /** Is current session */
-  isCurrent: boolean
+  isCurrent: boolean;
 }
 
 /**
@@ -28,5 +28,5 @@ export class SessionItemDto {
  */
 export class SessionsListResponseDto {
   /** Sessions list */
-  sessions: SessionItemDto[]
+  sessions: SessionItemDto[];
 }

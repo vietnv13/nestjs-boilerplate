@@ -1,5 +1,5 @@
-import { Type } from 'class-transformer'
-import { IsOptional, IsInt, Min, Max } from 'class-validator'
+import { Type } from "class-transformer";
+import { IsOptional, IsInt, Min, Max } from "class-validator";
 
 /**
  * Offset pagination DTO
@@ -24,7 +24,7 @@ export class OffsetPaginationDto {
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  page?: number = 1
+  page?: number = 1;
 
   /**
    * Items per page
@@ -35,5 +35,5 @@ export class OffsetPaginationDto {
   @IsInt()
   @Min(1)
   @Max(100)
-  page_size?: number = 20
+  page_size?: number = 20;
 }

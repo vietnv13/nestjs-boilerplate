@@ -18,7 +18,6 @@
   "extends": "./tsconfig.base.json",
 
   "compilerOptions": {
-
     // ==========================================================
     // Module System - Bundler/SWC Compatible
     // ==========================================================

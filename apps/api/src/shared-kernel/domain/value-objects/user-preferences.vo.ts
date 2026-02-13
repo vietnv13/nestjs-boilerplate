@@ -6,19 +6,19 @@
  */
 export interface UserPreferences {
   /** Theme: light/dark/system */
-  theme?: 'light' | 'dark' | 'system'
+  theme?: "light" | "dark" | "system";
   /** Language preference */
-  lang?: string
+  lang?: string;
   /** Timezone */
-  timezone?: string
+  timezone?: string;
   /** Notifications enabled */
-  notifications?: boolean
+  notifications?: boolean;
 }
 
 /**
  * Default user preferences
  */
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
-  theme: 'system',
+  theme: "system",
   notifications: true,
-}
+};

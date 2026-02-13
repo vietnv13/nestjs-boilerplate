@@ -1,15 +1,15 @@
-import * as React from 'react'
+import * as React from "react";
 
-import { cn } from '@workspace/ui/lib/utils'
+import { cn } from "@workspace/ui/lib/utils";
 
 export interface NavigationItem {
-  label: string
-  href: string
-  active?: boolean
+  label: string;
+  href: string;
+  active?: boolean;
 }
 
-export interface NavigationProps extends React.ComponentProps<'nav'> {
-  items: NavigationItem[]
+export interface NavigationProps extends React.ComponentProps<"nav"> {
+  items: NavigationItem[];
 }
 
 function Navigation({ className, items, ...props }: NavigationProps) {
@@ -17,7 +17,7 @@ function Navigation({ className, items, ...props }: NavigationProps) {
     <nav
       data-slot="navigation"
       aria-label="Main navigation"
-      className={cn('flex items-center', className)}
+      className={cn("flex items-center", className)}
       {...props}
     >
       <ul className="flex items-center gap-1">
@@ -27,12 +27,12 @@ function Navigation({ className, items, ...props }: NavigationProps) {
               href={item.href}
               data-active={item.active}
               className={cn(
-                'px-3 py-2 text-sm font-medium rounded-md transition-colors',
-                'hover:bg-accent hover:text-accent-foreground',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                "px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                "hover:bg-accent hover:text-accent-foreground",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 item.active
-                  ? 'bg-accent text-accent-foreground'
-                  : 'text-muted-foreground',
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground",
               )}
             >
               {item.label}
@@ -41,7 +41,7 @@ function Navigation({ className, items, ...props }: NavigationProps) {
         ))}
       </ul>
     </nav>
-  )
+  );
 }
 
-export { Navigation }
+export { Navigation };

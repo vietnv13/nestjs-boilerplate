@@ -19,16 +19,16 @@ export abstract class DomainEvent {
   /**
    * Event timestamp
    */
-  public readonly occurredOn: Date
+  public readonly occurredOn: Date;
 
   /**
    * Event unique identifier (optional, for idempotency handling)
    */
-  public readonly eventId: string
+  public readonly eventId: string;
 
   constructor() {
-    this.occurredOn = new Date()
-    this.eventId = crypto.randomUUID()
+    this.occurredOn = new Date();
+    this.eventId = crypto.randomUUID();
   }
 
   /**
@@ -36,6 +36,6 @@ export abstract class DomainEvent {
    * Defaults to class name, can be overridden by subclasses
    */
   get eventName(): string {
-    return this.constructor.name
+    return this.constructor.name;
   }
 }

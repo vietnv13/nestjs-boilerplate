@@ -1,10 +1,10 @@
-import { defineConfig } from 'eslint/config'
-import jsdocPlugin from 'eslint-plugin-jsdoc'
+import { defineConfig } from "eslint/config";
+import jsdocPlugin from "eslint-plugin-jsdoc";
 
-import type { OptionsOverrides } from '../types'
-import type { Linter } from 'eslint'
+import type { OptionsOverrides } from "../types";
+import type { Linter } from "eslint";
 
-export type JsdocOptions = OptionsOverrides
+export type JsdocOptions = OptionsOverrides;
 
 /**
  * JSDoc documentation standards configuration
@@ -16,19 +16,19 @@ export type JsdocOptions = OptionsOverrides
  * @returns ESLint config array
  */
 export function jsdoc(options: JsdocOptions = {}): Linter.Config[] {
-  const { overrides = {} } = options
+  const { overrides = {} } = options;
 
   return defineConfig([
     {
-      name: 'jsdoc/rules',
-      extends: [jsdocPlugin.configs['flat/contents-typescript']],
+      name: "jsdoc/rules",
+      extends: [jsdocPlugin.configs["flat/contents-typescript"]],
       rules: {
         // Disabled: Rule designed for English comments, not suitable for non-English projects
-        'jsdoc/match-description': 'off',
+        "jsdoc/match-description": "off",
         // Disabled: Rule's semantic analysis inaccurate for non-English comments
-        'jsdoc/informative-docs': 'off',
+        "jsdoc/informative-docs": "off",
         ...overrides,
       },
     },
-  ])
+  ]);
 }

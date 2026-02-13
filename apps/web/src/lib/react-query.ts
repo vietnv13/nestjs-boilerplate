@@ -1,4 +1,4 @@
-import type { UseMutationOptions, DefaultOptions } from '@tanstack/react-query'
+import type { UseMutationOptions, DefaultOptions } from "@tanstack/react-query";
 
 export const queryConfig = {
   queries: {
@@ -7,15 +7,16 @@ export const queryConfig = {
     retry: false,
     staleTime: 1000 * 60,
   },
-} satisfies DefaultOptions
+} satisfies DefaultOptions;
 
-type ApiFunctionReturnType<FunctionType extends (...arguments_: unknown[]) => Promise<unknown>>
-  = Awaited<ReturnType<FunctionType>>
+type ApiFunctionReturnType<
+  FunctionType extends (...arguments_: unknown[]) => Promise<unknown>,
+> = Awaited<ReturnType<FunctionType>>;
 
 export type QueryConfig<T extends (...arguments_: unknown[]) => unknown> = Omit<
   ReturnType<T>,
-  'queryKey' | 'queryFn'
->
+  "queryKey" | "queryFn"
+>;
 
 export type MutationConfig<
   MutationFunctionType extends (...arguments_: unknown[]) => Promise<unknown>,
@@ -23,4 +24,4 @@ export type MutationConfig<
   ApiFunctionReturnType<MutationFunctionType>,
   Error,
   Parameters<MutationFunctionType>[0]
->
+>;

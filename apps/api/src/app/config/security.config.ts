@@ -1,4 +1,4 @@
-import type { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface'
+import type { CorsOptions } from "@nestjs/common/interfaces/external/cors-options.interface";
 
 /**
  * CORS configuration
@@ -6,42 +6,40 @@ import type { CorsOptions } from '@nestjs/common/interfaces/external/cors-option
 export const corsConfig: CorsOptions = {
   // Allowed origins (production should specify exact domains)
   origin:
-    process.env.NODE_ENV === 'production'
-      ? process.env.ALLOWED_ORIGINS?.split(',') ?? []
-      : true, // Allow all origins in dev
+    process.env.NODE_ENV === "production" ? (process.env.ALLOWED_ORIGINS?.split(",") ?? []) : true, // Allow all origins in dev
   // Allowed HTTP methods
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   // Allowed request headers
   allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'Accept',
-    'X-Correlation-Id',
-    'Traceparent',
-    'Tracestate',
-    'API-Version',
+    "Content-Type",
+    "Authorization",
+    "Accept",
+    "X-Correlation-Id",
+    "Traceparent",
+    "Tracestate",
+    "API-Version",
   ],
   // Exposed response headers (RFC standard tracing)
   exposedHeaders: [
-    'X-Request-Id',
-    'X-Correlation-Id',
-    'Trace-Id',
-    'Link',
-    'Location',
-    'ETag',
-    'Retry-After',
-    'X-RateLimit-Limit',
-    'X-RateLimit-Remaining',
-    'X-RateLimit-Reset',
-    'Deprecation',
-    'Sunset',
-    'Warning',
+    "X-Request-Id",
+    "X-Correlation-Id",
+    "Trace-Id",
+    "Link",
+    "Location",
+    "ETag",
+    "Retry-After",
+    "X-RateLimit-Limit",
+    "X-RateLimit-Remaining",
+    "X-RateLimit-Reset",
+    "Deprecation",
+    "Sunset",
+    "Warning",
   ],
   // Allow credentials (cookies)
   credentials: true,
   // Preflight cache time (seconds)
   maxAge: 3600,
-}
+};
 
 /**
  * Rate limiting config to prevent API abuse
@@ -54,4 +52,4 @@ export const throttlerConfig = {
   ignoreUserAgents: [],
   skipSuccessfulRequests: false,
   skipFailedRequests: false,
-}
+};

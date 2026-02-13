@@ -1,34 +1,34 @@
-import { MenuIcon } from 'lucide-react'
+import { MenuIcon } from "lucide-react";
 
-import { Button } from '@workspace/ui/components/ui/button'
+import { Button } from "@workspace/ui/components/ui/button";
 
-import { MobileNavigation } from './mobile-navigation'
+import { MobileNavigation } from "./mobile-navigation";
 
-import type { Meta, StoryObj } from '@storybook/react-vite'
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta<typeof MobileNavigation> = {
-  title: 'Plus/MobileNavigation',
+  title: "Plus/MobileNavigation",
   component: MobileNavigation,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-}
+};
 
-export default meta
-type Story = StoryObj<typeof MobileNavigation>
+export default meta;
+type Story = StoryObj<typeof MobileNavigation>;
 
 const defaultItems = [
-  { label: 'Home', href: '/', active: true },
-  { label: 'Products', href: '/products' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
-]
+  { label: "Home", href: "/", active: true },
+  { label: "Products", href: "/products" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
 
 export const Default: Story = {
   args: {
     items: defaultItems,
   },
-}
+};
 
 export const CustomTrigger: Story = {
   args: {
@@ -40,25 +40,25 @@ export const CustomTrigger: Story = {
       </Button>
     ),
   },
-}
+};
 
 export const CustomTitle: Story = {
   args: {
     items: defaultItems,
-    title: 'Main Menu',
+    title: "Main Menu",
   },
-}
+};
 
 export const ManyItems: Story = {
   args: {
     items: [
-      { label: 'Home', href: '/', active: true },
-      { label: 'Products', href: '/products' },
-      { label: 'Services', href: '/services' },
-      { label: 'About', href: '/about' },
-      { label: 'Blog', href: '/blog' },
-      { label: 'Careers', href: '/careers' },
-      { label: 'Contact', href: '/contact' },
+      { label: "Home", href: "/", active: true },
+      { label: "Products", href: "/products" },
+      { label: "Services", href: "/services" },
+      { label: "About", href: "/about" },
+      { label: "Blog", href: "/blog" },
+      { label: "Careers", href: "/careers" },
+      { label: "Contact", href: "/contact" },
     ],
   },
-}
+};

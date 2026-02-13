@@ -1,4 +1,4 @@
-import { Button } from '@workspace/ui/components/ui/button'
+import { Button } from "@workspace/ui/components/ui/button";
 
 export const MainErrorFallback = () => {
   return (
@@ -14,5 +14,5 @@ export const MainErrorFallback = () => {
         Refresh Page
       </Button>
     </div>
-  )
-}
+  );
+};

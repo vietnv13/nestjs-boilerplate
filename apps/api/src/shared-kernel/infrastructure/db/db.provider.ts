@@ -1,8 +1,8 @@
-import * as schema from '@workspace/database'
-import { drizzle } from 'drizzle-orm/node-postgres'
-import { Pool } from 'pg'
+import * as schema from "@workspace/database";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 
-import type { DrizzleModuleOptions } from './db.port'
+import type { DrizzleModuleOptions } from "./db.port";
 
 /**
  * Create Drizzle database instance
@@ -17,7 +17,7 @@ export function createDrizzleInstance(options: DrizzleModuleOptions) {
     min: options.pool?.min ?? 2,
     idleTimeoutMillis: options.pool?.idleTimeoutMillis ?? 30_000,
     connectionTimeoutMillis: options.pool?.connectionTimeoutMillis ?? 5000,
-  })
+  });
 
-  return drizzle({ client: pool, schema })
+  return drizzle({ client: pool, schema });
 }

@@ -1,10 +1,10 @@
-import { defineConfig } from 'eslint/config'
-import storybookPlugin from 'eslint-plugin-storybook'
+import { defineConfig } from "eslint/config";
+import storybookPlugin from "eslint-plugin-storybook";
 
-import type { OptionsOverrides } from '../types'
-import type { Linter } from 'eslint'
+import type { OptionsOverrides } from "../types";
+import type { Linter } from "eslint";
 
-export type StorybookOptions = OptionsOverrides
+export type StorybookOptions = OptionsOverrides;
 
 /**
  * Storybook rules configuration
@@ -18,15 +18,17 @@ export type StorybookOptions = OptionsOverrides
  * @returns ESLint config array
  */
 export function storybook(options: StorybookOptions = {}): Linter.Config[] {
-  const { overrides = {} } = options
+  const { overrides = {} } = options;
 
   return defineConfig([
     {
-      name: 'storybook/recommended',
-      extends: [storybookPlugin.configs['flat/recommended'] as unknown as Linter.Config],
+      name: "storybook/recommended",
+      extends: [
+        storybookPlugin.configs["flat/recommended"] as unknown as Linter.Config,
+      ],
       rules: {
         ...overrides,
       },
     },
-  ])
+  ]);
 }

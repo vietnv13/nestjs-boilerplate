@@ -1,7 +1,7 @@
 /**
  * Verification Token Repository token
  */
-export const VERIFICATION_TOKEN_REPOSITORY = Symbol('VERIFICATION_TOKEN_REPOSITORY')
+export const VERIFICATION_TOKEN_REPOSITORY = Symbol("VERIFICATION_TOKEN_REPOSITORY");
 
 /**
  * Verification Token data structure
@@ -12,11 +12,11 @@ export const VERIFICATION_TOKEN_REPOSITORY = Symbol('VERIFICATION_TOKEN_REPOSITO
  * - No type field, distinguished by identifier
  */
 export interface VerificationToken {
-  id: string
-  identifier: string
-  value: string
-  expiresAt: Date
-  createdAt: Date
+  id: string;
+  identifier: string;
+  value: string;
+  expiresAt: Date;
+  createdAt: Date;
 }
 
 /**
@@ -35,39 +35,35 @@ export interface VerificationTokenRepository {
   /**
    * Create verification token (overwrites existing token for same identifier)
    */
-  create(data: {
-    identifier: string
-    value: string
-    expiresAt: Date
-  }): Promise<VerificationToken>
+  create(data: { identifier: string; value: string; expiresAt: Date }): Promise<VerificationToken>;
 
   /**
    * Find by token value
    */
-  findByValue(value: string): Promise<VerificationToken | null>
+  findByValue(value: string): Promise<VerificationToken | null>;
 
   /**
    * Find by identifier
    */
-  findByIdentifier(identifier: string): Promise<VerificationToken | null>
+  findByIdentifier(identifier: string): Promise<VerificationToken | null>;
 
   /**
    * Delete token (called after successful verification)
    */
-  delete(id: string): Promise<boolean>
+  delete(id: string): Promise<boolean>;
 
   /**
    * Delete by identifier
    */
-  deleteByIdentifier(identifier: string): Promise<boolean>
+  deleteByIdentifier(identifier: string): Promise<boolean>;
 
   /**
    * Delete expired tokens (scheduled cleanup)
    */
-  deleteExpired(): Promise<number>
+  deleteExpired(): Promise<number>;
 
   /**
    * Check if token is valid (exists and not expired)
    */
-  isValid(value: string): Promise<boolean>
+  isValid(value: string): Promise<boolean>;
 }

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsUUID } from 'class-validator'
+import { IsNotEmpty, IsUUID } from "class-validator";
 
 /**
  * Revoke session request DTO
@@ -10,7 +10,7 @@ export class RevokeSessionDto {
    */
   @IsUUID()
   @IsNotEmpty()
-  sessionId: string
+  sessionId: string;
 }
 
 /**
@@ -18,8 +18,8 @@ export class RevokeSessionDto {
  */
 export class RevokeSessionResponseDto {
   /** Success status */
-  success: boolean
+  success: boolean;
 
   /** Message */
-  message: string
+  message: string;
 }

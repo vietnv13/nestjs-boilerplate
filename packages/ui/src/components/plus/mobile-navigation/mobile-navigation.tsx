@@ -1,34 +1,34 @@
-'use client'
+"use client";
 
-import { MenuIcon } from 'lucide-react'
-import * as React from 'react'
+import { MenuIcon } from "lucide-react";
+import * as React from "react";
 
-import { Button } from '@workspace/ui/components/ui/button'
+import { Button } from "@workspace/ui/components/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@workspace/ui/components/ui/sheet'
-import { cn } from '@workspace/ui/lib/utils'
+} from "@workspace/ui/components/ui/sheet";
+import { cn } from "@workspace/ui/lib/utils";
 
-import type { NavigationItem } from '@workspace/ui/components/plus/navigation'
+import type { NavigationItem } from "@workspace/ui/components/plus/navigation";
 
-export interface MobileNavigationProps extends React.ComponentProps<'div'> {
-  items: NavigationItem[]
-  trigger?: React.ReactNode
-  title?: string
+export interface MobileNavigationProps extends React.ComponentProps<"div"> {
+  items: NavigationItem[];
+  trigger?: React.ReactNode;
+  title?: string;
 }
 
 function MobileNavigation({
   className,
   items,
   trigger,
-  title = 'Navigation',
+  title = "Navigation",
   ...props
 }: MobileNavigationProps) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   return (
     <div data-slot="mobile-navigation" className={cn(className)} {...props}>
@@ -44,7 +44,10 @@ function MobileNavigation({
           <SheetHeader>
             <SheetTitle>{title}</SheetTitle>
           </SheetHeader>
-          <nav aria-label="Mobile navigation" className="flex flex-col gap-1 px-4">
+          <nav
+            aria-label="Mobile navigation"
+            className="flex flex-col gap-1 px-4"
+          >
             {items.map((item) => (
               <a
                 key={item.href}
@@ -52,12 +55,12 @@ function MobileNavigation({
                 data-active={item.active}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  'px-3 py-2 text-sm font-medium rounded-md transition-colors',
-                  'hover:bg-accent hover:text-accent-foreground',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                  "px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                  "hover:bg-accent hover:text-accent-foreground",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                   item.active
-                    ? 'bg-accent text-accent-foreground'
-                    : 'text-muted-foreground',
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground",
                 )}
               >
                 {item.label}
@@ -67,7 +70,7 @@ function MobileNavigation({
         </SheetContent>
       </Sheet>
     </div>
-  )
+  );
 }
 
-export { MobileNavigation }
+export { MobileNavigation };

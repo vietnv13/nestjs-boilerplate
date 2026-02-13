@@ -1,4 +1,4 @@
-import type { UserPreferences } from '@/shared-kernel/domain/value-objects/user-preferences.vo'
+import type { UserPreferences } from "@/shared-kernel/domain/value-objects/user-preferences.vo";
 
 /**
  * Profile Port
@@ -10,16 +10,16 @@ import type { UserPreferences } from '@/shared-kernel/domain/value-objects/user-
  * - Removed email (now in auth_identities table)
  * - Added displayName, avatarUrl, bio, preferences
  */
-export const PROFILE_PORT = Symbol('PROFILE_PORT')
+export const PROFILE_PORT = Symbol("PROFILE_PORT");
 
 /**
  * Data for creating user profile
  */
 export interface CreateProfileData {
   /** User ID (1:1 relation with users table) */
-  userId: string
+  userId: string;
   /** Display name (optional) */
-  displayName?: string
+  displayName?: string;
 }
 
 /**
@@ -27,19 +27,19 @@ export interface CreateProfileData {
  */
 export interface ProfileInfo {
   /** User ID */
-  userId: string
+  userId: string;
   /** Display name */
-  displayName: string | null
+  displayName: string | null;
   /** Avatar URL */
-  avatarUrl: string | null
+  avatarUrl: string | null;
   /** Bio */
-  bio: string | null
+  bio: string | null;
   /** User preferences */
-  preferences: UserPreferences
+  preferences: UserPreferences;
   /** Created timestamp */
-  createdAt: Date
+  createdAt: Date;
   /** Updated timestamp */
-  updatedAt: Date
+  updatedAt: Date;
 }
 
 /**
@@ -53,26 +53,26 @@ export interface ProfilePort {
    * @param data Profile data
    * @returns Created profile
    */
-  createProfile(data: CreateProfileData): Promise<ProfileInfo>
+  createProfile(data: CreateProfileData): Promise<ProfileInfo>;
 
   /**
    * Find profile by user ID
    * @param userId User ID
    * @returns Profile or null
    */
-  findByUserId(userId: string): Promise<ProfileInfo | null>
+  findByUserId(userId: string): Promise<ProfileInfo | null>;
 
   /**
    * Check if profile exists
    * @param userId User ID
    * @returns True if exists
    */
-  exists(userId: string): Promise<boolean>
+  exists(userId: string): Promise<boolean>;
 
   /**
    * Delete user profile
    * @param userId User ID
    * @returns True if deleted
    */
-  deleteProfile(userId: string): Promise<boolean>
+  deleteProfile(userId: string): Promise<boolean>;
 }

@@ -1,10 +1,10 @@
-import { Injectable, Inject } from '@nestjs/common'
-import { sql } from 'drizzle-orm'
+import { Injectable, Inject } from "@nestjs/common";
+import { sql } from "drizzle-orm";
 
-import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
+import { DB_TOKEN } from "@/shared-kernel/infrastructure/db/db.port";
 
-import type { DrizzleDb } from '@/shared-kernel/infrastructure/db/db.port'
-import type { HealthIndicatorResult } from '@nestjs/terminus'
+import type { DrizzleDb } from "@/shared-kernel/infrastructure/db/db.port";
+import type { HealthIndicatorResult } from "@nestjs/terminus";
 
 /**
  * Drizzle database health indicator - verifies connection via SELECT 1
@@ -18,22 +18,21 @@ export class DrizzleHealthIndicator {
    */
   async isHealthy(key: string): Promise<HealthIndicatorResult> {
     try {
-      await this.database.execute(sql`SELECT 1`)
+      await this.database.execute(sql`SELECT 1`);
 
       return {
         [key]: {
-          status: 'up' as const,
-          message: 'Database is available',
+          status: "up" as const,
+          message: "Database is available",
         },
-      }
+      };
     } catch (error) {
       return {
         [key]: {
-          status: 'down' as const,
-          message:
-            error instanceof Error ? error.message : 'Database check failed',
+          status: "down" as const,
+          message: error instanceof Error ? error.message : "Database check failed",
         },
-      }
+      };
     }
   }
 }

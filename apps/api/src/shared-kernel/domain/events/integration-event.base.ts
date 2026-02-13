@@ -1,4 +1,4 @@
-import { DomainEvent } from './domain-event.base'
+import { DomainEvent } from "./domain-event.base";
 
 /**
  * Integration event base class
@@ -23,15 +23,15 @@ export abstract class IntegrationEvent extends DomainEvent {
   /**
    * Event version (for event evolution)
    */
-  public readonly version: number = 1
+  public readonly version: number = 1;
 
   /**
    * Bounded context/module name that published the event
    */
-  public readonly source: string
+  public readonly source: string;
 
   constructor(source: string) {
-    super()
-    this.source = source
+    super();
+    this.source = source;
   }
 }

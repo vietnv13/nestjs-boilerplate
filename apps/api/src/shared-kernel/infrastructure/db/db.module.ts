@@ -1,12 +1,12 @@
-import { Global, Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import { Global, Module } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
-import { DB_TOKEN } from './db.port'
-import { createDrizzleInstance } from './db.provider'
+import { DB_TOKEN } from "./db.port";
+import { createDrizzleInstance } from "./db.provider";
 
-import type { DrizzleAsyncOptions } from './db.port'
-import type { Env } from '@/app/config/env.schema'
-import type { DynamicModule } from '@nestjs/common'
+import type { DrizzleAsyncOptions } from "./db.port";
+import type { Env } from "@/app/config/env.schema";
+import type { DynamicModule } from "@nestjs/common";
 
 /**
  * Drizzle database module
@@ -31,26 +31,25 @@ export class DrizzleModule {
           inject: [ConfigService],
           useFactory: (configService: ConfigService<Env, true>) => {
             return createDrizzleInstance({
-              connectionString: configService.get('DATABASE_URL', {
+              connectionString: configService.get("DATABASE_URL", {
                 infer: true,
               }),
               pool: {
-                max: configService.get('DB_POOL_MAX', { infer: true }),
-                min: configService.get('DB_POOL_MIN', { infer: true }),
-                idleTimeoutMillis: configService.get('DB_POOL_IDLE_TIMEOUT', {
+                max: configService.get("DB_POOL_MAX", { infer: true }),
+                min: configService.get("DB_POOL_MIN", { infer: true }),
+                idleTimeoutMillis: configService.get("DB_POOL_IDLE_TIMEOUT", {
                   infer: true,
                 }),
-                connectionTimeoutMillis: configService.get(
-                  'DB_POOL_CONNECTION_TIMEOUT',
-                  { infer: true },
-                ),
+                connectionTimeoutMillis: configService.get("DB_POOL_CONNECTION_TIMEOUT", {
+                  infer: true,
+                }),
               },
-            })
+            });
           },
         },
       ],
       exports: [DB_TOKEN],
-    }
+    };
   }
 
   /**
@@ -76,12 +75,12 @@ export class DrizzleModule {
           provide: DB_TOKEN,
           inject: options.inject ?? [],
           useFactory: async (...args: unknown[]) => {
-            const moduleOptions = await options.useFactory(...args)
-            return createDrizzleInstance(moduleOptions)
+            const moduleOptions = await options.useFactory(...args);
+            return createDrizzleInstance(moduleOptions);
           },
         },
       ],
       exports: [DB_TOKEN],
-    }
+    };
   }
 }

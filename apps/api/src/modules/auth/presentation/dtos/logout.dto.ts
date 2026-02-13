@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsString } from 'class-validator'
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty, IsString } from "class-validator";
 
 /**
  * Logout request DTO
@@ -9,10 +9,10 @@ export class LogoutDto {
    * Refresh Token
    * Specifies the session to revoke
    */
-  @ApiProperty({ description: 'Refresh Token' })
+  @ApiProperty({ description: "Refresh Token" })
   @IsString()
-  @IsNotEmpty({ message: 'Refresh Token cannot be empty' })
-  refreshToken: string
+  @IsNotEmpty({ message: "Refresh Token cannot be empty" })
+  refreshToken: string;
 }
 
 /**
@@ -22,14 +22,14 @@ export class LogoutResponseDto {
   /**
    * Success status
    */
-  @ApiProperty({ description: 'Success status' })
-  success: boolean
+  @ApiProperty({ description: "Success status" })
+  success: boolean;
 
   /**
    * Message
    */
-  @ApiProperty({ description: 'Message' })
-  message: string
+  @ApiProperty({ description: "Message" })
+  message: string;
 }
 
 /**
@@ -39,12 +39,12 @@ export class LogoutAllResponseDto {
   /**
    * Number of revoked sessions
    */
-  @ApiProperty({ description: 'Number of revoked sessions' })
-  revokedCount: number
+  @ApiProperty({ description: "Number of revoked sessions" })
+  revokedCount: number;
 
   /**
    * Message
    */
-  @ApiProperty({ description: 'Message' })
-  message: string
+  @ApiProperty({ description: "Message" })
+  message: string;
 }

@@ -1,5 +1,5 @@
-import { Type } from 'class-transformer'
-import { IsOptional, IsInt, Min, Max } from 'class-validator'
+import { Type } from "class-transformer";
+import { IsOptional, IsInt, Min, Max } from "class-validator";
 
 /**
  * Cursor pagination DTO
@@ -23,12 +23,12 @@ export class CursorPaginationDto {
   @IsInt()
   @Min(1)
   @Max(100)
-  page_size?: number = 20
+  page_size?: number = 20;
 
   /**
    * Cursor token (Base64-encoded JSON object)
    * @example eyJpZCI6InVzcl8wMjAifQ==
    */
   @IsOptional()
-  cursor?: string
+  cursor?: string;
 }

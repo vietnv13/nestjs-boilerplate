@@ -1,13 +1,13 @@
-import { defineConfig } from 'eslint/config'
-import boundariesPlugin from 'eslint-plugin-boundaries'
+import { defineConfig } from "eslint/config";
+import boundariesPlugin from "eslint-plugin-boundaries";
 
-import type { OptionsOverrides } from '../types'
-import type { Linter } from 'eslint'
+import type { OptionsOverrides } from "../types";
+import type { Linter } from "eslint";
 
 /**
  * Preset types
  */
-type BoundaryPreset = 'modules' | 'layers'
+type BoundaryPreset = "modules" | "layers";
 
 /**
  * Element type definition
@@ -16,19 +16,19 @@ interface ElementType {
   /**
    * Element type name
    */
-  type: string
+  type: string;
   /**
    * Match pattern (supports minimatch glob)
    */
-  pattern: string | string[]
+  pattern: string | string[];
   /**
    * Capture groups for extracting variables
    */
-  capture?: string[]
+  capture?: string[];
   /**
    * Main entry point mode
    */
-  mode?: 'file' | 'folder' | 'full'
+  mode?: "file" | "folder" | "full";
 }
 
 /**
@@ -38,20 +38,20 @@ interface BoundaryRule {
   /**
    * Source element
    */
-  from: string | string[]
+  from: string | string[];
   /**
    * Allowed target elements
    * Supports string or [elementType, { captureGroup: 'value' }] format
    */
-  allow?: (string | [string, Record<string, string>])[]
+  allow?: (string | [string, Record<string, string>])[];
   /**
    * Disallowed target elements
    */
-  disallow?: string[]
+  disallow?: string[];
   /**
    * Rule message
    */
-  message?: string
+  message?: string;
 }
 
 export interface BoundariesOptions extends OptionsOverrides {
@@ -60,26 +60,26 @@ export interface BoundariesOptions extends OptionsOverrides {
    * - 'modules': VSA/DDD module boundaries (modules cannot import each other)
    * - 'layers': Layered architecture (controls layer dependency direction)
    */
-  preset?: BoundaryPreset
+  preset?: BoundaryPreset;
   /**
    * Custom element type definitions
    * Auto-generated when using preset, or fully customizable
    */
-  elements?: ElementType[]
+  elements?: ElementType[];
   /**
    * Custom boundary rules
    * Auto-generated when using preset, or fully customizable
    */
-  rules?: BoundaryRule[]
+  rules?: BoundaryRule[];
   /**
    * File matching patterns
    */
-  files?: string[]
+  files?: string[];
   /**
    * Base directory (for resolver)
    * @default process.cwd()
    */
-  baseDirectory?: string
+  baseDirectory?: string;
 }
 
 /**
@@ -87,65 +87,66 @@ export interface BoundariesOptions extends OptionsOverrides {
  * VSA/DDD style: modules cannot import each other, only shared-kernel and app
  */
 function getModulesPreset(): {
-  elements: ElementType[]
-  rules: BoundaryRule[]
+  elements: ElementType[];
+  rules: BoundaryRule[];
 } {
   return {
     elements: [
       {
-        type: 'module',
-        pattern: 'src/modules/*/**',
-        capture: ['moduleName'],
-        mode: 'folder',
+        type: "module",
+        pattern: "src/modules/*/**",
+        capture: ["moduleName"],
+        mode: "folder",
       },
       {
-        type: 'shared-kernel',
-        pattern: 'src/shared-kernel/**',
-        mode: 'folder',
+        type: "shared-kernel",
+        pattern: "src/shared-kernel/**",
+        mode: "folder",
       },
       {
-        type: 'app',
-        pattern: 'src/app/**',
-        mode: 'folder',
+        type: "app",
+        pattern: "src/app/**",
+        mode: "folder",
       },
       {
-        type: 'main',
-        pattern: ['src/main.ts', 'src/*.module.ts', 'src/*.d.ts'],
-        mode: 'file',
+        type: "main",
+        pattern: ["src/main.ts", "src/*.module.ts", "src/*.d.ts"],
+        mode: "file",
       },
     ],
     rules: [
       {
         // Modules can only import: same module, shared-kernel, app
-        from: ['module'],
+        from: ["module"],
         allow: [
           // Allow same module imports (matched via ${moduleName} capture group)
-          ['module', { moduleName: '${moduleName}' }],
-          'shared-kernel',
-          'app',
-          'main',
+          ["module", { moduleName: "${moduleName}" }],
+          "shared-kernel",
+          "app",
+          "main",
         ],
-        message: 'Modules cannot import each other. Use shared-kernel for shared code or decouple via events',
+        message:
+          "Modules cannot import each other. Use shared-kernel for shared code or decouple via events",
       },
       {
         // shared-kernel can import itself and app (infrastructure may need app config)
-        from: ['shared-kernel'],
-        allow: ['shared-kernel', 'app'],
-        message: 'shared-kernel cannot import business modules',
+        from: ["shared-kernel"],
+        allow: ["shared-kernel", "app"],
+        message: "shared-kernel cannot import business modules",
       },
       {
         // app can import shared-kernel, but not business modules
-        from: ['app'],
-        allow: ['app', 'shared-kernel'],
-        message: 'app layer should not directly depend on business modules',
+        from: ["app"],
+        allow: ["app", "shared-kernel"],
+        message: "app layer should not directly depend on business modules",
       },
       {
         // main can import anything
-        from: ['main'],
-        allow: ['module', 'shared-kernel', 'app', 'main'],
+        from: ["main"],
+        allow: ["module", "shared-kernel", "app", "main"],
       },
     ],
-  }
+  };
 }
 
 /**
@@ -153,63 +154,65 @@ function getModulesPreset(): {
  * Layered architecture: presentation → application → domain, infrastructure → application
  */
 function getLayersPreset(): {
-  elements: ElementType[]
-  rules: BoundaryRule[]
+  elements: ElementType[];
+  rules: BoundaryRule[];
 } {
   return {
     elements: [
       {
-        type: 'domain',
-        pattern: 'src/**/domain/**',
-        mode: 'folder',
+        type: "domain",
+        pattern: "src/**/domain/**",
+        mode: "folder",
       },
       {
-        type: 'application',
-        pattern: 'src/**/application/**',
-        mode: 'folder',
+        type: "application",
+        pattern: "src/**/application/**",
+        mode: "folder",
       },
       {
-        type: 'infrastructure',
-        pattern: 'src/**/infrastructure/**',
-        mode: 'folder',
+        type: "infrastructure",
+        pattern: "src/**/infrastructure/**",
+        mode: "folder",
       },
       {
-        type: 'presentation',
-        pattern: 'src/**/presentation/**',
-        mode: 'folder',
+        type: "presentation",
+        pattern: "src/**/presentation/**",
+        mode: "folder",
       },
     ],
     rules: [
       {
         // Domain layer has zero dependencies
-        from: ['domain'],
-        allow: ['domain'],
-        disallow: ['application', 'infrastructure', 'presentation'],
-        message: 'Domain layer must have zero dependencies and cannot import other layers',
+        from: ["domain"],
+        allow: ["domain"],
+        disallow: ["application", "infrastructure", "presentation"],
+        message:
+          "Domain layer must have zero dependencies and cannot import other layers",
       },
       {
         // Application layer can import domain
-        from: ['application'],
-        allow: ['domain', 'application'],
-        disallow: ['infrastructure', 'presentation'],
-        message: 'Application layer can only import domain layer',
+        from: ["application"],
+        allow: ["domain", "application"],
+        disallow: ["infrastructure", "presentation"],
+        message: "Application layer can only import domain layer",
       },
       {
         // Infrastructure implements application interfaces
-        from: ['infrastructure'],
-        allow: ['domain', 'application', 'infrastructure'],
-        disallow: ['presentation'],
-        message: 'Infrastructure layer cannot import presentation layer',
+        from: ["infrastructure"],
+        allow: ["domain", "application", "infrastructure"],
+        disallow: ["presentation"],
+        message: "Infrastructure layer cannot import presentation layer",
       },
       {
         // Presentation depends on application
-        from: ['presentation'],
-        allow: ['domain', 'application', 'presentation'],
-        disallow: ['infrastructure'],
-        message: 'Presentation layer cannot directly import infrastructure layer',
+        from: ["presentation"],
+        allow: ["domain", "application", "presentation"],
+        disallow: ["infrastructure"],
+        message:
+          "Presentation layer cannot directly import infrastructure layer",
       },
     ],
-  }
+  };
 }
 
 /**
@@ -244,52 +247,56 @@ export function boundaries(options: BoundariesOptions = {}): Linter.Config[] {
     preset,
     elements: customElements,
     rules: customRules,
-    files = ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+    files = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
     overrides = {},
     baseDirectory,
-  } = options
+  } = options;
 
   // Get preset configuration
-  let elements: ElementType[] = []
-  let rules: BoundaryRule[] = []
+  let elements: ElementType[] = [];
+  let rules: BoundaryRule[] = [];
 
-  if (preset === 'modules') {
-    const presetConfig = getModulesPreset()
-    elements = presetConfig.elements
-    rules = presetConfig.rules
-  } else if (preset === 'layers') {
-    const presetConfig = getLayersPreset()
-    elements = presetConfig.elements
-    rules = presetConfig.rules
+  if (preset === "modules") {
+    const presetConfig = getModulesPreset();
+    elements = presetConfig.elements;
+    rules = presetConfig.rules;
+  } else if (preset === "layers") {
+    const presetConfig = getLayersPreset();
+    elements = presetConfig.elements;
+    rules = presetConfig.rules;
   }
 
   // Custom config overrides preset
   if (customElements) {
-    elements = customElements
+    elements = customElements;
   }
   if (customRules) {
-    rules = customRules
+    rules = customRules;
   }
 
   // Return empty array if no config
   if (elements.length === 0) {
-    return []
+    return [];
   }
 
   return defineConfig([
     {
-      name: 'boundaries/rules',
+      name: "boundaries/rules",
       files,
       plugins: {
         boundaries: boundariesPlugin,
       },
       settings: {
-        'boundaries/elements': elements,
-        'boundaries/dependency-nodes': ['import', 'dynamic-import'],
+        "boundaries/elements": elements,
+        "boundaries/dependency-nodes": ["import", "dynamic-import"],
         // Ignore test files
-        'boundaries/ignore': ['**/*.spec.ts', '**/*.test.ts', '**/*.e2e-spec.ts'],
+        "boundaries/ignore": [
+          "**/*.spec.ts",
+          "**/*.test.ts",
+          "**/*.e2e-spec.ts",
+        ],
         // Configure TypeScript path resolver
-        'import/resolver': {
+        "import/resolver": {
           typescript: {
             alwaysTryTypes: true,
             ...(baseDirectory && { project: baseDirectory }),
@@ -298,14 +305,16 @@ export function boundaries(options: BoundariesOptions = {}): Linter.Config[] {
       },
       rules: {
         // Core rule: element boundary checking
-        'boundaries/element-types': [
-          'error',
+        "boundaries/element-types": [
+          "error",
           {
-            default: 'disallow',
+            default: "disallow",
             rules: rules.map((rule) => ({
               from: Array.isArray(rule.from) ? rule.from : [rule.from],
               allow: rule.allow
-                ? (Array.isArray(rule.allow) ? rule.allow : [rule.allow])
+                ? Array.isArray(rule.allow)
+                  ? rule.allow
+                  : [rule.allow]
                 : undefined,
               message: rule.message,
             })),
@@ -313,18 +322,18 @@ export function boundaries(options: BoundariesOptions = {}): Linter.Config[] {
         ],
 
         // Prevent external modules from importing private elements
-        'boundaries/no-private': 'error',
+        "boundaries/no-private": "error",
 
         // Prevent unknown files (not matching any element definition)
         // Note: Disabled because .d.ts and config files may not match element definitions
-        'boundaries/no-unknown-files': 'off',
+        "boundaries/no-unknown-files": "off",
 
         // Prevent unknown imports (importing files not matching any element)
         // Note: Disabled because external dependencies (node_modules) trigger false positives
-        'boundaries/no-unknown': 'off',
+        "boundaries/no-unknown": "off",
 
         ...overrides,
       },
     },
-  ])
+  ]);
 }

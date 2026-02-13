@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty } from "@nestjs/swagger";
 
 /**
  * Cursor pagination response base class
@@ -9,30 +9,30 @@ import { ApiProperty } from '@nestjs/swagger'
  */
 export class ListResponseDto<T> {
   @ApiProperty({
-    description: 'Object type identifier',
-    example: 'list',
-    enum: ['list'],
+    description: "Object type identifier",
+    example: "list",
+    enum: ["list"],
   })
-  object: 'list'
+  object: "list";
 
   @ApiProperty({
-    description: 'Data array',
+    description: "Data array",
     isArray: true,
   })
-  data: T[]
+  data: T[];
 
   @ApiProperty({
-    description: 'Whether more data exists',
+    description: "Whether more data exists",
     example: true,
   })
-  has_more: boolean
+  has_more: boolean;
 
   @ApiProperty({
-    description: 'Next page cursor (Base64 encoded)',
-    example: 'eyJpZCI6InVzcl8wMjAifQ==',
+    description: "Next page cursor (Base64 encoded)",
+    example: "eyJpZCI6InVzcl8wMjAifQ==",
     required: false,
   })
-  next_cursor?: string
+  next_cursor?: string;
 }
 
 /**
@@ -44,39 +44,39 @@ export class ListResponseDto<T> {
  */
 export class OffsetListResponseDto<T> {
   @ApiProperty({
-    description: 'Object type identifier',
-    example: 'list',
-    enum: ['list'],
+    description: "Object type identifier",
+    example: "list",
+    enum: ["list"],
   })
-  object: 'list'
+  object: "list";
 
   @ApiProperty({
-    description: 'Data array',
+    description: "Data array",
     isArray: true,
   })
-  data: T[]
+  data: T[];
 
   @ApiProperty({
-    description: 'Current page number (1-based)',
+    description: "Current page number (1-based)",
     example: 1,
   })
-  page: number
+  page: number;
 
   @ApiProperty({
-    description: 'Items per page',
+    description: "Items per page",
     example: 20,
   })
-  page_size: number
+  page_size: number;
 
   @ApiProperty({
-    description: 'Total items',
+    description: "Total items",
     example: 100,
   })
-  total: number
+  total: number;
 
   @ApiProperty({
-    description: 'Whether more data exists',
+    description: "Whether more data exists",
     example: true,
   })
-  has_more: boolean
+  has_more: boolean;
 }

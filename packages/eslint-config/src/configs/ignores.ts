@@ -1,38 +1,38 @@
-import { existsSync } from 'node:fs'
-import path from 'node:path'
+import { existsSync } from "node:fs";
+import path from "node:path";
 
-import { includeIgnoreFile } from '@eslint/compat'
+import { includeIgnoreFile } from "@eslint/compat";
 
-import type { Linter } from 'eslint'
+import type { Linter } from "eslint";
 
 /**
  * Default ignored files and directories
  */
 export const DEFAULT_IGNORES: string[] = [
   // Dependencies
-  '**/node_modules/**',
-  '**/.pnp.*',
+  "**/node_modules/**",
+  "**/.pnp.*",
 
   // Build outputs
-  '**/dist/**',
-  '**/build/**',
-  '**/out/**',
-  '**/.next/**',
+  "**/dist/**",
+  "**/build/**",
+  "**/out/**",
+  "**/.next/**",
 
   // Cache directories
-  '**/.cache/**',
-  '**/.turbo/**',
-  '**/.eslintcache',
+  "**/.cache/**",
+  "**/.turbo/**",
+  "**/.eslintcache",
 
   // Version control
-  '**/.git/**',
-  '**/.svn/**',
-  '**/.hg/**',
-  '**/public/**',
+  "**/.git/**",
+  "**/.svn/**",
+  "**/.hg/**",
+  "**/public/**",
 
   // Type files
-  '**/*.d.ts',
-]
+  "**/*.d.ts",
+];
 
 /**
  * Ignore files configuration
@@ -48,20 +48,20 @@ export function ignores(
   userIgnores?: string[] | false,
   gitignorePath?: string | boolean,
 ): Linter.Config[] {
-  const configs: Linter.Config[] = []
+  const configs: Linter.Config[] = [];
 
   // Handle gitignore import
   if (gitignorePath !== false) {
     try {
       // Use ternary instead of if-else
-      const gitignoreFile
-        = typeof gitignorePath === 'string'
+      const gitignoreFile =
+        typeof gitignorePath === "string"
           ? path.resolve(gitignorePath) // Use specified path
-          : path.resolve(process.cwd(), '.gitignore') // Default: find in project root
+          : path.resolve(process.cwd(), ".gitignore"); // Default: find in project root
 
       // Import only if file exists
       if (existsSync(gitignoreFile)) {
-        configs.push(includeIgnoreFile(gitignoreFile))
+        configs.push(includeIgnoreFile(gitignoreFile));
       }
     } catch {
       // Silently skip errors to ensure config is always valid
@@ -69,24 +69,24 @@ export function ignores(
   }
 
   // Handle default and user-defined ignore rules
-  const finalIgnores
-    = userIgnores === false
+  const finalIgnores =
+    userIgnores === false
       ? []
-      : (userIgnores
-          ? [...DEFAULT_IGNORES, ...userIgnores]
-          : DEFAULT_IGNORES)
+      : userIgnores
+        ? [...DEFAULT_IGNORES, ...userIgnores]
+        : DEFAULT_IGNORES;
 
   if (finalIgnores.length > 0) {
     configs.push({
-      name: 'defaults',
+      name: "defaults",
       ignores: finalIgnores,
-    })
+    });
   }
 
   return configs.map((config) => ({
     ...config,
     name: `ignores/globals/${config.name}`,
-  }))
+  }));
 }
 
 /**
@@ -94,7 +94,7 @@ export function ignores(
  */
 export interface IgnoresOptions {
   /** Custom ignore rules, or false to disable defaults */
-  ignores?: string[] | false
+  ignores?: string[] | false;
   /** gitignore file path or enable flag */
-  gitignore?: string | boolean
+  gitignore?: string | boolean;
 }

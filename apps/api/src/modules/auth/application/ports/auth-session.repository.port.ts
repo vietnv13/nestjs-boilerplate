@@ -1,9 +1,9 @@
-import type { AuthSession } from '@/modules/auth/domain/entities/auth-session.entity'
+import type { AuthSession } from "@/modules/auth/domain/entities/auth-session.entity";
 
 /**
  * Auth Session Repository token
  */
-export const AUTH_SESSION_REPOSITORY = Symbol('AUTH_SESSION_REPOSITORY')
+export const AUTH_SESSION_REPOSITORY = Symbol("AUTH_SESSION_REPOSITORY");
 
 /**
  * Auth Session Repository interface
@@ -17,40 +17,40 @@ export interface AuthSessionRepository {
   /**
    * Save session
    */
-  save(session: AuthSession): Promise<void>
+  save(session: AuthSession): Promise<void>;
 
   /**
    * Find by ID
    */
-  findById(id: string): Promise<AuthSession | null>
+  findById(id: string): Promise<AuthSession | null>;
 
   /**
    * Find by token
    */
-  findByToken(token: string): Promise<AuthSession | null>
+  findByToken(token: string): Promise<AuthSession | null>;
 
   /**
    * Find all active sessions by user ID (not expired)
    */
-  findActiveByUserId(userId: string): Promise<AuthSession[]>
+  findActiveByUserId(userId: string): Promise<AuthSession[]>;
 
   /**
    * Find all sessions by user ID
    */
-  findAllByUserId(userId: string): Promise<AuthSession[]>
+  findAllByUserId(userId: string): Promise<AuthSession[]>;
 
   /**
    * Delete session (revoke = delete)
    */
-  delete(id: string): Promise<boolean>
+  delete(id: string): Promise<boolean>;
 
   /**
    * Delete all sessions for a user
    */
-  deleteAllByUserId(userId: string): Promise<number>
+  deleteAllByUserId(userId: string): Promise<number>;
 
   /**
    * Delete expired sessions
    */
-  deleteExpired(): Promise<number>
+  deleteExpired(): Promise<number>;
 }

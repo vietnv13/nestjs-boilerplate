@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator'
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator";
 
 /**
  * Create Todo DTO
@@ -13,7 +13,7 @@ export class CreateTodoDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(200)
-  title: string
+  title: string;
 
   /**
    * Todo description (optional)
@@ -22,7 +22,7 @@ export class CreateTodoDto {
   @IsString()
   @IsOptional()
   @MaxLength(1000)
-  description?: string
+  description?: string;
 
   /**
    * Completed status (optional, defaults to false)
@@ -30,5 +30,5 @@ export class CreateTodoDto {
    */
   @IsBoolean()
   @IsOptional()
-  isCompleted?: boolean
+  isCompleted?: boolean;
 }

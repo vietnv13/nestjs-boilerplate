@@ -1,12 +1,12 @@
-import { defineConfig } from 'eslint/config'
-import prettierConfig from 'eslint-plugin-prettier/recommended'
+import { defineConfig } from "eslint/config";
+import prettierConfig from "eslint-plugin-prettier/recommended";
 
-import { GLOB_SRC } from '../utils'
+import { GLOB_SRC } from "../utils";
 
-import type { OptionsOverrides } from '../types'
-import type { Linter } from 'eslint'
+import type { OptionsOverrides } from "../types";
+import type { Linter } from "eslint";
 
-export type PrettierOptions = OptionsOverrides
+export type PrettierOptions = OptionsOverrides;
 
 /**
  * Prettier code formatting configuration
@@ -16,16 +16,16 @@ export type PrettierOptions = OptionsOverrides
  * @returns ESLint config array
  */
 export function prettier(options: PrettierOptions = {}): Linter.Config[] {
-  const { overrides = {} } = options
+  const { overrides = {} } = options;
 
-  const files = [GLOB_SRC]
+  const files = [GLOB_SRC];
 
   return defineConfig([
     {
-      name: 'prettier/rules',
+      name: "prettier/rules",
       files,
       extends: [prettierConfig],
       rules: overrides,
     },
-  ])
+  ]);
 }

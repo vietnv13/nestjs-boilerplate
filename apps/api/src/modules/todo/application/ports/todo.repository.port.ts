@@ -1,4 +1,4 @@
-import type { Todo, InsertTodo } from '@workspace/database'
+import type { Todo, InsertTodo } from "@workspace/database";
 
 /**
  * Todo Repository interface
@@ -10,33 +10,33 @@ export interface TodoRepository {
   /**
    * Find all todos
    */
-  findAll(): Promise<Todo[]>
+  findAll(): Promise<Todo[]>;
 
   /**
    * Find todo by ID
    */
-  findById(id: string): Promise<Todo | null>
+  findById(id: string): Promise<Todo | null>;
 
   /**
    * Create new todo
    */
-  create(data: Omit<InsertTodo, 'id' | 'createdAt' | 'updatedAt'>): Promise<Todo>
+  create(data: Omit<InsertTodo, "id" | "createdAt" | "updatedAt">): Promise<Todo>;
 
   /**
    * Update todo
    */
   update(
     id: string,
-    data: Partial<Omit<InsertTodo, 'id' | 'createdAt' | 'updatedAt'>>,
-  ): Promise<Todo | null>
+    data: Partial<Omit<InsertTodo, "id" | "createdAt" | "updatedAt">>,
+  ): Promise<Todo | null>;
 
   /**
    * Delete todo
    */
-  delete(id: string): Promise<boolean>
+  delete(id: string): Promise<boolean>;
 }
 
 /**
  * Repository injection token
  */
-export const TODO_REPOSITORY = Symbol('TODO_REPOSITORY')
+export const TODO_REPOSITORY = Symbol("TODO_REPOSITORY");

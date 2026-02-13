@@ -8,10 +8,10 @@
  * - phone: Phone authentication
  */
 export const AuthProvider = {
-  EMAIL: 'email',
-  GOOGLE: 'google',
-  GITHUB: 'github',
-  PHONE: 'phone',
-} as const
+  EMAIL: "email",
+  GOOGLE: "google",
+  GITHUB: "github",
+  PHONE: "phone",
+} as const;
 
-export type AuthProvider = (typeof AuthProvider)[keyof typeof AuthProvider]
+export type AuthProvider = (typeof AuthProvider)[keyof typeof AuthProvider];

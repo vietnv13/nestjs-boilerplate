@@ -1,8 +1,8 @@
-import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
-import { proxyAuthRequest, setAuthCookies } from '@/lib/auth'
-import type { AuthResponse, RegisterRequest } from '@/types/auth'
+import { proxyAuthRequest, setAuthCookies } from "@/lib/auth";
+import type { AuthResponse, RegisterRequest } from "@/types/auth";
 
 /**
  * Register endpoint
@@ -11,19 +11,19 @@ import type { AuthResponse, RegisterRequest } from '@/types/auth'
  * 3. Return user info (auto login after registration)
  */
 export async function POST(request: NextRequest) {
-  const body = (await request.json()) as RegisterRequest
+  const body = (await request.json()) as RegisterRequest;
 
   const { data, ok, status } = await proxyAuthRequest<AuthResponse>(
-    '/api/auth/register',
+    "/api/auth/register",
     body,
-  )
+  );
 
   if (!ok) {
-    return NextResponse.json(data, { status })
+    return NextResponse.json(data, { status });
   }
 
-  const res = NextResponse.json({ user: data.user })
-  setAuthCookies(res, data)
+  const res = NextResponse.json({ user: data.user });
+  setAuthCookies(res, data);
 
-  return res
+  return res;
 }

@@ -1,15 +1,15 @@
-import { Inject, Injectable } from '@nestjs/common'
-import { usersTable } from '@workspace/database'
-import { eq, and } from 'drizzle-orm'
+import { Inject, Injectable } from "@nestjs/common";
+import { usersTable } from "@workspace/database";
+import { eq, and } from "drizzle-orm";
 
-import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
+import { DB_TOKEN } from "@/shared-kernel/infrastructure/db/db.port";
 
 import type {
   User,
   UserRepository,
   CreateUserData,
-} from '@/shared-kernel/application/ports/user.repository.port'
-import type { DrizzleDb } from '@/shared-kernel/infrastructure/db/db.port'
+} from "@/shared-kernel/application/ports/user.repository.port";
+import type { DrizzleDb } from "@/shared-kernel/infrastructure/db/db.port";
 
 /**
  * Drizzle User Repository implementation
@@ -25,7 +25,7 @@ export class UserRepositoryImpl implements UserRepository {
   ) {}
 
   async create(data: CreateUserData): Promise<User> {
-    const now = new Date()
+    const now = new Date();
     const result = await this.db
       .insert(usersTable)
       .values({
@@ -38,23 +38,19 @@ export class UserRepositoryImpl implements UserRepository {
         createdAt: now,
         updatedAt: now,
       })
-      .returning()
+      .returning();
 
-    return this.toEntity(result[0]!)
+    return this.toEntity(result[0]);
   }
 
   async findById(id: string): Promise<User | null> {
-    const result = await this.db
-      .select()
-      .from(usersTable)
-      .where(eq(usersTable.id, id))
-      .limit(1)
+    const result = await this.db.select().from(usersTable).where(eq(usersTable.id, id)).limit(1);
 
     if (result.length === 0) {
-      return null
+      return null;
     }
 
-    return this.toEntity(result[0]!)
+    return this.toEntity(result[0]);
   }
 
   async setBanned(id: string, banned: boolean, reason?: string, expires?: Date): Promise<boolean> {
@@ -66,17 +62,15 @@ export class UserRepositoryImpl implements UserRepository {
         banExpires: expires ?? null,
         updatedAt: new Date(),
       })
-      .where(eq(usersTable.id, id))
+      .where(eq(usersTable.id, id));
 
-    return (result.rowCount ?? 0) > 0
+    return (result.rowCount ?? 0) > 0;
   }
 
   async hardDelete(id: string): Promise<boolean> {
-    const result = await this.db
-      .delete(usersTable)
-      .where(eq(usersTable.id, id))
+    const result = await this.db.delete(usersTable).where(eq(usersTable.id, id));
 
-    return (result.rowCount ?? 0) > 0
+    return (result.rowCount ?? 0) > 0;
   }
 
   async exists(id: string): Promise<boolean> {
@@ -84,24 +78,19 @@ export class UserRepositoryImpl implements UserRepository {
       .select({ id: usersTable.id })
       .from(usersTable)
       .where(eq(usersTable.id, id))
-      .limit(1)
+      .limit(1);
 
-    return result.length > 0
+    return result.length > 0;
   }
 
   async existsAndActive(id: string): Promise<boolean> {
     const result = await this.db
       .select({ id: usersTable.id })
       .from(usersTable)
-      .where(
-        and(
-          eq(usersTable.id, id),
-          eq(usersTable.banned, false),
-        ),
-      )
-      .limit(1)
+      .where(and(eq(usersTable.id, id), eq(usersTable.banned, false)))
+      .limit(1);
 
-    return result.length > 0
+    return result.length > 0;
   }
 
   private toEntity(record: typeof usersTable.$inferSelect): User {
@@ -117,6 +106,6 @@ export class UserRepositoryImpl implements UserRepository {
       banExpires: record.banExpires,
       createdAt: record.createdAt,
       updatedAt: record.updatedAt,
-    }
+    };
   }
 }

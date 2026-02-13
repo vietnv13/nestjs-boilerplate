@@ -7,13 +7,13 @@
  * - Session revocation = delete record
  */
 export class AuthSession {
-  readonly #id: string
-  readonly #userId: string
-  readonly #token: string
-  readonly #expiresAt: Date
-  readonly #ipAddress: string | null
-  readonly #userAgent: string | null
-  readonly #createdAt: Date
+  readonly #id: string;
+  readonly #userId: string;
+  readonly #token: string;
+  readonly #expiresAt: Date;
+  readonly #ipAddress: string | null;
+  readonly #userAgent: string | null;
+  readonly #createdAt: Date;
 
   private constructor(
     id: string,
@@ -24,13 +24,13 @@ export class AuthSession {
     userAgent: string | null,
     createdAt: Date,
   ) {
-    this.#id = id
-    this.#userId = userId
-    this.#token = token
-    this.#expiresAt = expiresAt
-    this.#ipAddress = ipAddress
-    this.#userAgent = userAgent
-    this.#createdAt = createdAt
+    this.#id = id;
+    this.#userId = userId;
+    this.#token = token;
+    this.#expiresAt = expiresAt;
+    this.#ipAddress = ipAddress;
+    this.#userAgent = userAgent;
+    this.#createdAt = createdAt;
   }
 
   /**
@@ -52,7 +52,7 @@ export class AuthSession {
       ipAddress ?? null,
       userAgent ?? null,
       new Date(),
-    )
+    );
   }
 
   /**
@@ -67,15 +67,7 @@ export class AuthSession {
     userAgent: string | null,
     createdAt: Date,
   ): AuthSession {
-    return new AuthSession(
-      id,
-      userId,
-      token,
-      expiresAt,
-      ipAddress,
-      userAgent,
-      createdAt,
-    )
+    return new AuthSession(id, userId, token, expiresAt, ipAddress, userAgent, createdAt);
   }
 
   /**
@@ -83,42 +75,42 @@ export class AuthSession {
    * Note: In better-auth, session revocation = delete record, so only check expiration here
    */
   get isValid(): boolean {
-    return this.#expiresAt > new Date()
+    return this.#expiresAt > new Date();
   }
 
   /**
    * Check if session is expired
    */
   get isExpired(): boolean {
-    return this.#expiresAt <= new Date()
+    return this.#expiresAt <= new Date();
   }
 
   // Getters
   get id(): string {
-    return this.#id
+    return this.#id;
   }
 
   get userId(): string {
-    return this.#userId
+    return this.#userId;
   }
 
   get token(): string {
-    return this.#token
+    return this.#token;
   }
 
   get expiresAt(): Date {
-    return this.#expiresAt
+    return this.#expiresAt;
   }
 
   get ipAddress(): string | null {
-    return this.#ipAddress
+    return this.#ipAddress;
   }
 
   get userAgent(): string | null {
-    return this.#userAgent
+    return this.#userAgent;
   }
 
   get createdAt(): Date {
-    return this.#createdAt
+    return this.#createdAt;
   }
 }

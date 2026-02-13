@@ -1,13 +1,13 @@
-import js from '@eslint/js'
-import { defineConfig } from 'eslint/config'
-import globals from 'globals'
+import js from "@eslint/js";
+import { defineConfig } from "eslint/config";
+import globals from "globals";
 
-import { GLOB_SRC } from '../utils'
+import { GLOB_SRC } from "../utils";
 
-import type { OptionsFiles, OptionsOverrides } from '../types'
-import type { Linter } from 'eslint'
+import type { OptionsFiles, OptionsOverrides } from "../types";
+import type { Linter } from "eslint";
 
-export type JavaScriptOptions = OptionsFiles & OptionsOverrides
+export type JavaScriptOptions = OptionsFiles & OptionsOverrides;
 
 /**
  * JavaScript base configuration
@@ -18,14 +18,14 @@ export type JavaScriptOptions = OptionsFiles & OptionsOverrides
  * @returns ESLint config array
  */
 export function javascript(options: JavaScriptOptions = {}): Linter.Config[] {
-  const { files = [GLOB_SRC], overrides = {} } = options
+  const { files = [GLOB_SRC], overrides = {} } = options;
 
   return defineConfig({
-    name: 'javascript/rules',
+    name: "javascript/rules",
     files,
     extends: [js.configs.recommended],
     languageOptions: {
-      ecmaVersion: 'latest',
+      ecmaVersion: "latest",
       globals: {
         ...globals.es2021,
       },
@@ -34,10 +34,10 @@ export function javascript(options: JavaScriptOptions = {}): Linter.Config[] {
           jsx: true,
         },
       },
-      sourceType: 'module',
+      sourceType: "module",
     },
     rules: {
       ...overrides,
     },
-  })
+  });
 }

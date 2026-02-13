@@ -1,19 +1,19 @@
-import { RequestMethod } from '@nestjs/common'
+import { RequestMethod } from "@nestjs/common";
 
-import { redactCensor, redactPaths } from './redaction.config'
+import { redactCensor, redactPaths } from "./redaction.config";
 
-import type { Env } from '@/app/config/env.schema'
-import type { ConfigService } from '@nestjs/config'
-import type { Params } from 'nestjs-pino'
-import type { IncomingMessage, ServerResponse } from 'node:http'
+import type { Env } from "@/app/config/env.schema";
+import type { ConfigService } from "@nestjs/config";
+import type { Params } from "nestjs-pino";
+import type { IncomingMessage, ServerResponse } from "node:http";
 
 /**
  * Create nestjs-pino configuration
  */
 export function createLoggerConfig(config: ConfigService<Env, true>): Params {
-  const nodeEnv: 'development' | 'production' | 'test' = config.get('NODE_ENV')
-  const isProduction = nodeEnv === 'production'
-  const logLevel = getLogLevel(nodeEnv)
+  const nodeEnv: "development" | "production" | "test" = config.get("NODE_ENV");
+  const isProduction = nodeEnv === "production";
+  const logLevel = getLogLevel(nodeEnv);
 
   return {
     pinoHttp: {
@@ -22,8 +22,8 @@ export function createLoggerConfig(config: ConfigService<Env, true>): Params {
       // Only log API paths (whitelist)
       autoLogging: {
         ignore: (req) => {
-          const url = req.url ?? ''
-          return !url.startsWith('/v1/') && !url.startsWith('/v2/')
+          const url = req.url ?? "";
+          return !url.startsWith("/v1/") && !url.startsWith("/v2/");
         },
       },
 
@@ -35,7 +35,7 @@ export function createLoggerConfig(config: ConfigService<Env, true>): Params {
 
       // Serializers
       serializers: {
-        req: (req: IncomingMessage & { id?: string, query?: unknown, params?: unknown }) => ({
+        req: (req: IncomingMessage & { id?: string; query?: unknown; params?: unknown }) => ({
           id: req.id,
           method: req.method,
           url: req.url,
@@ -56,16 +56,16 @@ export function createLoggerConfig(config: ConfigService<Env, true>): Params {
 
       // Custom log properties from request headers
       customProps: (req: IncomingMessage) => ({
-        correlationId: req.headers['x-correlation-id'],
+        correlationId: req.headers["x-correlation-id"],
         traceId: extractTraceId(req.headers.traceparent as string | undefined),
       }),
 
       customSuccessMessage: (req: IncomingMessage, res: ServerResponse) => {
-        return `${req.method} ${req.url} ${res.statusCode}`
+        return `${req.method} ${req.url} ${res.statusCode}`;
       },
 
       customErrorMessage: (req: IncomingMessage, res: ServerResponse, error: Error) => {
-        return `${req.method} ${req.url} ${res.statusCode} - ${error.message}`
+        return `${req.method} ${req.url} ${res.statusCode} - ${error.message}`;
       },
 
       // Dev: use pino-pretty
@@ -73,13 +73,13 @@ export function createLoggerConfig(config: ConfigService<Env, true>): Params {
         ? {}
         : {
             transport: {
-              target: 'pino-pretty',
+              target: "pino-pretty",
               options: {
                 colorize: true,
                 singleLine: true,
-                translateTime: 'HH:MM:ss',
-                ignore: 'pid,hostname',
-                messageFormat: '{context} | {msg}',
+                translateTime: "HH:MM:ss",
+                ignore: "pid,hostname",
+                messageFormat: "{context} | {msg}",
               },
             },
           }),
@@ -87,26 +87,26 @@ export function createLoggerConfig(config: ConfigService<Env, true>): Params {
 
     // Exclude health check routes
     exclude: [
-      { method: RequestMethod.GET, path: 'v1/health' },
-      { method: RequestMethod.GET, path: 'v1/health/live' },
-      { method: RequestMethod.GET, path: 'v1/health/ready' },
+      { method: RequestMethod.GET, path: "v1/health" },
+      { method: RequestMethod.GET, path: "v1/health/live" },
+      { method: RequestMethod.GET, path: "v1/health/ready" },
     ],
-  }
+  };
 }
 
 /**
  * Get log level by environment
  */
-function getLogLevel(nodeEnv: 'development' | 'production' | 'test'): string {
+function getLogLevel(nodeEnv: "development" | "production" | "test"): string {
   switch (nodeEnv) {
-    case 'production': {
-      return 'info'
+    case "production": {
+      return "info";
     }
-    case 'test': {
-      return 'warn'
+    case "test": {
+      return "warn";
     }
-    case 'development': {
-      return 'debug'
+    case "development": {
+      return "debug";
     }
   }
 }
@@ -116,9 +116,9 @@ function getLogLevel(nodeEnv: 'development' | 'production' | 'test'): string {
  */
 function extractTraceId(traceparent: string | undefined): string | undefined {
   if (!traceparent) {
-    return undefined
+    return undefined;
   }
 
-  const parts = traceparent.split('-')
-  return parts[1]
+  const parts = traceparent.split("-");
+  return parts[1];
 }

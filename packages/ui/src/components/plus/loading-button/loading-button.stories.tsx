@@ -1,57 +1,64 @@
-import { LoadingButton } from './loading-button'
+import { LoadingButton } from "./loading-button";
 
-import type { Meta, StoryObj } from '@storybook/react-vite'
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta: Meta<typeof LoadingButton> = {
-  title: 'Plus/LoadingButton',
+  title: "Plus/LoadingButton",
   component: LoadingButton,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
+      control: "select",
+      options: [
+        "default",
+        "destructive",
+        "outline",
+        "secondary",
+        "ghost",
+        "link",
+      ],
     },
     size: {
-      control: 'select',
-      options: ['default', 'sm', 'lg', 'icon'],
+      control: "select",
+      options: ["default", "sm", "lg", "icon"],
     },
     loading: {
-      control: 'boolean',
+      control: "boolean",
     },
     loadingText: {
-      control: 'text',
+      control: "text",
     },
     disabled: {
-      control: 'boolean',
+      control: "boolean",
     },
   },
-}
+};
 
-export default meta
-type Story = StoryObj<typeof LoadingButton>
+export default meta;
+type Story = StoryObj<typeof LoadingButton>;
 
 export const Default: Story = {
   args: {
-    children: 'Submit',
+    children: "Submit",
   },
-}
+};
 
 export const Loading: Story = {
   args: {
-    children: 'Submit',
+    children: "Submit",
     loading: true,
   },
-}
+};
 
 export const LoadingWithText: Story = {
   args: {
-    children: 'Submit',
+    children: "Submit",
     loading: true,
-    loadingText: 'Submitting...',
+    loadingText: "Submitting...",
   },
-}
+};
 
 export const Variants: Story = {
   render: () => (
@@ -64,7 +71,7 @@ export const Variants: Story = {
       <LoadingButton variant="link">Link</LoadingButton>
     </div>
   ),
-}
+};
 
 export const Sizes: Story = {
   render: () => (
@@ -74,15 +81,23 @@ export const Sizes: Story = {
       <LoadingButton size="lg">Large</LoadingButton>
     </div>
   ),
-}
+};
 
 export const AllLoadingStates: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
-      <LoadingButton variant="default" loading>Default</LoadingButton>
-      <LoadingButton variant="destructive" loading>Destructive</LoadingButton>
-      <LoadingButton variant="outline" loading>Outline</LoadingButton>
-      <LoadingButton variant="secondary" loading>Secondary</LoadingButton>
+      <LoadingButton variant="default" loading>
+        Default
+      </LoadingButton>
+      <LoadingButton variant="destructive" loading>
+        Destructive
+      </LoadingButton>
+      <LoadingButton variant="outline" loading>
+        Outline
+      </LoadingButton>
+      <LoadingButton variant="secondary" loading>
+        Secondary
+      </LoadingButton>
     </div>
   ),
-}
+};

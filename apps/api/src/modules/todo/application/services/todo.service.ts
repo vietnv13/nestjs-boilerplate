@@ -1,11 +1,11 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 
-import { TODO_REPOSITORY } from '@/modules/todo/application/ports/todo.repository.port'
+import { TODO_REPOSITORY } from "@/modules/todo/application/ports/todo.repository.port";
 
-import type { TodoRepository } from '@/modules/todo/application/ports/todo.repository.port'
-import type { CreateTodoDto } from '@/modules/todo/presentation/dtos/create-todo.dto'
-import type { UpdateTodoDto } from '@/modules/todo/presentation/dtos/update-todo.dto'
-import type { Todo } from '@workspace/database'
+import type { TodoRepository } from "@/modules/todo/application/ports/todo.repository.port";
+import type { CreateTodoDto } from "@/modules/todo/presentation/dtos/create-todo.dto";
+import type { UpdateTodoDto } from "@/modules/todo/presentation/dtos/update-todo.dto";
+import type { Todo } from "@workspace/database";
 
 /**
  * Todo Service
@@ -24,7 +24,7 @@ export class TodoService {
    * Get all todos
    */
   async findAll(): Promise<Todo[]> {
-    return this.todoRepository.findAll()
+    return this.todoRepository.findAll();
   }
 
   /**
@@ -33,20 +33,20 @@ export class TodoService {
    * @throws NotFoundException if todo not found
    */
   async findById(id: string): Promise<Todo> {
-    const todo = await this.todoRepository.findById(id)
+    const todo = await this.todoRepository.findById(id);
 
     if (!todo) {
-      throw new NotFoundException(`Todo with ID ${id} not found`)
+      throw new NotFoundException(`Todo with ID ${id} not found`);
     }
 
-    return todo
+    return todo;
   }
 
   /**
    * Create new todo
    */
   async create(createTodoDto: CreateTodoDto): Promise<Todo> {
-    return this.todoRepository.create(createTodoDto)
+    return this.todoRepository.create(createTodoDto);
   }
 
   /**
@@ -55,13 +55,13 @@ export class TodoService {
    * @throws NotFoundException if todo not found
    */
   async update(id: string, updateTodoDto: UpdateTodoDto): Promise<Todo> {
-    const todo = await this.todoRepository.update(id, updateTodoDto)
+    const todo = await this.todoRepository.update(id, updateTodoDto);
 
     if (!todo) {
-      throw new NotFoundException(`Todo with ID ${id} not found`)
+      throw new NotFoundException(`Todo with ID ${id} not found`);
     }
 
-    return todo
+    return todo;
   }
 
   /**
@@ -70,10 +70,10 @@ export class TodoService {
    * @throws NotFoundException if todo not found
    */
   async delete(id: string): Promise<void> {
-    const deleted = await this.todoRepository.delete(id)
+    const deleted = await this.todoRepository.delete(id);
 
     if (!deleted) {
-      throw new NotFoundException(`Todo with ID ${id} not found`)
+      throw new NotFoundException(`Todo with ID ${id} not found`);
     }
   }
 }

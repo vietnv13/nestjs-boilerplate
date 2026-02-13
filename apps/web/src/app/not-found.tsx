@@ -1,6 +1,6 @@
-import { BlankLayout } from '@/components/layouts'
-import { Link } from '@/components/link'
-import { appPaths } from '@/config/app-paths'
+import { BlankLayout } from "@/components/layouts";
+import { Link } from "@/components/link";
+import { appPaths } from "@/config/app-paths";
 
 const NotFoundPage = () => {
   return (
@@ -13,7 +13,7 @@ const NotFoundPage = () => {
         </Link>
       </div>
     </BlankLayout>
-  )
-}
+  );
+};
 
-export default NotFoundPage
+export default NotFoundPage;

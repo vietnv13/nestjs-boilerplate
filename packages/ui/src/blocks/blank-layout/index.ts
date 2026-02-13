@@ -1,2 +1,2 @@
-export { BlankLayout } from './blank-layout'
-export type { BlankLayoutProps } from './blank-layout'
+export { BlankLayout } from "./blank-layout";
+export type { BlankLayoutProps } from "./blank-layout";

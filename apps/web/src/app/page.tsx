@@ -1,6 +1,6 @@
-import { BlankLayout } from '@/components/layouts'
-import { Nav } from '@/components/nav'
-import { Hero } from '@/features/home/components/hero'
+import { BlankLayout } from "@/components/layouts";
+import { Nav } from "@/components/nav";
+import { Hero } from "@/features/home/components/hero";
 
 export default function HomePage() {
   return (
@@ -8,5 +8,5 @@ export default function HomePage() {
       <Nav />
       <Hero />
     </BlankLayout>
-  )
+  );
 }

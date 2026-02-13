@@ -1,33 +1,33 @@
-import { cva } from 'class-variance-authority'
-import NextLink from 'next/link'
+import { cva } from "class-variance-authority";
+import NextLink from "next/link";
 
-import { cn } from '@workspace/ui/lib/utils'
+import { cn } from "@workspace/ui/lib/utils";
 
-import type { VariantProps } from 'class-variance-authority'
-import type { LinkProps as NextLinkProperties } from 'next/link'
+import type { VariantProps } from "class-variance-authority";
+import type { LinkProps as NextLinkProperties } from "next/link";
 
 const linkVariants = cva(
-  'underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors',
+  "underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors",
   {
     variants: {
       variant: {
-        default: 'text-primary',
-        nav: 'text-foreground/80 hover:text-foreground',
-        muted: 'text-muted-foreground hover:text-foreground',
+        default: "text-primary",
+        nav: "text-foreground/80 hover:text-foreground",
+        muted: "text-muted-foreground hover:text-foreground",
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: "default",
     },
   },
-)
+);
 
 type LinkProperties = {
-  className?: string
-  children: React.ReactNode
-  target?: string
-} & NextLinkProperties
-& VariantProps<typeof linkVariants>
+  className?: string;
+  children: React.ReactNode;
+  target?: string;
+} & NextLinkProperties &
+  VariantProps<typeof linkVariants>;
 
 export const Link = ({
   className,
@@ -44,5 +44,5 @@ export const Link = ({
     >
       {children}
     </NextLink>
-  )
-}
+  );
+};

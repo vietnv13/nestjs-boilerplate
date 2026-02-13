@@ -1,11 +1,11 @@
-import defu from 'defu'
-import { defineConfig } from 'eslint/config'
-import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import defu from "defu";
+import { defineConfig } from "eslint/config";
+import eslintPluginUnicorn from "eslint-plugin-unicorn";
 
-import { GLOB_SRC } from '../utils'
+import { GLOB_SRC } from "../utils";
 
-import type { OptionsFiles, OptionsOverrides } from '../types'
-import type { Linter } from 'eslint'
+import type { OptionsFiles, OptionsOverrides } from "../types";
+import type { Linter } from "eslint";
 
 /**
  * Unicorn best practices configuration
@@ -30,19 +30,19 @@ import type { Linter } from 'eslint'
  * ];
  * ```
  */
-export type UnicornOptions = OptionsFiles & OptionsOverrides
+export type UnicornOptions = OptionsFiles & OptionsOverrides;
 
 export function unicorn(options: UnicornOptions = {}): Linter.Config[] {
-  const { files = [GLOB_SRC], overrides = {} } = options
+  const { files = [GLOB_SRC], overrides = {} } = options;
 
   return defineConfig({
-    name: 'unicorn/rules',
+    name: "unicorn/rules",
     files,
     extends: [eslintPluginUnicorn.configs.recommended],
     rules: defu(overrides, {
       // Modern libraries like drizzle, react-query use null by default, incompatible with data operations
-      'unicorn/no-null': 'off',
-      'unicorn/prevent-abbreviations': 'off',
+      "unicorn/no-null": "off",
+      "unicorn/prevent-abbreviations": "off",
     }),
-  })
+  });
 }

@@ -1,19 +1,19 @@
-import { Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { PassportStrategy } from '@nestjs/passport'
-import { ExtractJwt, Strategy } from 'passport-jwt'
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { PassportStrategy } from "@nestjs/passport";
+import { ExtractJwt, Strategy } from "passport-jwt";
 
-import type { Env } from '@/app/config/env.schema'
-import type { RoleType } from '@/shared-kernel/domain/value-objects/role.vo'
+import type { Env } from "@/app/config/env.schema";
+import type { RoleType } from "@/shared-kernel/domain/value-objects/role.vo";
 
 /**
  * JWT payload
  */
 export interface JwtPayload {
-  sub: string // User ID
-  email: string
-  roles: RoleType[]
-  sessionId: string // Session ID
+  sub: string; // User ID
+  email: string;
+  roles: RoleType[];
+  sessionId: string; // Session ID
 }
 
 /**
@@ -27,8 +27,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get('JWT_SECRET', { infer: true }),
-    })
+      secretOrKey: configService.get("JWT_SECRET", { infer: true }),
+    });
   }
 
   /**
@@ -43,6 +43,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       email: payload.email,
       roles: payload.roles,
       sessionId: payload.sessionId,
-    }
+    };
   }
 }

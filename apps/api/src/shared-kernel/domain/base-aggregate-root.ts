@@ -1,4 +1,4 @@
-import type { BaseDomainEvent } from './base-domain-event'
+import type { BaseDomainEvent } from "./base-domain-event";
 
 /**
  * Base aggregate root
@@ -6,20 +6,20 @@ import type { BaseDomainEvent } from './base-domain-event'
  * Provides domain event collection and publishing functionality
  */
 export abstract class BaseAggregateRoot {
-  #domainEvents: BaseDomainEvent[] = []
+  #domainEvents: BaseDomainEvent[] = [];
 
   /**
    * Get all pending domain events
    */
   getDomainEvents(): BaseDomainEvent[] {
-    return [...this.#domainEvents]
+    return [...this.#domainEvents];
   }
 
   /**
    * Add domain event to pending queue
    */
   protected addDomainEvent(event: BaseDomainEvent): void {
-    this.#domainEvents.push(event)
+    this.#domainEvents.push(event);
   }
 
   /**
@@ -27,6 +27,6 @@ export abstract class BaseAggregateRoot {
    * Typically called after events are published
    */
   clearDomainEvents(): void {
-    this.#domainEvents = []
+    this.#domainEvents = [];
   }
 }

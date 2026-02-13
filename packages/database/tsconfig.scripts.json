@@ -5,7 +5,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": true
   },
-  "include": ["scripts/seed.ts","*.config.ts","*.config.mts"]
+  "include": ["scripts/seed.ts", "*.config.ts", "*.config.mts"]
 }

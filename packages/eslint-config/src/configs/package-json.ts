@@ -1,8 +1,8 @@
-import { defineConfig } from 'eslint/config'
-import plugin from 'eslint-plugin-package-json'
+import { defineConfig } from "eslint/config";
+import plugin from "eslint-plugin-package-json";
 
-import type { OptionsOverrides } from '../types'
-import type { Linter } from 'eslint'
+import type { OptionsOverrides } from "../types";
+import type { Linter } from "eslint";
 
 /**
  * Package.json configuration options
@@ -12,13 +12,13 @@ export interface PackageJsonOptions extends OptionsOverrides {
    * Enable stylistic rules
    * @default true
    */
-  stylistic?: boolean
+  stylistic?: boolean;
 
   /**
    * Enforce rules for private packages
    * @default false - name and version not enforced, other fields enforced
    */
-  enforceForPrivate?: boolean
+  enforceForPrivate?: boolean;
 }
 
 /**
@@ -66,17 +66,17 @@ export interface PackageJsonOptions extends OptionsOverrides {
  * ```
  */
 export function packageJson(options: PackageJsonOptions = {}): Linter.Config[] {
-  const { stylistic = true, enforceForPrivate, overrides = {} } = options
+  const { stylistic = true, enforceForPrivate, overrides = {} } = options;
 
   return defineConfig({
-    name: 'package-json/rules',
+    name: "package-json/rules",
     plugins: {
-      'package-json': plugin,
+      "package-json": plugin,
     },
     extends: [plugin.configs.recommended],
     rules: {
       ...(stylistic ? plugin.configs.stylistic.rules : {}),
-      'package-json/valid-local-dependency': 'off', // Allow link: local dependencies
+      "package-json/valid-local-dependency": "off", // Allow link: local dependencies
       ...overrides,
     },
     ...(enforceForPrivate !== undefined && {
@@ -86,5 +86,5 @@ export function packageJson(options: PackageJsonOptions = {}): Linter.Config[] {
         },
       },
     }),
-  })
+  });
 }

@@ -12,10 +12,10 @@
  */
 
 export interface TraceContext {
-  version: string
-  traceId: string
-  parentId: string
-  traceFlags: string
+  version: string;
+  traceId: string;
+  parentId: string;
+  traceFlags: string;
 }
 
 /**
@@ -34,37 +34,37 @@ export interface TraceContext {
  * // }
  */
 export function parseTraceparent(traceparent: string): TraceContext | null {
-  if (!traceparent || typeof traceparent !== 'string') {
-    return null
+  if (!traceparent || typeof traceparent !== "string") {
+    return null;
   }
 
-  const parts = traceparent.split('-')
+  const parts = traceparent.split("-");
 
   if (parts.length !== 4) {
-    return null
+    return null;
   }
 
-  const [version, traceId, parentId, traceFlags] = parts
+  const [version, traceId, parentId, traceFlags] = parts;
 
   // Validate format
   if (
-    version?.length !== 2
-    || traceId?.length !== 32
-    || parentId?.length !== 16
-    || traceFlags?.length !== 2
+    version?.length !== 2 ||
+    traceId?.length !== 32 ||
+    parentId?.length !== 16 ||
+    traceFlags?.length !== 2
   ) {
-    return null
+    return null;
   }
 
   // Validate hexadecimal
-  const hexRegex = /^[0-9a-f]+$/i
+  const hexRegex = /^[0-9a-f]+$/i;
   if (
-    !hexRegex.test(version)
-    || !hexRegex.test(traceId)
-    || !hexRegex.test(parentId)
-    || !hexRegex.test(traceFlags)
+    !hexRegex.test(version) ||
+    !hexRegex.test(traceId) ||
+    !hexRegex.test(parentId) ||
+    !hexRegex.test(traceFlags)
   ) {
-    return null
+    return null;
   }
 
   return {
@@ -72,7 +72,7 @@ export function parseTraceparent(traceparent: string): TraceContext | null {
     traceId,
     parentId,
     traceFlags,
-  }
+  };
 }
 
 /**
@@ -86,12 +86,9 @@ export function parseTraceparent(traceparent: string): TraceContext | null {
  * const traceparent = generateTraceparent('4bf92f3577b34da6a3ce929d0e0e4736');
  * // '00-4bf92f3577b34da6a3ce929d0e0e4736-{newSpanId}-01'
  */
-export function generateTraceparent(
-  traceId: string,
-  parentId?: string,
-): string {
-  const newParentId = parentId ?? generateSpanId()
-  return `00-${traceId}-${newParentId}-01`
+export function generateTraceparent(traceId: string, parentId?: string): string {
+  const newParentId = parentId ?? generateSpanId();
+  return `00-${traceId}-${newParentId}-01`;
 }
 
 /**
@@ -100,9 +97,7 @@ export function generateTraceparent(
  * @returns 16-character hexadecimal string
  */
 export function generateSpanId(): string {
-  return Array.from({ length: 16 }, () =>
-    Math.floor(Math.random() * 16).toString(16),
-  ).join('')
+  return Array.from({ length: 16 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
 }
 
 /**
@@ -111,9 +106,7 @@ export function generateSpanId(): string {
  * @returns 32-character hexadecimal string
  */
 export function generateTraceId(): string {
-  return Array.from({ length: 32 }, () =>
-    Math.floor(Math.random() * 16).toString(16),
-  ).join('')
+  return Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
 }
 
 /**
@@ -123,5 +116,5 @@ export function generateTraceId(): string {
  * @returns Whether the header is valid
  */
 export function isValidTraceparent(traceparent: string): boolean {
-  return parseTraceparent(traceparent) !== null
+  return parseTraceparent(traceparent) !== null;
 }

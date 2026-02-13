@@ -1,6 +1,6 @@
-import { BaseAggregateRoot } from '@/shared-kernel/domain/base-aggregate-root'
+import { BaseAggregateRoot } from "@/shared-kernel/domain/base-aggregate-root";
 
-import type { AuthProvider } from '@/modules/auth/domain/value-objects/auth-provider'
+import type { AuthProvider } from "@/modules/auth/domain/value-objects/auth-provider";
 
 /**
  * AuthIdentity Aggregate Root
@@ -15,18 +15,18 @@ import type { AuthProvider } from '@/modules/auth/domain/value-objects/auth-prov
  * - password only used for password-based auth (OAuth is null)
  */
 export class AuthIdentity extends BaseAggregateRoot {
-  readonly #id: string
-  readonly #userId: string
-  readonly #providerId: AuthProvider
-  readonly #accountId: string
-  #password: string | null
-  #accessToken: string | null
-  #refreshToken: string | null
-  #accessTokenExpiresAt: Date | null
-  #refreshTokenExpiresAt: Date | null
-  #scope: string | null
-  readonly #createdAt: Date
-  #updatedAt: Date
+  readonly #id: string;
+  readonly #userId: string;
+  readonly #providerId: AuthProvider;
+  readonly #accountId: string;
+  #password: string | null;
+  #accessToken: string | null;
+  #refreshToken: string | null;
+  #accessTokenExpiresAt: Date | null;
+  #refreshTokenExpiresAt: Date | null;
+  #scope: string | null;
+  readonly #createdAt: Date;
+  #updatedAt: Date;
 
   private constructor(
     id: string,
@@ -42,19 +42,19 @@ export class AuthIdentity extends BaseAggregateRoot {
     createdAt: Date,
     updatedAt: Date,
   ) {
-    super()
-    this.#id = id
-    this.#userId = userId
-    this.#providerId = providerId
-    this.#accountId = accountId
-    this.#password = password
-    this.#accessToken = accessToken
-    this.#refreshToken = refreshToken
-    this.#accessTokenExpiresAt = accessTokenExpiresAt
-    this.#refreshTokenExpiresAt = refreshTokenExpiresAt
-    this.#scope = scope
-    this.#createdAt = createdAt
-    this.#updatedAt = updatedAt
+    super();
+    this.#id = id;
+    this.#userId = userId;
+    this.#providerId = providerId;
+    this.#accountId = accountId;
+    this.#password = password;
+    this.#accessToken = accessToken;
+    this.#refreshToken = refreshToken;
+    this.#accessTokenExpiresAt = accessTokenExpiresAt;
+    this.#refreshTokenExpiresAt = refreshTokenExpiresAt;
+    this.#scope = scope;
+    this.#createdAt = createdAt;
+    this.#updatedAt = updatedAt;
   }
 
   /**
@@ -68,12 +68,12 @@ export class AuthIdentity extends BaseAggregateRoot {
     email: string,
     passwordHash: string,
   ): AuthIdentity {
-    const now = new Date()
+    const now = new Date();
 
     return new AuthIdentity(
       id,
       userId,
-      'email',
+      "email",
       email.toLowerCase(), // accountId = email
       passwordHash,
       null,
@@ -83,7 +83,7 @@ export class AuthIdentity extends BaseAggregateRoot {
       null,
       now,
       now,
-    )
+    );
   }
 
   /**
@@ -92,7 +92,7 @@ export class AuthIdentity extends BaseAggregateRoot {
   static createOAuthIdentity(
     id: string,
     userId: string,
-    provider: 'google' | 'github',
+    provider: "google" | "github",
     accountId: string,
     accessToken?: string,
     refreshToken?: string,
@@ -100,7 +100,7 @@ export class AuthIdentity extends BaseAggregateRoot {
     refreshTokenExpiresAt?: Date,
     scope?: string,
   ): AuthIdentity {
-    const now = new Date()
+    const now = new Date();
 
     return new AuthIdentity(
       id,
@@ -115,23 +115,19 @@ export class AuthIdentity extends BaseAggregateRoot {
       scope ?? null,
       now,
       now,
-    )
+    );
   }
 
   /**
    * Create phone authentication identity
    */
-  static createPhoneIdentity(
-    id: string,
-    userId: string,
-    phone: string,
-  ): AuthIdentity {
-    const now = new Date()
+  static createPhoneIdentity(id: string, userId: string, phone: string): AuthIdentity {
+    const now = new Date();
 
     return new AuthIdentity(
       id,
       userId,
-      'phone',
+      "phone",
       phone, // accountId = phone
       null, // Phone uses verification code
       null,
@@ -141,7 +137,7 @@ export class AuthIdentity extends BaseAggregateRoot {
       null,
       now,
       now,
-    )
+    );
   }
 
   /**
@@ -174,7 +170,7 @@ export class AuthIdentity extends BaseAggregateRoot {
       scope,
       createdAt,
       updatedAt,
-    )
+    );
   }
 
   /**
@@ -183,11 +179,11 @@ export class AuthIdentity extends BaseAggregateRoot {
    * @param newPasswordHash Hashed new password (processed by PasswordHasher at Service layer)
    */
   changePassword(newPasswordHash: string): void {
-    if (this.#providerId !== 'email') {
-      throw new Error('Only email authentication supports password change')
+    if (this.#providerId !== "email") {
+      throw new Error("Only email authentication supports password change");
     }
-    this.#password = newPasswordHash
-    this.#updatedAt = new Date()
+    this.#password = newPasswordHash;
+    this.#updatedAt = new Date();
   }
 
   /**
@@ -200,90 +196,90 @@ export class AuthIdentity extends BaseAggregateRoot {
     refreshTokenExpiresAt?: Date,
     scope?: string,
   ): void {
-    this.#accessToken = accessToken
+    this.#accessToken = accessToken;
     if (refreshToken !== undefined) {
-      this.#refreshToken = refreshToken
+      this.#refreshToken = refreshToken;
     }
     if (accessTokenExpiresAt !== undefined) {
-      this.#accessTokenExpiresAt = accessTokenExpiresAt
+      this.#accessTokenExpiresAt = accessTokenExpiresAt;
     }
     if (refreshTokenExpiresAt !== undefined) {
-      this.#refreshTokenExpiresAt = refreshTokenExpiresAt
+      this.#refreshTokenExpiresAt = refreshTokenExpiresAt;
     }
     if (scope !== undefined) {
-      this.#scope = scope
+      this.#scope = scope;
     }
-    this.#updatedAt = new Date()
+    this.#updatedAt = new Date();
   }
 
   /**
    * Check if password verification is required
    */
   get requiresPassword(): boolean {
-    return this.#providerId === 'email'
+    return this.#providerId === "email";
   }
 
   // Getters
   get id(): string {
-    return this.#id
+    return this.#id;
   }
 
   get userId(): string {
-    return this.#userId
+    return this.#userId;
   }
 
   get providerId(): AuthProvider {
-    return this.#providerId
+    return this.#providerId;
   }
 
   // Alias for compatibility
   get provider(): AuthProvider {
-    return this.#providerId
+    return this.#providerId;
   }
 
   get accountId(): string {
-    return this.#accountId
+    return this.#accountId;
   }
 
   // Alias for compatibility with code expecting identifier
   get identifier(): string {
-    return this.#accountId
+    return this.#accountId;
   }
 
   get password(): string | null {
-    return this.#password
+    return this.#password;
   }
 
   // Alias for compatibility
   get credentialHash(): string | null {
-    return this.#password
+    return this.#password;
   }
 
   get accessToken(): string | null {
-    return this.#accessToken
+    return this.#accessToken;
   }
 
   get refreshToken(): string | null {
-    return this.#refreshToken
+    return this.#refreshToken;
   }
 
   get accessTokenExpiresAt(): Date | null {
-    return this.#accessTokenExpiresAt
+    return this.#accessTokenExpiresAt;
   }
 
   get refreshTokenExpiresAt(): Date | null {
-    return this.#refreshTokenExpiresAt
+    return this.#refreshTokenExpiresAt;
   }
 
   get scope(): string | null {
-    return this.#scope
+    return this.#scope;
   }
 
   get createdAt(): Date {
-    return this.#createdAt
+    return this.#createdAt;
   }
 
   get updatedAt(): Date {
-    return this.#updatedAt
+    return this.#updatedAt;
   }
 }

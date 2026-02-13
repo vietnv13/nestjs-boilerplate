@@ -3,13 +3,13 @@
  */
 export class SessionUserDto {
   /** User ID */
-  id: string
+  id: string;
 
   /** User email */
-  email: string
+  email: string;
 
   /** User role */
-  role: string | null
+  role: string | null;
 }
 
 /**
@@ -17,16 +17,16 @@ export class SessionUserDto {
  */
 export class SessionInfoDto {
   /** Session ID */
-  id: string
+  id: string;
 
   /** Expiration time */
-  expiresAt: Date
+  expiresAt: Date;
 
   /** IP address */
-  ipAddress: string | null
+  ipAddress: string | null;
 
   /** User agent */
-  userAgent: string | null
+  userAgent: string | null;
 }
 
 /**
@@ -36,8 +36,8 @@ export class SessionInfoDto {
  */
 export class SessionResponseDto {
   /** User info */
-  user: SessionUserDto
+  user: SessionUserDto;
 
   /** Session info */
-  session: SessionInfoDto
+  session: SessionInfoDto;
 }

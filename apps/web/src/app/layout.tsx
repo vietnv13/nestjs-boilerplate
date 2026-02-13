@@ -2,41 +2,41 @@ import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
-} from '@tanstack/react-query'
+} from "@tanstack/react-query";
 
-import { AppProvider } from '@/app/provide'
+import { AppProvider } from "@/app/provide";
 
-import type { Metadata, Viewport } from 'next'
-import type { ReactNode } from 'react'
-import '@workspace/ui/globals.css'
-import { $api } from '@/lib/fetch-client'
-import { Toaster } from '@workspace/ui/components/ui/sonner'
+import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
+import "@workspace/ui/globals.css";
+import { $api } from "@/lib/fetch-client";
+import { Toaster } from "@workspace/ui/components/ui/sonner";
 
 export const viewport: Viewport = {
   initialScale: 1,
-  width: 'device-width',
-}
+  width: "device-width",
+};
 
 export const metadata: Metadata = {
   title: {
-    template: '%s · Starter',
-    default: 'Starter',
+    template: "%s · Starter",
+    default: "Starter",
   },
-  description: 'Starter template',
-}
+  description: "Starter template",
+};
 
 const Layout = async ({ children }: { children: ReactNode }) => {
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery($api.queryOptions('get', '/api/auth/session'))
+  await queryClient.prefetchQuery(
+    $api.queryOptions("get", "/api/auth/session"),
+  );
 
-  const dehydratedState = dehydrate(queryClient)
+  const dehydratedState = dehydrate(queryClient);
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className="antialiased"
-      >
+      <body className="antialiased">
         <AppProvider>
           <HydrationBoundary state={dehydratedState}>
             {children}
@@ -45,11 +45,11 @@ const Layout = async ({ children }: { children: ReactNode }) => {
         </AppProvider>
       </body>
     </html>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
 
 // Disable pre-rendering, force dynamic execution on each request
 // User data depends on cookies, must be fetched at request time
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
