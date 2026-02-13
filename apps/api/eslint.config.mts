@@ -7,20 +7,18 @@ const baseConfig = composeConfig({
   prettier: false,
   packageJson: {
     overrides: {
-      'package-json/valid-devDependencies': 'off', // Allow link: local deps
+      'package-json/valid-devDependencies': 'off',
     },
   },
   vitest: true,
-  // Enable module boundary checks for VSA/DDD
   boundaries: {
     preset: 'modules',
   },
   unicorn: {
     overrides: {
-      'unicorn/no-null': 'off', // Drizzle returns null
+      'unicorn/no-null': 'off',
     },
   },
-  // Disallow ../ relative imports, use @/ alias
   imports: {
     overrides: {
       'no-restricted-imports': [
@@ -38,7 +36,6 @@ const baseConfig = composeConfig({
   },
 })
 
-// Schema exception: Drizzle Kit requires relative imports
 export default [
   ...baseConfig,
   {
@@ -47,7 +44,6 @@ export default [
       'no-restricted-imports': 'off',
     },
   },
-  // Allow auth module to depend on profile module
   {
     files: ['src/modules/auth/**/*.ts'],
     rules: {
@@ -56,7 +52,6 @@ export default [
         {
           default: 'disallow',
           rules: [
-            // Auth can import profile (one-way dependency)
             {
               from: ['module'],
               allow: [

@@ -25,6 +25,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
+    "format": "prettier --write \"src/**/*.ts\" \"scripts/**/*.ts\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check-types": "tsc --noEmit",
