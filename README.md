@@ -54,6 +54,8 @@ Update the `.env` files with your local configuration, including `DATABASE_URL`,
 
 ```bash
 docker-compose -f docker-compose.yml up -d
+# or
+podman compose --file docker-compose.yml up --detach
 ```
 
 ### Run Database Migrations and Seed Data

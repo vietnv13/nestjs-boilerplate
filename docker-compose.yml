@@ -1,39 +1,27 @@
-version: "3.8"
-
 services:
   postgres:
-    image: bitnami/postgresql:latest
+    image: postgres:18-alpine
     container_name: postgres
     restart: unless-stopped
     environment:
-      - POSTGRESQL_USERNAME=${POSTGRES_USER:-postgres}
-      - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - POSTGRESQL_DATABASE=${POSTGRES_DB:-nestjs}
+      - POSTGRES_USERNAME=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DATABASE=${POSTGRES_DB:-nestjs}
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - postgres_data:/bitnami/postgresql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - postgres_data:/postgres
     networks:
       - nestjs-network
 
   redis:
-    image: redis:alpine
+    image: redis:8.6.0-alpine
     container_name: redis
     restart: unless-stopped
     ports:
       - "${REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     networks:
       - nestjs-network
 
