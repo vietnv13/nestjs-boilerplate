@@ -58,6 +58,7 @@
     "@workspace/eslint-config": "workspace:*",
     "@workspace/icons": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
+    "baseline-browser-mapping": "^2.9.19",
     "dotenv": "^17.2.3",
     "eslint": "^9.39.2",
     "globals": "16.5.0",
