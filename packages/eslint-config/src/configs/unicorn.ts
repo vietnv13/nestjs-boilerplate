@@ -40,6 +40,14 @@ export function unicorn(options: UnicornOptions = {}): Linter.Config[] {
     files,
     extends: [eslintPluginUnicorn.configs.recommended],
     rules: defu(overrides, {
+      'unicorn/filename-case': [
+        'error',
+        {
+          cases: {
+            kebabCase: true,
+          },
+        },
+      ],
       // Modern libraries like drizzle, react-query use null by default, incompatible with data operations
       'unicorn/no-null': 'off',
       'unicorn/prevent-abbreviations': 'off',
