@@ -1,27 +1,24 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { EventBus, type IEvent, ofType } from "@nestjs/cqrs";
 import type { Observable } from "rxjs";
 
 /**
- * Base Saga Class
+ * Base Saga
  *
- * Provides common functionality for all sagas
- * Sagas orchestrate complex workflows by listening to domain events
- * and triggering commands in response
+ * Abstract base class for all sagas. Sagas react to domain events and
+ * orchestrate follow-up actions (e.g., dispatching commands, calling services).
+ *
+ * Concrete sagas must implement `saga()` and decorate it with `@Saga()`.
  */
 @Injectable()
 export abstract class BaseSaga {
+  protected readonly logger = new Logger(this.constructor.name);
+
   constructor(protected readonly eventBus: EventBus) {}
 
-  /**
-   * Define saga logic
-   * Override this method in concrete saga implementations
-   */
   abstract saga(events$: Observable<IEvent>): Observable<any>;
 
-  /**
-   * Helper to filter events by type
-   */
+  /** Filter the event stream to a specific event type */
   protected filterEvents<T extends IEvent>(
     events$: Observable<IEvent>,
     ...eventTypes: Array<new (...args: any[]) => T>
@@ -29,17 +26,11 @@ export abstract class BaseSaga {
     return events$.pipe(ofType(...eventTypes));
   }
 
-  /**
-   * Log saga execution
-   */
-  protected log(message: string, data?: any): void {
-    console.log(`[Saga] ${message}`, data || "");
+  protected log(message: string, data?: Record<string, unknown>): void {
+    this.logger.debug(message, data);
   }
 
-  /**
-   * Log saga errors
-   */
-  protected logError(message: string, error: any): void {
-    console.error(`[Saga Error] ${message}`, error);
+  protected logError(message: string, error: unknown): void {
+    this.logger.error(message, error instanceof Error ? error.stack : error);
   }
 }

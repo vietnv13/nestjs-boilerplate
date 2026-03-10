@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 
 import type { BaseAggregateRoot } from "@/shared-kernel/domain/base-aggregate-root";
@@ -7,14 +7,18 @@ import type { BaseDomainEvent } from "@/shared-kernel/domain/base-domain-event";
 /**
  * Domain event publisher
  *
- * Collects events from aggregates and publishes to event bus
+ * Collects events from aggregates and publishes to the event bus.
+ * Inject this into application services or command handlers to dispatch
+ * domain events after mutating aggregate state.
  */
 @Injectable()
 export class DomainEventPublisher {
+  private readonly logger = new Logger(DomainEventPublisher.name);
+
   constructor(private readonly eventEmitter: EventEmitter2) {}
 
   /**
-   * Publish all domain events from aggregate
+   * Publish all pending domain events from an aggregate, then clear the queue
    */
   async publishEventsForAggregate(aggregate: BaseAggregateRoot): Promise<void> {
     const events = aggregate.getDomainEvents();
@@ -27,17 +31,13 @@ export class DomainEventPublisher {
   }
 
   /**
-   * Publish single domain event
+   * Publish a single domain event
    */
   async publish(event: BaseDomainEvent): Promise<void> {
-    const metadata = event.getMetadata();
+    const { eventType, aggregateId } = event.getMetadata();
 
-    console.log(`[DomainEvent] Publishing: ${metadata.eventType}`, {
-      aggregateId: metadata.aggregateId,
-      occurredAt: metadata.occurredAt,
-    });
+    this.logger.debug(`Publishing domain event: ${eventType}`, { aggregateId });
 
-    // Use event type as event name
-    await this.eventEmitter.emitAsync(event.eventType, event);
+    await this.eventEmitter.emitAsync(eventType, event);
   }
 }

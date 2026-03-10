@@ -1,31 +1,26 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import type { IEvent } from "@nestjs/cqrs";
 import type { StoredEvent, EventFilter } from "./event-store.types";
 
 /**
  * Event Store Service
  *
- * Provides event sourcing capabilities:
- * - Store all domain events
- * - Retrieve event history
- * - Replay events for debugging or rebuilding state
+ * Provides in-memory event sourcing capabilities: store, retrieve, and replay
+ * domain events. Suitable for development and testing.
  *
- * In production, this would use a dedicated event store database
- * (e.g., EventStoreDB, PostgreSQL with JSONB, or DynamoDB)
+ * For production, replace the in-memory store with a persistent backend
+ * (e.g., EventStoreDB, PostgreSQL with JSONB, or DynamoDB).
  */
 @Injectable()
 export class EventStoreService {
-  // In-memory storage for demonstration
-  // In production, use a persistent database
+  private readonly logger = new Logger(EventStoreService.name);
+
   private events: StoredEvent[] = [];
   private eventVersion = 0;
 
-  /**
-   * Store a domain event
-   */
   async store(event: IEvent, aggregateId: string, userId?: string): Promise<StoredEvent> {
     const storedEvent: StoredEvent = {
-      id: this.generateId(),
+      id: crypto.randomUUID(),
       aggregateId,
       eventType: event.constructor.name,
       eventData: event,
@@ -38,7 +33,7 @@ export class EventStoreService {
     };
 
     this.events.push(storedEvent);
-    console.log(`[EventStore] Stored event: ${storedEvent.eventType}`, {
+    this.logger.debug(`Stored event: ${storedEvent.eventType}`, {
       aggregateId,
       version: storedEvent.metadata.version,
     });
@@ -46,74 +41,36 @@ export class EventStoreService {
     return storedEvent;
   }
 
-  /**
-   * Get all events for an aggregate
-   */
   async getEventsForAggregate(aggregateId: string): Promise<StoredEvent[]> {
-    return this.events.filter((event) => event.aggregateId === aggregateId);
+    return this.events.filter((e) => e.aggregateId === aggregateId);
   }
 
-  /**
-   * Get events by filter
-   */
   async getEvents(filter: EventFilter = {}): Promise<StoredEvent[]> {
     let filtered = [...this.events];
 
-    if (filter.aggregateId) {
-      filtered = filtered.filter((e) => e.aggregateId === filter.aggregateId);
-    }
-
-    if (filter.eventType) {
-      filtered = filtered.filter((e) => e.eventType === filter.eventType);
-    }
-
-    if (filter.fromDate) {
-      filtered = filtered.filter((e) => e.createdAt >= filter.fromDate!);
-    }
-
-    if (filter.toDate) {
-      filtered = filtered.filter((e) => e.createdAt <= filter.toDate!);
-    }
-
-    if (filter.limit) {
-      filtered = filtered.slice(0, filter.limit);
-    }
+    if (filter.aggregateId) filtered = filtered.filter((e) => e.aggregateId === filter.aggregateId);
+    if (filter.eventType) filtered = filtered.filter((e) => e.eventType === filter.eventType);
+    if (filter.fromDate) filtered = filtered.filter((e) => e.createdAt >= filter.fromDate!);
+    if (filter.toDate) filtered = filtered.filter((e) => e.createdAt <= filter.toDate!);
+    if (filter.limit) filtered = filtered.slice(0, filter.limit);
 
     return filtered;
   }
 
-  /**
-   * Replay events for an aggregate
-   * Useful for debugging or rebuilding aggregate state
-   */
   async replayEvents(aggregateId: string): Promise<IEvent[]> {
     const events = await this.getEventsForAggregate(aggregateId);
-    console.log(`[EventStore] Replaying ${events.length} events for aggregate ${aggregateId}`);
+    this.logger.debug(`Replaying ${events.length} events for aggregate ${aggregateId}`);
     return events.map((e) => e.eventData);
   }
 
-  /**
-   * Get event count
-   */
   async getEventCount(filter: EventFilter = {}): Promise<number> {
-    const events = await this.getEvents(filter);
-    return events.length;
+    return (await this.getEvents(filter)).length;
   }
 
-  /**
-   * Clear all events (for testing)
-   */
+  /** Clear all events — intended for testing only */
   async clear(): Promise<void> {
     this.events = [];
     this.eventVersion = 0;
-    console.log("[EventStore] Cleared all events");
-  }
-
-  /**
-   * Generate unique ID
-   * In production, use UUID or database-generated ID
-   */
-  private generateId(): string {
-    return `evt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    this.logger.debug("Cleared all events");
   }
 }

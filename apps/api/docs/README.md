@@ -1,38 +1,52 @@
-# NestJS Boilerplate API Documentation
+# NestJS Boilerplate API — Documentation
 
-Welcome to the NestJS Boilerplate API documentation. This project demonstrates enterprise-grade architecture patterns and best practices.
+## Contents
 
-## Table of Contents
+| Document                                   | Description                                             |
+| ------------------------------------------ | ------------------------------------------------------- |
+| [Architecture Overview](./architecture.md) | Layer structure, modules, request pipeline, env vars    |
+| [DDD Patterns](./ddd-patterns.md)          | Entities, aggregates, events, CQRS, repositories, sagas |
+| [API Usage Examples](./api-usage.md)       | HTTP request/response examples for each endpoint        |
+| [Error Codes Reference](./error-codes.md)  | Domain error codes and their HTTP mappings              |
+| [Testing Guide](./testing-guide.md)        | Unit, integration (Testcontainers), and E2E testing     |
 
-- [Architecture Overview](./architecture.md)
-- [Domain-Driven Design Patterns](./ddd-patterns.md)
-- [Module Boundaries](./module-boundaries.md)
-- [Testing Guide](./testing-guide.md)
-- [API Usage Examples](./api-usage.md)
-- [Error Codes Reference](./error-codes.md)
-- [Development Setup](./development-setup.md)
-- [Deployment Guide](./deployment.md)
+## Quick Start
 
-## Quick Links
+```bash
+# Install dependencies
+pnpm install
 
-### For Developers
+# Run in development (watch mode)
+pnpm --filter api dev
 
-- **Getting Started**: See [Development Setup](./development-setup.md)
-- **Writing Tests**: See [Testing Guide](./testing-guide.md)
-- **Understanding Architecture**: See [Architecture Overview](./architecture.md)
+# Build for production
+pnpm --filter api build
 
-### For API Consumers
+# Run tests
+pnpm --filter api test
 
-- **API Reference**: See [API Usage Examples](./api-usage.md)
-- **Error Handling**: See [Error Codes Reference](./error-codes.md)
+# Run integration tests (requires Docker)
+pnpm --filter api test:integration
+```
 
-## Key Features
+## Key Concepts
 
-- **CQRS Pattern**: Command Query Responsibility Segregation for scalable architecture
-- **Domain-Driven Design**: Rich domain models with proper boundaries
-- **Integration Tests**: Comprehensive testing with Testcontainers
-- **Domain Exceptions**: Type-safe error handling
-- **Event-Driven**: Domain events for decoupled communication
-- **Type Safety**: Full TypeScript with strict mode
-- **API Versioning**: Support for multiple API versions
-- **Observability**: Metrics, tracing, and structured logging
+- **CQRS** — `todo` and `users` modules split reads/writes into Query/Command handlers
+- **DDD** — domain layer is pure TypeScript with no NestJS or Drizzle imports
+- **Application Service** — `auth` uses `AuthService` for complex multi-aggregate workflows
+- **RFC 9457 Problem Details** — all errors return `application/problem+json`
+- **Event-Driven** — `BaseDomainEvent` + EventBus/EventEmitter2 for decoupled side effects
+- **Redis Cache** — `CacheService` wraps `@nestjs/cache-manager` with automatic invalidation
+- **Pino Logging** — structured JSON logs with request-scoped correlation IDs
+
+## API Endpoints
+
+| Tag      | Base path    | Description                                |
+| -------- | ------------ | ------------------------------------------ |
+| `auth`   | `/api/auth`  | Register, login, refresh, logout, sessions |
+| `todos`  | `/api/todos` | CRUD for todos                             |
+| `users`  | `/api/users` | CRUD for users                             |
+| `health` | `/health`    | Liveness / readiness                       |
+
+Interactive API reference: `http://localhost:3000/docs` (Scalar)
+Swagger UI: `http://localhost:3000/swagger`

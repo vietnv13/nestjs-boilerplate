@@ -19,7 +19,7 @@ export class TodoUpdatedEvent extends BaseDomainEvent {
     public readonly changes: {
       title?: string;
       description?: string;
-      completed?: boolean;
+      isCompleted?: boolean;
     },
   ) {
     super(todoId);

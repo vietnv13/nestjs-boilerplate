@@ -1,319 +1,250 @@
 # Domain-Driven Design Patterns
 
-## Overview
-
-This guide explains how DDD patterns are implemented in this codebase.
-
-## Core Concepts
+## Core Building Blocks
 
 ### Entities
 
-Entities have identity and lifecycle. Two entities with the same data but different IDs are different.
+Entities have **identity** — two entities with the same data but different IDs are distinct.
+In this codebase, entities are typed as plain TypeScript interfaces backed by the Drizzle ORM
+schema types from `@workspace/database`.
 
 ```typescript
+// modules/users/domain/user.entity.ts
 export interface User {
   id: string;
   email: string;
   name: string | null;
   role: "user" | "admin";
+  emailVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 ```
 
-**Key Characteristics**:
+### Aggregate Roots
 
-- Has unique identifier
-- Mutable (can change over time)
-- Identity-based equality
-
-### Value Objects
-
-Value objects have no identity. Two value objects with the same data are the same.
+Aggregates enforce **business invariants** and collect **domain events** to be published
+after a successful state change. They extend `BaseAggregateRoot`.
 
 ```typescript
-export class Email extends ValueObject<string> {
-  constructor(value: string) {
-    super(value);
-    this.validate();
-  }
-
-  private validate(): void {
-    if (!this.value.includes("@")) {
-      throw new ValidationException("Invalid email format");
-    }
-  }
+// shared-kernel/domain/base-aggregate-root.ts
+export abstract class BaseAggregateRoot {
+  protected addDomainEvent(event: BaseDomainEvent): void { … }
+  getDomainEvents(): BaseDomainEvent[]                   { … }
+  clearDomainEvents(): void                              { … }
 }
 ```
 
-**Key Characteristics**:
-
-- No unique identifier
-- Immutable
-- Value-based equality
-
-### Aggregates
-
-Aggregates are clusters of entities and value objects with a root entity.
+The only aggregate root currently implemented is **`AuthIdentity`** (auth module), which
+wraps the accounts table and exposes domain methods like `setPassword()`, `updateOAuthTokens()`.
 
 ```typescript
-export class Order extends BaseAggregateRoot<OrderProps> {
-  private items: OrderItem[] = [];
-
-  addItem(item: OrderItem): void {
-    this.items.push(item);
-    this.addDomainEvent(new ItemAddedEvent(this.id, item));
-  }
-
-  // Aggregate root ensures invariants
-  checkout(): void {
-    if (this.items.length === 0) {
-      throw new BusinessRuleException("Cannot checkout empty order");
-    }
-    this.addDomainEvent(new OrderCheckedOutEvent(this.id));
-  }
-}
+// After mutating an aggregate, publish its queued events:
+await this.domainEventPublisher.publishEventsForAggregate(authIdentity);
 ```
-
-**Key Characteristics**:
-
-- Has a root entity
-- Enforces business invariants
-- Transaction boundary
-- Publishes domain events
 
 ### Domain Events
 
-Events represent facts that occurred in the domain.
+Events describe **facts** that occurred. All domain events extend `BaseDomainEvent`:
 
 ```typescript
-export class UserCreatedEvent extends BaseDomainEvent {
-  readonly eventType = "user.created";
+// shared-kernel/domain/base-domain-event.ts
+export abstract class BaseDomainEvent {
+  readonly aggregateId: string;
+  readonly occurredAt: Date;
+  abstract readonly eventType: string; // e.g. "todo.created"
+}
+```
 
+**Naming convention**: past tense, noun-first (`TodoCreatedEvent`, `UserDeletedEvent`).
+
+**Example**:
+
+```typescript
+// modules/todo/domain/events/todo.events.ts
+export class TodoCreatedEvent extends BaseDomainEvent {
+  readonly eventType = "todo.created";
   constructor(
-    public readonly userId: string,
-    public readonly email: string,
+    public readonly todoId: string,
+    public readonly title: string,
   ) {
-    super(userId);
+    super(todoId);
   }
 }
 ```
 
-**Naming Convention**: Past tense (UserCreated, OrderPlaced, PaymentProcessed)
+### Value Objects
 
-**Usage**:
+Immutable domain primitives with no identity. Currently implemented:
 
-```typescript
-// Publish event
-this.eventBus.publish(new UserCreatedEvent(user.id, user.email));
+| Value Object         | Location                                             | Usage                         |
+| -------------------- | ---------------------------------------------------- | ----------------------------- |
+| `RoleType` / `ROLES` | `shared-kernel/domain/value-objects/role.vo.ts`      | Auth — user role type         |
+| `AuthProvider`       | `modules/auth/domain/value-objects/auth-provider.ts` | Auth — identity provider enum |
 
-// Handle event
-@OnEvent('user.created')
-async handleUserCreated(event: UserCreatedEvent) {
-  await this.emailService.sendWelcomeEmail(event.email);
-}
-```
+---
 
-### Repositories
+## Repository Pattern (Ports & Adapters)
 
-Repositories provide collection-like interface for aggregates.
+Repositories are defined as **interfaces** (ports) in the application layer and implemented
+in the infrastructure layer. This is the **Dependency Inversion Principle** in practice.
 
 ```typescript
-export interface UserRepository {
-  // Collection-like methods
-  create(data: CreateUserData): Promise<User>;
-  findById(id: string): Promise<User | null>;
-  update(id: string, data: UpdateUserData): Promise<User | null>;
+// Port — application/ports/todo.repository.port.ts
+export interface TodoRepository {
+  findAll(): Promise<Todo[]>;
+  findById(id: string): Promise<Todo | null>;
+  create(data: Omit<InsertTodo, "id" | "createdAt" | "updatedAt">): Promise<Todo>;
+  update(id: string, data: Partial<…>): Promise<Todo | null>;
   delete(id: string): Promise<boolean>;
-
-  // Query methods
-  findByEmail(email: string): Promise<User | null>;
-  findAll(limit?: number, offset?: number): Promise<User[]>;
 }
+export const TODO_REPOSITORY = Symbol("TODO_REPOSITORY");
+
+// Adapter — infrastructure/repositories/todo.repository.ts
+@Injectable()
+export class TodoRepositoryImpl implements TodoRepository { … }
+
+// Wired in module:
+{ provide: TODO_REPOSITORY, useClass: TodoRepositoryImpl }
 ```
 
-**Key Principles**:
+**Rules:**
 
-- One repository per aggregate root
-- Returns domain entities, not database records
-- Hides persistence details
+- One repository per aggregate root / entity cluster.
+- Repositories return domain types, never raw ORM records.
+- Infrastructure details (Drizzle, Redis) stay inside the implementation.
 
-## Domain Exceptions
+---
 
-Type-safe error handling for domain rules.
+## CQRS Pattern
+
+Used by `todo` and `users` modules. **Commands** mutate state; **Queries** read state.
+Controllers never contain business logic — they only construct and dispatch.
 
 ```typescript
-// Base exception
-export abstract class DomainException extends Error {
+// Controller
+@Post()
+async create(@Body() dto: CreateTodoDto): Promise<Todo> {
+  return this.commandBus.execute(
+    new CreateTodoCommand(dto.title, dto.description)
+  );
+}
+
+// Command (plain data carrier)
+export class CreateTodoCommand {
   constructor(
-    message: string,
-    public readonly code: string,
-    public readonly statusCode: number = 400,
-  ) {
-    super(message);
-  }
-}
-
-// Specific exceptions
-export class UserNotFoundException extends NotFoundException {
-  constructor(identifier: string) {
-    super("User", identifier);
-  }
-}
-
-export class UserAlreadyExistsException extends BusinessRuleException {
-  constructor(email: string) {
-    super(`User with email '${email}' already exists`, "USER_ALREADY_EXISTS");
-  }
-}
-```
-
-**Usage**:
-
-```typescript
-const user = await this.userRepository.findById(id);
-if (!user) {
-  throw new UserNotFoundException(id);
-}
-```
-
-## Ubiquitous Language
-
-Use domain terminology consistently across code and documentation.
-
-**Good**:
-
-```typescript
-class Order {
-  checkout(): void {}
-  cancel(): void {}
-  ship(): void {}
-}
-```
-
-**Bad**:
-
-```typescript
-class Order {
-  process(): void {} // Too generic
-  remove(): void {} // Technical term
-  send(): void {} // Ambiguous
-}
-```
-
-## Bounded Contexts
-
-Modules represent bounded contexts with clear boundaries.
-
-```
-modules/
-├── auth/          # Authentication context
-├── users/         # User management context
-├── orders/        # Order management context
-└── billing/       # Billing context
-```
-
-**Communication**: Use domain events to communicate between contexts.
-
-## Example: Complete User Module
-
-### Domain Layer
-
-```typescript
-// domain/user.entity.ts
-export interface User {
-  id: string;
-  email: string;
-  name: string | null;
-  role: "user" | "admin";
-}
-
-// domain/events/user.events.ts
-export class UserCreatedEvent extends BaseDomainEvent {
-  readonly eventType = "user.created";
-  constructor(public readonly userId: string) {
-    super(userId);
-  }
-}
-```
-
-### Application Layer
-
-```typescript
-// application/commands/create-user.command.ts
-export class CreateUserCommand {
-  constructor(
-    public readonly email: string,
-    public readonly name?: string,
+    public readonly title: string,
+    public readonly description?: string,
   ) {}
 }
 
-// application/commands/create-user.handler.ts
-@CommandHandler(CreateUserCommand)
-export class CreateUserHandler {
-  async execute(command: CreateUserCommand): Promise<User> {
-    // Check business rules
-    const exists = await this.userRepository.existsByEmail(command.email);
-    if (exists) {
-      throw new UserAlreadyExistsException(command.email);
-    }
-
-    // Create user
-    const user = await this.userRepository.create(command);
-
-    // Publish event
-    this.eventBus.publish(new UserCreatedEvent(user.id));
-
-    return user;
+// Handler (business logic)
+@CommandHandler(CreateTodoCommand)
+export class CreateTodoHandler implements ICommandHandler<CreateTodoCommand, Todo> {
+  async execute(command: CreateTodoCommand): Promise<Todo> {
+    const todo = await this.todoRepository.create({ title: command.title, … });
+    this.eventBus.publish(new TodoCreatedEvent(todo.id, todo.title));
+    return todo;
   }
 }
 ```
 
-### Infrastructure Layer
+---
+
+## Application Service Pattern
+
+The **`auth`** module uses `AuthService` instead of CQRS handlers. This is appropriate
+when a use case coordinates multiple aggregates/repos in a single transactional unit,
+making a flat service more readable than a chain of commands.
 
 ```typescript
-// infrastructure/repositories/user.repository.ts
 @Injectable()
-export class UserRepositoryImpl implements UserRepository {
-  async create(data: CreateUserData): Promise<User> {
-    const [user] = await this.db.insert(usersTable).values(data).returning();
-    return this.toEntity(user);
+export class AuthService {
+  async login(email: string, password: string): Promise<LoginResponse> {
+    const identity = await this.authIdentityRepo.findByProviderAndIdentifier("email", email);
+    if (!identity) throw new UnauthorizedException(…);
+    const ok = await this.passwordHasher.verify(password, identity.password);
+    if (!ok) throw new UnauthorizedException(…);
+    // issue tokens, create session …
+    return { user, accessToken, refreshToken };
   }
 }
 ```
 
-### Presentation Layer
+---
+
+## Domain Exception Hierarchy
+
+All domain errors extend `DomainException` which carries a typed `code` and maps to an
+HTTP status. Exception filters transform them to RFC 9457 Problem Details automatically.
+
+```
+DomainException (base)
+├── NotFoundException       → 404  (NotFoundException, UserNotFoundException)
+├── ValidationException     → 400
+├── ConflictException       → 409
+└── BusinessRuleException   → 422  (UserAlreadyExistsException, UserBannedException)
+```
+
+**Throw from domain/application layer:**
 
 ```typescript
-// presentation/controllers/users.controller.ts
-@Controller("users")
-export class UsersController {
-  @Post()
-  async createUser(@Body() dto: CreateUserDto): Promise<UserResponseDto> {
-    const command = new CreateUserCommand(dto.email, dto.name);
-    return this.commandBus.execute(command);
+throw new UserNotFoundException(userId);
+throw new UserAlreadyExistsException(email);
+throw new ValidationException("Title cannot be empty");
+```
+
+---
+
+## Bounded Contexts
+
+Each module is a bounded context with an **anti-corruption layer** at its boundary:
+
+```
+┌──────────────────┐    domain events     ┌──────────────────┐
+│   auth context   │ ──────────────────► │  users context   │
+│                  │                      │                  │
+│  AuthIdentity    │    shared kernel     │  User entity     │
+│  AuthSession     │ ◄──────────────────  │  UserRepository  │
+└──────────────────┘  UserRepository port └──────────────────┘
+```
+
+The `auth` module accesses user data through the **shared-kernel `UserRepository` port**,
+not the users module's port. This prevents a circular dependency and keeps auth's user
+concept minimal (id, name, email, role, banned).
+
+---
+
+## Saga Pattern
+
+Sagas react to domain events and orchestrate multi-step workflows. They live in
+`shared-kernel/infrastructure/events/sagas/` because they coordinate cross-module actions.
+
+```typescript
+@Injectable()
+export class UserRegistrationSaga extends BaseSaga {
+  @Saga()
+  saga(events$: Observable<IEvent>): Observable<any> {
+    return this.filterEvents(events$, UserCreatedEvent).pipe(
+      delay(100),
+      map((event) => {
+        // Dispatch follow-up commands here, e.g.:
+        // this.commandBus.execute(new SendWelcomeEmailCommand(event.userId));
+        return null;
+      }),
+    );
   }
 }
 ```
 
-## Best Practices
-
-1. **Keep Domain Pure**: Domain layer should have no framework dependencies
-2. **Use Domain Events**: Decouple modules through events
-3. **Enforce Invariants**: Validate business rules in domain layer
-4. **Repository Per Aggregate**: One repository per aggregate root
-5. **Ubiquitous Language**: Use domain terms consistently
-6. **Bounded Contexts**: Clear module boundaries
+---
 
 ## Anti-Patterns to Avoid
 
-❌ **Anemic Domain Model**: Entities with only getters/setters
-❌ **God Objects**: Entities that know too much
-❌ **Leaky Abstractions**: Domain depending on infrastructure
-❌ **Generic Repositories**: Repository<T> pattern
-❌ **CRUD Everywhere**: Not all operations are CRUD
-
-## Next Steps
-
-- [Module Boundaries](./module-boundaries.md)
-- [Testing Guide](./testing-guide.md)
+| Anti-pattern                     | Why it's bad                            | Better approach                                      |
+| -------------------------------- | --------------------------------------- | ---------------------------------------------------- |
+| Business logic in controllers    | Controllers become fat, untestable      | Move to command handler or service                   |
+| Infrastructure imports in domain | Domain tied to framework                | Define ports; implement in infrastructure            |
+| Direct cross-module imports      | Tight coupling, hinders refactoring     | Communicate via domain events or shared-kernel ports |
+| Generic `Repository<T>`          | Loses domain semantics                  | Explicit interface per aggregate                     |
+| `console.log` in infrastructure  | Unstructured, can't be filtered/sampled | Inject NestJS `Logger`                               |
