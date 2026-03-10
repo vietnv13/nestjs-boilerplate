@@ -1,27 +1,22 @@
-import {
-  Header,
-  HeaderCenter,
-  HeaderEnd,
-  HeaderStart,
-} from "@workspace/ui/components/plus/header";
+import { Header, HeaderCenter, HeaderEnd, HeaderStart } from '@workspace/ui/components/plus/header'
 
-import { BlankLayout } from "./blank-layout";
+import { BlankLayout } from './blank-layout'
 
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from '@storybook/react-vite'
 
 const meta: Meta<typeof BlankLayout> = {
-  title: "Blocks/BlankLayout",
+  title: 'Blocks/BlankLayout',
   component: BlankLayout,
   parameters: {
-    layout: "fullscreen",
+    layout: 'fullscreen',
   },
   argTypes: {
-    bordered: { control: "boolean" },
+    bordered: { control: 'boolean' },
   },
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof BlankLayout>;
+export default meta
+type Story = StoryObj<typeof BlankLayout>
 
 export const Default: Story = {
   args: {
@@ -31,13 +26,11 @@ export const Default: Story = {
     <BlankLayout {...args}>
       <div className="p-8">
         <h1 className="text-2xl font-bold">Default Layout</h1>
-        <p className="mt-2 text-muted-foreground">
-          Basic layout without borders
-        </p>
+        <p className="mt-2 text-muted-foreground">Basic layout without borders</p>
       </div>
     </BlankLayout>
   ),
-};
+}
 
 export const Bordered: Story = {
   args: {
@@ -53,7 +46,7 @@ export const Bordered: Story = {
       </div>
     </BlankLayout>
   ),
-};
+}
 
 export const WithHeader: Story = {
   args: {
@@ -70,10 +63,8 @@ export const WithHeader: Story = {
       </Header>
       <main className="flex-1 p-8">
         <h1 className="text-2xl font-bold">Page Content</h1>
-        <p className="mt-2 text-muted-foreground">
-          Combined with Header component
-        </p>
+        <p className="mt-2 text-muted-foreground">Combined with Header component</p>
       </main>
     </BlankLayout>
   ),
-};
+}

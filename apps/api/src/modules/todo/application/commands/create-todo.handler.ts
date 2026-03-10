@@ -1,15 +1,15 @@
-import { Inject } from "@nestjs/common";
-import { CommandHandler, EventBus } from "@nestjs/cqrs";
+import { Inject } from '@nestjs/common'
+import { CommandHandler, EventBus } from '@nestjs/cqrs'
 
-import { TODO_REPOSITORY } from "@/modules/todo/application/ports/todo.repository.port";
-import { TodoCreatedEvent } from "@/modules/todo/domain/events/todo.events";
-import { ValidationException } from "@/shared-kernel/domain/exceptions";
+import { TODO_REPOSITORY } from '@/modules/todo/application/ports/todo.repository.port'
+import { TodoCreatedEvent } from '@/modules/todo/domain/events/todo.events'
+import { ValidationException } from '@/shared-kernel/domain/exceptions'
 
-import { CreateTodoCommand } from "./create-todo.command";
+import { CreateTodoCommand } from './create-todo.command'
 
-import type { TodoRepository } from "@/modules/todo/application/ports/todo.repository.port";
-import type { ICommandHandler } from "@nestjs/cqrs";
-import type { Todo } from "@workspace/database";
+import type { TodoRepository } from '@/modules/todo/application/ports/todo.repository.port'
+import type { ICommandHandler } from '@nestjs/cqrs'
+import type { Todo } from '@workspace/database'
 
 @CommandHandler(CreateTodoCommand)
 export class CreateTodoHandler implements ICommandHandler<CreateTodoCommand, Todo> {
@@ -22,22 +22,22 @@ export class CreateTodoHandler implements ICommandHandler<CreateTodoCommand, Tod
   async execute(command: CreateTodoCommand): Promise<Todo> {
     // Validate title
     if (!command.title || command.title.trim().length === 0) {
-      throw new ValidationException("Title is required and cannot be empty");
+      throw new ValidationException('Title is required and cannot be empty')
     }
 
     if (command.title.length > 200) {
-      throw new ValidationException("Title cannot exceed 200 characters");
+      throw new ValidationException('Title cannot exceed 200 characters')
     }
 
     // Create todo
     const todo = await this.todoRepository.create({
       title: command.title.trim(),
       description: command.description?.trim(),
-    });
+    })
 
     // Publish domain event
-    this.eventBus.publish(new TodoCreatedEvent(todo.id, todo.title));
+    this.eventBus.publish(new TodoCreatedEvent(todo.id, todo.title))
 
-    return todo;
+    return todo
   }
 }

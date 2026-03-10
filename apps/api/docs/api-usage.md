@@ -343,19 +343,19 @@ http://localhost:3000/api/docs
 ### JavaScript/TypeScript
 
 ```typescript
-const response = await fetch("http://localhost:3000/api/users", {
-  method: "POST",
+const response = await fetch('http://localhost:3000/api/users', {
+  method: 'POST',
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     Authorization: `Bearer ${accessToken}`,
   },
   body: JSON.stringify({
-    email: "newuser@example.com",
-    name: "New User",
+    email: 'newuser@example.com',
+    name: 'New User',
   }),
-});
+})
 
-const user = await response.json();
+const user = await response.json()
 ```
 
 ### cURL

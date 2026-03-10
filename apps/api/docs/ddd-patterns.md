@@ -11,13 +11,13 @@ schema types from `@workspace/database`.
 ```typescript
 // modules/users/domain/user.entity.ts
 export interface User {
-  id: string;
-  email: string;
-  name: string | null;
-  role: "user" | "admin";
-  emailVerified: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  email: string
+  name: string | null
+  role: 'user' | 'admin'
+  emailVerified: boolean
+  createdAt: Date
+  updatedAt: Date
 }
 ```
 
@@ -40,7 +40,7 @@ wraps the accounts table and exposes domain methods like `setPassword()`, `updat
 
 ```typescript
 // After mutating an aggregate, publish its queued events:
-await this.domainEventPublisher.publishEventsForAggregate(authIdentity);
+await this.domainEventPublisher.publishEventsForAggregate(authIdentity)
 ```
 
 ### Domain Events
@@ -50,9 +50,9 @@ Events describe **facts** that occurred. All domain events extend `BaseDomainEve
 ```typescript
 // shared-kernel/domain/base-domain-event.ts
 export abstract class BaseDomainEvent {
-  readonly aggregateId: string;
-  readonly occurredAt: Date;
-  abstract readonly eventType: string; // e.g. "todo.created"
+  readonly aggregateId: string
+  readonly occurredAt: Date
+  abstract readonly eventType: string // e.g. "todo.created"
 }
 ```
 
@@ -63,12 +63,12 @@ export abstract class BaseDomainEvent {
 ```typescript
 // modules/todo/domain/events/todo.events.ts
 export class TodoCreatedEvent extends BaseDomainEvent {
-  readonly eventType = "todo.created";
+  readonly eventType = 'todo.created'
   constructor(
     public readonly todoId: string,
     public readonly title: string,
   ) {
-    super(todoId);
+    super(todoId)
   }
 }
 ```
@@ -189,9 +189,9 @@ DomainException (base)
 **Throw from domain/application layer:**
 
 ```typescript
-throw new UserNotFoundException(userId);
-throw new UserAlreadyExistsException(email);
-throw new ValidationException("Title cannot be empty");
+throw new UserNotFoundException(userId)
+throw new UserAlreadyExistsException(email)
+throw new ValidationException('Title cannot be empty')
 ```
 
 ---
@@ -230,9 +230,9 @@ export class UserRegistrationSaga extends BaseSaga {
       map((event) => {
         // Dispatch follow-up commands here, e.g.:
         // this.commandBus.execute(new SendWelcomeEmailCommand(event.userId));
-        return null;
+        return null
       }),
-    );
+    )
   }
 }
 ```

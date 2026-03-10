@@ -1,35 +1,35 @@
-import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { APP_GUARD } from "@nestjs/core";
-import { EventEmitterModule } from "@nestjs/event-emitter";
-import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
-import { ClsModule } from "nestjs-cls";
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { APP_GUARD } from '@nestjs/core'
+import { EventEmitterModule } from '@nestjs/event-emitter'
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
+import { ClsModule } from 'nestjs-cls'
 
-import { createClsConfig } from "@/app/config/cls.config";
-import { validateEnv } from "@/app/config/env.schema";
-import { throttlerConfig } from "@/app/config/security.config";
-import { AllExceptionsFilter } from "@/app/filters/all-exceptions.filter";
-import { DomainExceptionFilter } from "@/app/filters/domain-exception.filter";
-import { ProblemDetailsFilter } from "@/app/filters/problem-details.filter";
-import { ThrottlerExceptionFilter } from "@/app/filters/throttler-exception.filter";
-import { HealthModule } from "@/app/health/health.module";
-import { CorrelationIdInterceptor } from "@/app/interceptors/correlation-id.interceptor";
-import { DeprecationInterceptor } from "@/app/interceptors/deprecation.interceptor";
-import { RequestContextInterceptor } from "@/app/interceptors/request-context.interceptor";
-import { TraceContextInterceptor } from "@/app/interceptors/trace-context.interceptor";
-import { LoggerModule } from "@/app/logger/logger.module";
-import { ApiVersionMiddleware } from "@/app/middleware/api-version.middleware";
-import { ETagMiddleware } from "@/app/middleware/etag.middleware";
-import { SwaggerDevController } from "@/app/swagger/swagger-dev.controller";
-import { AuthModule } from "@/modules/auth/auth.module";
-import { TodoModule } from "@/modules/todo/todo.module";
-import { UsersModule } from "@/modules/users/users.module";
-import { CacheModule } from "@/shared-kernel/infrastructure/cache/cache.module";
-import { DrizzleModule } from "@/shared-kernel/infrastructure/db/db.module";
-import { DomainEventsModule } from "@/shared-kernel/infrastructure/events/domain-events.module";
-import { EventsModule } from "@/shared-kernel/infrastructure/events/events.module";
+import { createClsConfig } from '@/app/config/cls.config'
+import { validateEnv } from '@/app/config/env.schema'
+import { throttlerConfig } from '@/app/config/security.config'
+import { AllExceptionsFilter } from '@/app/filters/all-exceptions.filter'
+import { DomainExceptionFilter } from '@/app/filters/domain-exception.filter'
+import { ProblemDetailsFilter } from '@/app/filters/problem-details.filter'
+import { ThrottlerExceptionFilter } from '@/app/filters/throttler-exception.filter'
+import { HealthModule } from '@/app/health/health.module'
+import { CorrelationIdInterceptor } from '@/app/interceptors/correlation-id.interceptor'
+import { DeprecationInterceptor } from '@/app/interceptors/deprecation.interceptor'
+import { RequestContextInterceptor } from '@/app/interceptors/request-context.interceptor'
+import { TraceContextInterceptor } from '@/app/interceptors/trace-context.interceptor'
+import { LoggerModule } from '@/app/logger/logger.module'
+import { ApiVersionMiddleware } from '@/app/middleware/api-version.middleware'
+import { ETagMiddleware } from '@/app/middleware/etag.middleware'
+import { SwaggerDevController } from '@/app/swagger/swagger-dev.controller'
+import { AuthModule } from '@/modules/auth/auth.module'
+import { TodoModule } from '@/modules/todo/todo.module'
+import { UsersModule } from '@/modules/users/users.module'
+import { CacheModule } from '@/shared-kernel/infrastructure/cache/cache.module'
+import { DrizzleModule } from '@/shared-kernel/infrastructure/db/db.module'
+import { DomainEventsModule } from '@/shared-kernel/infrastructure/events/domain-events.module'
+import { EventsModule } from '@/shared-kernel/infrastructure/events/events.module'
 
-import type { NestModule, MiddlewareConsumer } from "@nestjs/common";
+import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
 
 /**
  * Root module: assembles all feature modules and infrastructure
@@ -54,7 +54,7 @@ import type { NestModule, MiddlewareConsumer } from "@nestjs/common";
     // Event module: domain and integration events
     EventEmitterModule.forRoot({
       wildcard: true, // Support wildcard event listeners (e.g., 'user.*')
-      delimiter: ".", // Event name delimiter
+      delimiter: '.', // Event name delimiter
       maxListeners: 10, // Max listeners per event
       verboseMemoryLeak: true, // Warn when exceeding maxListeners
       ignoreErrors: false, // Don't ignore event handler errors
@@ -82,7 +82,7 @@ import type { NestModule, MiddlewareConsumer } from "@nestjs/common";
   ],
   controllers: [
     // Dev helper controller (dev only)
-    ...(process.env.NODE_ENV === "production" ? [] : [SwaggerDevController]),
+    ...(process.env.NODE_ENV === 'production' ? [] : [SwaggerDevController]),
   ],
   providers: [
     // Global rate limiting guard
@@ -110,6 +110,6 @@ export class AppModule implements NestModule {
         ApiVersionMiddleware, // API versioning (must be before ETag)
         ETagMiddleware, // ETag and 304 Not Modified support
       )
-      .forRoutes("{*path}"); // Apply to all routes
+      .forRoutes('{*path}') // Apply to all routes
   }
 }

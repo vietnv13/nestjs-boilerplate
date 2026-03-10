@@ -1,70 +1,70 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsEmail, IsString, IsOptional, IsEnum } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsEmail, IsString, IsOptional, IsEnum } from 'class-validator'
 
 export class CreateUserDto {
-  @ApiProperty({ example: "user@example.com" })
+  @ApiProperty({ example: 'user@example.com' })
   @IsEmail()
-  email: string;
+  email: string
 
-  @ApiPropertyOptional({ example: "John Doe" })
+  @ApiPropertyOptional({ example: 'John Doe' })
   @IsString()
   @IsOptional()
-  name?: string;
+  name?: string
 
-  @ApiPropertyOptional({ enum: ["user", "admin"], example: "user" })
-  @IsEnum(["user", "admin"])
+  @ApiPropertyOptional({ enum: ['user', 'admin'], example: 'user' })
+  @IsEnum(['user', 'admin'])
   @IsOptional()
-  role?: "user" | "admin";
+  role?: 'user' | 'admin'
 }
 
 export class UpdateUserDto {
-  @ApiPropertyOptional({ example: "John Doe" })
+  @ApiPropertyOptional({ example: 'John Doe' })
   @IsString()
   @IsOptional()
-  name?: string;
+  name?: string
 
-  @ApiPropertyOptional({ example: "user@example.com" })
+  @ApiPropertyOptional({ example: 'user@example.com' })
   @IsEmail()
   @IsOptional()
-  email?: string;
+  email?: string
 
-  @ApiPropertyOptional({ example: "https://example.com/avatar.jpg" })
+  @ApiPropertyOptional({ example: 'https://example.com/avatar.jpg' })
   @IsString()
   @IsOptional()
-  image?: string;
+  image?: string
 }
 
 export class UserResponseDto {
   @ApiProperty()
-  id: string;
+  id: string
 
   @ApiProperty()
-  email: string;
+  email: string
 
   @ApiProperty({ nullable: true })
-  name: string | null;
+  name: string | null
 
-  @ApiProperty({ enum: ["user", "admin"] })
-  role: "user" | "admin";
+  @ApiProperty({ enum: ['user', 'admin'] })
+  role: 'user' | 'admin'
 
   @ApiProperty()
-  emailVerified: boolean;
+  emailVerified: boolean
 
   @ApiProperty({ nullable: true })
-  image: string | null;
+  image: string | null
 
   @ApiProperty()
-  banned: boolean;
+  banned: boolean
 
   @ApiProperty({ nullable: true })
-  banReason: string | null;
+  banReason: string | null
 
   @ApiProperty({ nullable: true })
-  banExpires: Date | null;
+  banExpires: Date | null
 
   @ApiProperty()
-  createdAt: Date;
+  createdAt: Date
 
   @ApiProperty()
-  updatedAt: Date;
+  updatedAt: Date
 }

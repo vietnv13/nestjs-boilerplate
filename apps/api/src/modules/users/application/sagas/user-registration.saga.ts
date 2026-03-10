@@ -1,12 +1,12 @@
-import { Injectable } from "@nestjs/common";
-import { Saga } from "@nestjs/cqrs";
-import { Observable } from "rxjs";
-import { delay, map } from "rxjs/operators";
+import { Injectable } from '@nestjs/common'
+import { Saga } from '@nestjs/cqrs'
+import { Observable } from 'rxjs'
+import { delay, map } from 'rxjs/operators'
 
-import { UserCreatedEvent } from "@/modules/users/domain/events/user.events";
-import { BaseSaga } from "@/shared-kernel/infrastructure/events/sagas/base.saga";
+import { UserCreatedEvent } from '@/modules/users/domain/events/user.events'
+import { BaseSaga } from '@/shared-kernel/infrastructure/events/sagas/base.saga'
 
-import type { IEvent } from "@nestjs/cqrs";
+import type { IEvent } from '@nestjs/cqrs'
 
 /**
  * User Registration Saga
@@ -21,32 +21,32 @@ export class UserRegistrationSaga extends BaseSaga {
     return this.filterEvents(events$, UserCreatedEvent).pipe(
       delay(100),
       map((event: UserCreatedEvent) => {
-        this.log("User registration saga triggered", {
+        this.log('User registration saga triggered', {
           userId: event.userId,
           eventType: event.eventType,
-        });
+        })
 
-        this.sendWelcomeEmail(event.userId);
-        this.createUserProfile(event.userId);
-        this.assignDefaultPermissions(event.userId);
+        this.sendWelcomeEmail(event.userId)
+        this.createUserProfile(event.userId)
+        this.assignDefaultPermissions(event.userId)
 
-        return null;
+        return null
       }),
-    );
+    )
   }
 
   private sendWelcomeEmail(userId: string): void {
-    this.log("Sending welcome email", { userId });
+    this.log('Sending welcome email', { userId })
     // TODO: Dispatch SendWelcomeEmailCommand
   }
 
   private createUserProfile(userId: string): void {
-    this.log("Creating user profile", { userId });
+    this.log('Creating user profile', { userId })
     // TODO: Dispatch CreateUserProfileCommand
   }
 
   private assignDefaultPermissions(userId: string): void {
-    this.log("Assigning default permissions", { userId });
+    this.log('Assigning default permissions', { userId })
     // TODO: Dispatch AssignDefaultPermissionsCommand
   }
 }

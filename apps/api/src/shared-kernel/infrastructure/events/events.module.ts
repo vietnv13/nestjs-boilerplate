@@ -1,8 +1,8 @@
-import { Module } from "@nestjs/common";
-import { CqrsModule } from "@nestjs/cqrs";
+import { Module } from '@nestjs/common'
+import { CqrsModule } from '@nestjs/cqrs'
 
-import { EventStorePublisher } from "./event-store/event-store.publisher";
-import { EventStoreService } from "./event-store/event-store.service";
+import { EventStorePublisher } from './event-store/event-store.publisher'
+import { EventStoreService } from './event-store/event-store.service'
 
 /**
  * Events Module

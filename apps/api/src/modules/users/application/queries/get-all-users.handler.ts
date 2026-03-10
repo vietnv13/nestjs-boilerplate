@@ -1,13 +1,13 @@
-import { Inject } from "@nestjs/common";
-import { QueryHandler } from "@nestjs/cqrs";
+import { Inject } from '@nestjs/common'
+import { QueryHandler } from '@nestjs/cqrs'
 
-import { USER_REPOSITORY } from "@/modules/users/application/ports/user.repository.port";
+import { USER_REPOSITORY } from '@/modules/users/application/ports/user.repository.port'
 
-import { GetAllUsersQuery } from "./get-all-users.query";
+import { GetAllUsersQuery } from './get-all-users.query'
 
-import type { UserRepository } from "@/modules/users/application/ports/user.repository.port";
-import type { User } from "@/modules/users/domain/user.entity";
-import type { IQueryHandler } from "@nestjs/cqrs";
+import type { UserRepository } from '@/modules/users/application/ports/user.repository.port'
+import type { User } from '@/modules/users/domain/user.entity'
+import type { IQueryHandler } from '@nestjs/cqrs'
 
 @QueryHandler(GetAllUsersQuery)
 export class GetAllUsersHandler implements IQueryHandler<GetAllUsersQuery, User[]> {
@@ -17,6 +17,6 @@ export class GetAllUsersHandler implements IQueryHandler<GetAllUsersQuery, User[
   ) {}
 
   async execute(query: GetAllUsersQuery): Promise<User[]> {
-    return this.userRepository.findAll(query.limit, query.offset);
+    return this.userRepository.findAll(query.limit, query.offset)
   }
 }

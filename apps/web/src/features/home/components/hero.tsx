@@ -4,28 +4,28 @@ import {
   Tailwindcss as TailwindcssIcon,
   Typescript as TypescriptIcon,
   Github as GithubIcon,
-} from "@workspace/icons";
-import { Button } from "@workspace/ui/components/ui/button";
-import Link from "next/link";
+} from '@workspace/icons'
+import { Button } from '@workspace/ui/components/ui/button'
+import Link from 'next/link'
 
 const stackItems = [
   {
-    name: "Next.js",
+    name: 'Next.js',
     icon: <NextjsIcon className="w-10 h-10 fill-black dark:fill-white" />,
   },
   {
-    name: "React",
+    name: 'React',
     icon: <ReactIcon className="w-10 h-10 fill-black dark:fill-white" />,
   },
   {
-    name: "Tailwind CSS",
+    name: 'Tailwind CSS',
     icon: <TailwindcssIcon className="w-10 h-10 fill-black dark:fill-white" />,
   },
   {
-    name: "TypeScript",
+    name: 'TypeScript',
     icon: <TypescriptIcon className="w-10 h-10 fill-black dark:fill-white" />,
   },
-];
+]
 
 const Stack = () => {
   return (
@@ -37,8 +37,8 @@ const Stack = () => {
         </li>
       ))}
     </ul>
-  );
-};
+  )
+}
 
 const Hero = () => {
   return (
@@ -51,10 +51,7 @@ const Hero = () => {
           </p>
           <Stack />
           <Button variant="outline" asChild>
-            <Link
-              href="https://github.com/oNo500/nestjs-boilerplate"
-              target="_blank"
-            >
+            <Link href="https://github.com/oNo500/nestjs-boilerplate" target="_blank">
               <GithubIcon className="w-4 h-4 fill-black dark:fill-white" />
               GitHub
             </Link>
@@ -62,7 +59,7 @@ const Hero = () => {
         </div>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export { Hero };
+export { Hero }

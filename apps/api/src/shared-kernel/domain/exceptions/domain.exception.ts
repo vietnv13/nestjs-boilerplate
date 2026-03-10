@@ -5,9 +5,9 @@ export abstract class DomainException extends Error {
     public readonly statusCode: number = 400,
     public readonly metadata?: Record<string, unknown>,
   ) {
-    super(message);
-    this.name = this.constructor.name;
-    Error.captureStackTrace(this, this.constructor);
+    super(message)
+    this.name = this.constructor.name
+    Error.captureStackTrace(this, this.constructor)
   }
 
   toJSON() {
@@ -17,6 +17,6 @@ export abstract class DomainException extends Error {
       code: this.code,
       statusCode: this.statusCode,
       metadata: this.metadata,
-    };
+    }
   }
 }

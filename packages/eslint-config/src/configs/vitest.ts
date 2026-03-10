@@ -1,11 +1,11 @@
-import { fixupPluginRules } from "@eslint/compat";
-import vitestPlugin from "@vitest/eslint-plugin";
-import { defineConfig } from "eslint/config";
+import { fixupPluginRules } from '@eslint/compat'
+import vitestPlugin from '@vitest/eslint-plugin'
+import { defineConfig } from 'eslint/config'
 
-import { GLOB_TESTS, isInEditorEnv } from "../utils";
+import { GLOB_TESTS, isInEditorEnv } from '../utils'
 
-import type { OptionsFiles, OptionsOverrides } from "../types";
-import type { ESLint, Linter } from "eslint";
+import type { OptionsFiles, OptionsOverrides } from '../types'
+import type { ESLint, Linter } from 'eslint'
 
 export type VitestOptions = OptionsFiles &
   OptionsOverrides & {
@@ -13,8 +13,8 @@ export type VitestOptions = OptionsFiles &
      * Running in editor
      * .skip/.only show warnings in editor, errors in CI
      */
-    isInEditor?: boolean;
-  };
+    isInEditor?: boolean
+  }
 
 /**
  * Vitest testing rules configuration
@@ -34,16 +34,12 @@ export type VitestOptions = OptionsFiles &
  * @returns ESLint config array
  */
 export function vitest(options: VitestOptions = {}): Linter.Config[] {
-  const {
-    files = GLOB_TESTS,
-    overrides = {},
-    isInEditor = isInEditorEnv(),
-  } = options;
+  const { files = GLOB_TESTS, overrides = {}, isInEditor = isInEditorEnv() } = options
 
   return defineConfig([
     // TODO: Many compatibility issues, need actual testing
     {
-      name: "vitest/rules",
+      name: 'vitest/rules',
       files,
       plugins: {
         vitest: fixupPluginRules(vitestPlugin as unknown as ESLint.Plugin), // Compatibility fix
@@ -52,27 +48,24 @@ export function vitest(options: VitestOptions = {}): Linter.Config[] {
         ...vitestPlugin.configs.recommended.rules,
 
         // Relax rules for test code (based on Vite project best practices)
-        "no-console": "off", // Allow console in tests
-        "no-restricted-globals": "off", // Allow test environment globals
-        "no-restricted-syntax": "off", // Allow special syntax in tests
-        "no-undef": "off", // TypeScript handles type checking
-        "@typescript-eslint/ban-ts-comment": "off", // Allow @ts-ignore etc.
-        "@typescript-eslint/explicit-module-boundary-types": "off", // Test functions don't need explicit return types
-        "@typescript-eslint/unbound-method": "off", // Mock methods don't need binding
-        "unicorn/no-null": "off", // Returning null in mocks is reasonable
+        'no-console': 'off', // Allow console in tests
+        'no-restricted-globals': 'off', // Allow test environment globals
+        'no-restricted-syntax': 'off', // Allow special syntax in tests
+        'no-undef': 'off', // TypeScript handles type checking
+        '@typescript-eslint/ban-ts-comment': 'off', // Allow @ts-ignore etc.
+        '@typescript-eslint/explicit-module-boundary-types': 'off', // Test functions don't need explicit return types
+        '@typescript-eslint/unbound-method': 'off', // Mock methods don't need binding
+        'unicorn/no-null': 'off', // Returning null in mocks is reasonable
 
         // Test code style consistency
-        "vitest/consistent-test-it": [
-          "error",
-          { fn: "it", withinDescribe: "it" },
-        ], // Use it consistently
-        "vitest/no-identical-title": "error", // Prevent duplicate test titles
-        "vitest/prefer-hooks-in-order": "error", // Enforce hook order
-        "vitest/prefer-lowercase-title": "error", // Consistent lowercase titles
+        'vitest/consistent-test-it': ['error', { fn: 'it', withinDescribe: 'it' }], // Use it consistently
+        'vitest/no-identical-title': 'error', // Prevent duplicate test titles
+        'vitest/prefer-hooks-in-order': 'error', // Enforce hook order
+        'vitest/prefer-lowercase-title': 'error', // Consistent lowercase titles
 
         // Test quality assurance (warning in editor, error in CI)
-        "vitest/no-disabled-tests": isInEditor ? "warn" : "error", // Prevent committing .skip tests
-        "vitest/no-focused-tests": isInEditor ? "warn" : "error", // Prevent committing .only tests
+        'vitest/no-disabled-tests': isInEditor ? 'warn' : 'error', // Prevent committing .skip tests
+        'vitest/no-focused-tests': isInEditor ? 'warn' : 'error', // Prevent committing .only tests
 
         ...overrides,
       },
@@ -82,5 +75,5 @@ export function vitest(options: VitestOptions = {}): Linter.Config[] {
         },
       },
     },
-  ]);
+  ])
 }

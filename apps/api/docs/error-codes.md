@@ -81,18 +81,18 @@ Examples: `USER_NOT_FOUND`, `AUTH_INVALID_CREDENTIALS`, `VALIDATION_ERROR`
 
 ```typescript
 interface ProblemDetails {
-  type: string; // URL to error documentation
-  title: string; // Human-readable error title
-  status: number; // HTTP status code
-  detail: string; // Detailed error message
-  instance?: string; // Request path
-  code: string; // Machine-readable error code
-  metadata?: object; // Additional error context
+  type: string // URL to error documentation
+  title: string // Human-readable error title
+  status: number // HTTP status code
+  detail: string // Detailed error message
+  instance?: string // Request path
+  code: string // Machine-readable error code
+  metadata?: object // Additional error context
   errors?: Array<{
     // Validation errors
-    field: string;
-    message: string;
-  }>;
+    field: string
+    message: string
+  }>
 }
 ```
 
@@ -162,33 +162,33 @@ interface ProblemDetails {
 ```typescript
 async function createUser(data: CreateUserDto) {
   try {
-    const response = await fetch("/api/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const response = await fetch('/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
-    });
+    })
 
     if (!response.ok) {
-      const error = await response.json();
+      const error = await response.json()
 
       // Handle specific error codes
       switch (error.code) {
-        case "USER_ALREADY_EXISTS":
-          throw new Error("This email is already registered");
-        case "VALIDATION_ERROR":
-          throw new ValidationError(error.errors);
-        case "RATE_LIMIT_EXCEEDED":
-          throw new Error("Too many requests. Please try again later.");
+        case 'USER_ALREADY_EXISTS':
+          throw new Error('This email is already registered')
+        case 'VALIDATION_ERROR':
+          throw new ValidationError(error.errors)
+        case 'RATE_LIMIT_EXCEEDED':
+          throw new Error('Too many requests. Please try again later.')
         default:
-          throw new Error(error.detail);
+          throw new Error(error.detail)
       }
     }
 
-    return response.json();
+    return response.json()
   } catch (error) {
     // Handle network errors
-    console.error("Failed to create user:", error);
-    throw error;
+    console.error('Failed to create user:', error)
+    throw error
   }
 }
 ```
@@ -198,28 +198,28 @@ async function createUser(data: CreateUserDto) {
 Some errors are retryable:
 
 ```typescript
-const RETRYABLE_CODES = ["RATE_LIMIT_EXCEEDED", "EXTERNAL_SERVICE_ERROR", "DATABASE_ERROR"];
+const RETRYABLE_CODES = ['RATE_LIMIT_EXCEEDED', 'EXTERNAL_SERVICE_ERROR', 'DATABASE_ERROR']
 
 async function fetchWithRetry(url: string, options: RequestInit, maxRetries = 3) {
   for (let i = 0; i < maxRetries; i++) {
     try {
-      const response = await fetch(url, options);
+      const response = await fetch(url, options)
 
       if (!response.ok) {
-        const error = await response.json();
+        const error = await response.json()
 
         if (RETRYABLE_CODES.includes(error.code) && i < maxRetries - 1) {
-          const delay = Math.pow(2, i) * 1000; // Exponential backoff
-          await new Promise((resolve) => setTimeout(resolve, delay));
-          continue;
+          const delay = Math.pow(2, i) * 1000 // Exponential backoff
+          await new Promise((resolve) => setTimeout(resolve, delay))
+          continue
         }
 
-        throw error;
+        throw error
       }
 
-      return response;
+      return response
     } catch (error) {
-      if (i === maxRetries - 1) throw error;
+      if (i === maxRetries - 1) throw error
     }
   }
 }
@@ -239,9 +239,9 @@ Example:
 ```typescript
 export class OrderAlreadyShippedException extends BusinessRuleException {
   constructor(orderId: string) {
-    super("Cannot modify order that has already been shipped", "ORDER_ALREADY_SHIPPED", {
+    super('Cannot modify order that has already been shipped', 'ORDER_ALREADY_SHIPPED', {
       orderId,
-    });
+    })
   }
 }
 ```

@@ -194,7 +194,7 @@ Two complementary mechanisms coexist:
 Used by `Todo` and `Users` handlers. Events dispatched with:
 
 ```typescript
-this.eventBus.publish(new UserCreatedEvent(user.id, user.email, user.name));
+this.eventBus.publish(new UserCreatedEvent(user.id, user.email, user.name))
 ```
 
 **Sagas** subscribe to the bus via `@Saga()` and react to events by dispatching follow-up
@@ -213,7 +213,7 @@ state mutation. Consumers use `@OnEvent('user.created')`.
 
 ```typescript
 // After mutating an aggregate root:
-await this.domainEventPublisher.publishEventsForAggregate(aggregate);
+await this.domainEventPublisher.publishEventsForAggregate(aggregate)
 ```
 
 ---

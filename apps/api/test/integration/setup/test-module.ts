@@ -1,13 +1,13 @@
-import { ConfigModule } from "@nestjs/config";
-import { EventEmitterModule } from "@nestjs/event-emitter";
-import { Test } from "@nestjs/testing";
-import { ClsModule } from "nestjs-cls";
+import { ConfigModule } from '@nestjs/config'
+import { EventEmitterModule } from '@nestjs/event-emitter'
+import { Test } from '@nestjs/testing'
+import { ClsModule } from 'nestjs-cls'
 
-import { DB_TOKEN } from "@/shared-kernel/infrastructure/db/db.port";
+import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
 
-import { testDb } from "./test-database";
+import { testDb } from './test-database'
 
-import type { TestingModule } from "@nestjs/testing";
+import type { TestingModule } from '@nestjs/testing'
 
 export const TestModuleBuilder = {
   async createTestingModule(imports: any[] = [], providers: any[] = []): Promise<TestingModule> {
@@ -19,7 +19,7 @@ export const TestModuleBuilder = {
           load: [
             () => ({
               DATABASE_URL: testDb.connectionString,
-              NODE_ENV: "test",
+              NODE_ENV: 'test',
             }),
           ],
         }),
@@ -37,6 +37,6 @@ export const TestModuleBuilder = {
         },
         ...providers,
       ],
-    }).compile();
+    }).compile()
   },
-};
+}

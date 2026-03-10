@@ -1,53 +1,53 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class FieldError {
   @ApiProperty()
-  field: string;
+  field: string
 
   @ApiProperty()
-  pointer: string;
+  pointer: string
 
   @ApiProperty()
-  code: string;
+  code: string
 
   @ApiProperty()
-  message: string;
+  message: string
 }
 
 export class ProblemDetailsDto {
   @ApiProperty()
-  type: string;
+  type: string
 
   @ApiProperty()
-  title: string;
+  title: string
 
   @ApiProperty()
-  status: number;
+  status: number
 
   @ApiProperty()
-  detail: string;
+  detail: string
 
   @ApiProperty()
-  instance: string;
+  instance: string
 
   @ApiPropertyOptional()
-  request_id?: string;
+  request_id?: string
 
   @ApiPropertyOptional()
-  correlation_id?: string;
+  correlation_id?: string
 
   @ApiPropertyOptional()
-  trace_id?: string;
+  trace_id?: string
 
   @ApiPropertyOptional()
-  timestamp?: string;
+  timestamp?: string
 
   @ApiPropertyOptional()
-  code?: string;
+  code?: string
 
   @ApiPropertyOptional()
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, unknown>
 
   @ApiPropertyOptional({ type: [FieldError] })
-  errors?: FieldError[];
+  errors?: FieldError[]
 }

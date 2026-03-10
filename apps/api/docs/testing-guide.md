@@ -15,40 +15,40 @@ Test individual components in isolation.
 **Example**:
 
 ```typescript
-import { describe, it, expect, beforeEach } from "vitest";
-import { CreateUserHandler } from "./create-user.handler";
+import { describe, it, expect, beforeEach } from 'vitest'
+import { CreateUserHandler } from './create-user.handler'
 
-describe("CreateUserHandler", () => {
-  let handler: CreateUserHandler;
-  let mockRepository: MockType<UserRepository>;
-  let mockEventBus: MockType<EventBus>;
+describe('CreateUserHandler', () => {
+  let handler: CreateUserHandler
+  let mockRepository: MockType<UserRepository>
+  let mockEventBus: MockType<EventBus>
 
   beforeEach(() => {
-    mockRepository = createMock<UserRepository>();
-    mockEventBus = createMock<EventBus>();
-    handler = new CreateUserHandler(mockRepository, mockEventBus);
-  });
+    mockRepository = createMock<UserRepository>()
+    mockEventBus = createMock<EventBus>()
+    handler = new CreateUserHandler(mockRepository, mockEventBus)
+  })
 
-  it("should create a user", async () => {
-    const command = new CreateUserCommand("test@example.com", "Test User");
-    mockRepository.existsByEmail.mockResolvedValue(false);
-    mockRepository.create.mockResolvedValue({ id: "1", ...command });
+  it('should create a user', async () => {
+    const command = new CreateUserCommand('test@example.com', 'Test User')
+    mockRepository.existsByEmail.mockResolvedValue(false)
+    mockRepository.create.mockResolvedValue({ id: '1', ...command })
 
-    const result = await handler.execute(command);
+    const result = await handler.execute(command)
 
-    expect(result.email).toBe(command.email);
+    expect(result.email).toBe(command.email)
     expect(mockEventBus.publish).toHaveBeenCalledWith(
-      expect.objectContaining({ eventType: "user.created" }),
-    );
-  });
+      expect.objectContaining({ eventType: 'user.created' }),
+    )
+  })
 
-  it("should throw if user already exists", async () => {
-    const command = new CreateUserCommand("existing@example.com");
-    mockRepository.existsByEmail.mockResolvedValue(true);
+  it('should throw if user already exists', async () => {
+    const command = new CreateUserCommand('existing@example.com')
+    mockRepository.existsByEmail.mockResolvedValue(true)
 
-    await expect(handler.execute(command)).rejects.toThrow(UserAlreadyExistsException);
-  });
-});
+    await expect(handler.execute(command)).rejects.toThrow(UserAlreadyExistsException)
+  })
+})
 ```
 
 **Run**:
@@ -68,33 +68,33 @@ Test multiple components working together with a real database.
 **Example**:
 
 ```typescript
-import { describe, it, expect, beforeEach } from "vitest";
-import { testDb } from "../setup/test-database";
-import { TestModuleBuilder } from "../setup/test-module";
-import { UserRepositoryImpl } from "@/modules/users/infrastructure/repositories/user.repository";
+import { describe, it, expect, beforeEach } from 'vitest'
+import { testDb } from '../setup/test-database'
+import { TestModuleBuilder } from '../setup/test-module'
+import { UserRepositoryImpl } from '@/modules/users/infrastructure/repositories/user.repository'
 
-describe("UserRepository Integration Tests", () => {
-  let userRepository: UserRepositoryImpl;
+describe('UserRepository Integration Tests', () => {
+  let userRepository: UserRepositoryImpl
 
   beforeEach(async () => {
-    const module = await TestModuleBuilder.createTestingModule([], [UserRepositoryImpl]);
-    userRepository = module.get<UserRepositoryImpl>(UserRepositoryImpl);
-  });
+    const module = await TestModuleBuilder.createTestingModule([], [UserRepositoryImpl])
+    userRepository = module.get<UserRepositoryImpl>(UserRepositoryImpl)
+  })
 
-  it("should create and retrieve a user", async () => {
+  it('should create and retrieve a user', async () => {
     const userData = {
-      email: "test@example.com",
-      name: "Test User",
-      role: "user" as const,
-    };
+      email: 'test@example.com',
+      name: 'Test User',
+      role: 'user' as const,
+    }
 
-    const created = await userRepository.create(userData);
-    const found = await userRepository.findById(created.id);
+    const created = await userRepository.create(userData)
+    const found = await userRepository.findById(created.id)
 
-    expect(found).toBeDefined();
-    expect(found?.email).toBe(userData.email);
-  });
-});
+    expect(found).toBeDefined()
+    expect(found?.email).toBe(userData.email)
+  })
+})
 ```
 
 **Run**:
@@ -114,57 +114,57 @@ Test complete user flows through HTTP endpoints.
 **Example**:
 
 ```typescript
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { INestApplication } from "@nestjs/common";
-import { Test } from "@nestjs/testing";
-import request from "supertest";
-import { AppModule } from "@/app.module";
+import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { INestApplication } from '@nestjs/common'
+import { Test } from '@nestjs/testing'
+import request from 'supertest'
+import { AppModule } from '@/app.module'
 
-describe("Users E2E", () => {
-  let app: INestApplication;
+describe('Users E2E', () => {
+  let app: INestApplication
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    }).compile()
 
-    app = moduleRef.createNestApplication();
-    await app.init();
-  });
+    app = moduleRef.createNestApplication()
+    await app.init()
+  })
 
   afterAll(async () => {
-    await app.close();
-  });
+    await app.close()
+  })
 
-  it("POST /users - should create a user", async () => {
+  it('POST /users - should create a user', async () => {
     const response = await request(app.getHttpServer())
-      .post("/users")
+      .post('/users')
       .send({
-        email: "newuser@example.com",
-        name: "New User",
+        email: 'newuser@example.com',
+        name: 'New User',
       })
-      .expect(201);
+      .expect(201)
 
     expect(response.body).toMatchObject({
-      email: "newuser@example.com",
-      name: "New User",
-    });
-  });
+      email: 'newuser@example.com',
+      name: 'New User',
+    })
+  })
 
-  it("GET /users/:id - should retrieve a user", async () => {
+  it('GET /users/:id - should retrieve a user', async () => {
     // Create user first
     const createResponse = await request(app.getHttpServer())
-      .post("/users")
-      .send({ email: "getuser@example.com" });
+      .post('/users')
+      .send({ email: 'getuser@example.com' })
 
-    const userId = createResponse.body.id;
+    const userId = createResponse.body.id
 
     // Retrieve user
-    const response = await request(app.getHttpServer()).get(`/users/${userId}`).expect(200);
+    const response = await request(app.getHttpServer()).get(`/users/${userId}`).expect(200)
 
-    expect(response.body.id).toBe(userId);
-  });
-});
+    expect(response.body.id).toBe(userId)
+  })
+})
 ```
 
 **Run**:
@@ -182,20 +182,20 @@ Integration tests use Testcontainers for isolated database instances:
 ```typescript
 // test/integration/setup/test-database.ts
 export class TestDatabase {
-  private container: StartedPostgreSqlContainer;
-  public db: DrizzleDb;
+  private container: StartedPostgreSqlContainer
+  public db: DrizzleDb
 
   async setup(): Promise<void> {
-    this.container = await new PostgreSqlContainer("postgres:18-alpine")
-      .withDatabase("test_db")
-      .start();
+    this.container = await new PostgreSqlContainer('postgres:18-alpine')
+      .withDatabase('test_db')
+      .start()
 
     const pool = new Pool({
       connectionString: this.container.getConnectionUri(),
-    });
+    })
 
-    this.db = drizzle(pool, { schema });
-    await migrate(this.db, { migrationsFolder: "./drizzle" });
+    this.db = drizzle(pool, { schema })
+    await migrate(this.db, { migrationsFolder: './drizzle' })
   }
 
   async cleanup(): Promise<void> {
@@ -203,7 +203,7 @@ export class TestDatabase {
   }
 
   async teardown(): Promise<void> {
-    await this.container.stop();
+    await this.container.stop()
   }
 }
 ```
@@ -222,14 +222,14 @@ export class UserFixtures {
       .insert(usersTable)
       .values({
         email: data.email ?? `test-${Date.now()}@example.com`,
-        name: data.name ?? "Test User",
-        role: data.role ?? "user",
+        name: data.name ?? 'Test User',
+        role: data.role ?? 'user',
       })
-      .returning();
+      .returning()
   }
 
   async createAdmin() {
-    return this.createUser({ role: "admin" });
+    return this.createUser({ role: 'admin' })
   }
 }
 ```
@@ -237,8 +237,8 @@ export class UserFixtures {
 **Usage**:
 
 ```typescript
-const fixtures = new UserFixtures(testDb.db);
-const user = await fixtures.createUser({ email: "specific@example.com" });
+const fixtures = new UserFixtures(testDb.db)
+const user = await fixtures.createUser({ email: 'specific@example.com' })
 ```
 
 ## Mocking
@@ -246,12 +246,12 @@ const user = await fixtures.createUser({ email: "specific@example.com" });
 ### Repository Mocks
 
 ```typescript
-import { createMock } from "@golevelup/ts-vitest";
+import { createMock } from '@golevelup/ts-vitest'
 
 const mockRepository = createMock<UserRepository>({
   findById: vi.fn().mockResolvedValue(mockUser),
   create: vi.fn().mockResolvedValue(mockUser),
-});
+})
 ```
 
 ### Event Bus Mocks
@@ -259,12 +259,12 @@ const mockRepository = createMock<UserRepository>({
 ```typescript
 const mockEventBus = createMock<EventBus>({
   publish: vi.fn(),
-});
+})
 
 // Verify event was published
 expect(mockEventBus.publish).toHaveBeenCalledWith(
-  expect.objectContaining({ eventType: "user.created" }),
-);
+  expect.objectContaining({ eventType: 'user.created' }),
+)
 ```
 
 ## Best Practices
@@ -272,18 +272,18 @@ expect(mockEventBus.publish).toHaveBeenCalledWith(
 ### 1. Arrange-Act-Assert Pattern
 
 ```typescript
-it("should do something", async () => {
+it('should do something', async () => {
   // Arrange
-  const input = { email: "test@example.com" };
-  mockRepository.findByEmail.mockResolvedValue(null);
+  const input = { email: 'test@example.com' }
+  mockRepository.findByEmail.mockResolvedValue(null)
 
   // Act
-  const result = await handler.execute(input);
+  const result = await handler.execute(input)
 
   // Assert
-  expect(result).toBeDefined();
-  expect(mockRepository.create).toHaveBeenCalledWith(input);
-});
+  expect(result).toBeDefined()
+  expect(mockRepository.create).toHaveBeenCalledWith(input)
+})
 ```
 
 ### 2. Test Behavior, Not Implementation
@@ -291,53 +291,53 @@ it("should do something", async () => {
 **Good**:
 
 ```typescript
-it("should send welcome email when user is created", async () => {
-  await createUser({ email: "test@example.com" });
-  expect(mockEmailService.send).toHaveBeenCalled();
-});
+it('should send welcome email when user is created', async () => {
+  await createUser({ email: 'test@example.com' })
+  expect(mockEmailService.send).toHaveBeenCalled()
+})
 ```
 
 **Bad**:
 
 ```typescript
-it("should call repository.create", async () => {
-  await createUser({ email: "test@example.com" });
-  expect(mockRepository.create).toHaveBeenCalled(); // Testing implementation
-});
+it('should call repository.create', async () => {
+  await createUser({ email: 'test@example.com' })
+  expect(mockRepository.create).toHaveBeenCalled() // Testing implementation
+})
 ```
 
 ### 3. Use Descriptive Test Names
 
 ```typescript
 // Good
-it("should throw UserNotFoundException when user does not exist", () => {});
+it('should throw UserNotFoundException when user does not exist', () => {})
 
 // Bad
-it("should throw error", () => {});
+it('should throw error', () => {})
 ```
 
 ### 4. One Assertion Per Test (When Possible)
 
 ```typescript
 // Good
-it("should return user with correct email", async () => {
-  const user = await createUser({ email: "test@example.com" });
-  expect(user.email).toBe("test@example.com");
-});
+it('should return user with correct email', async () => {
+  const user = await createUser({ email: 'test@example.com' })
+  expect(user.email).toBe('test@example.com')
+})
 
-it("should return user with correct role", async () => {
-  const user = await createUser({ role: "admin" });
-  expect(user.role).toBe("admin");
-});
+it('should return user with correct role', async () => {
+  const user = await createUser({ role: 'admin' })
+  expect(user.role).toBe('admin')
+})
 ```
 
 ### 5. Clean Up After Tests
 
 ```typescript
 afterEach(async () => {
-  await testDb.cleanup(); // Clear database
-  vi.clearAllMocks(); // Clear mock calls
-});
+  await testDb.cleanup() // Clear database
+  vi.clearAllMocks() // Clear mock calls
+})
 ```
 
 ## Coverage Goals

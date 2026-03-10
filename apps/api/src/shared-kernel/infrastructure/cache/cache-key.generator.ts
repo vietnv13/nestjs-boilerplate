@@ -5,10 +5,10 @@
  */
 export const CacheKeyGenerator = {
   user(id: string): string {
-    return `user:${id}`;
+    return `user:${id}`
   },
 
   userByEmail(email: string): string {
-    return `user:email:${email}`;
+    return `user:email:${email}`
   },
-};
+}

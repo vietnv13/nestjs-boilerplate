@@ -1,16 +1,16 @@
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto'
 
-import { Inject, Injectable } from "@nestjs/common";
-import { verificationsTable } from "@workspace/database";
-import { eq, lt } from "drizzle-orm";
+import { Inject, Injectable } from '@nestjs/common'
+import { verificationsTable } from '@workspace/database'
+import { eq, lt } from 'drizzle-orm'
 
-import { DB_TOKEN } from "@/shared-kernel/infrastructure/db/db.port";
+import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
 
 import type {
   VerificationToken,
   VerificationTokenRepository,
-} from "@/modules/auth/application/ports/verification-token.repository.port";
-import type { DrizzleDb } from "@/shared-kernel/infrastructure/db/db.port";
+} from '@/modules/auth/application/ports/verification-token.repository.port'
+import type { DrizzleDb } from '@/shared-kernel/infrastructure/db/db.port'
 
 @Injectable()
 export class VerificationTokenRepositoryImpl implements VerificationTokenRepository {
@@ -20,12 +20,12 @@ export class VerificationTokenRepositoryImpl implements VerificationTokenReposit
   ) {}
 
   async create(data: {
-    identifier: string;
-    value: string;
-    expiresAt: Date;
+    identifier: string
+    value: string
+    expiresAt: Date
   }): Promise<VerificationToken> {
     // Delete old token for same identifier first
-    await this.deleteByIdentifier(data.identifier);
+    await this.deleteByIdentifier(data.identifier)
 
     // Create new token
     const result = await this.db
@@ -38,10 +38,10 @@ export class VerificationTokenRepositoryImpl implements VerificationTokenReposit
         createdAt: new Date(),
         updatedAt: new Date(),
       })
-      .returning();
+      .returning()
 
-    const record = result[0]!;
-    return this.toEntity(record);
+    const record = result[0]!
+    return this.toEntity(record)
   }
 
   async findByValue(value: string): Promise<VerificationToken | null> {
@@ -49,13 +49,13 @@ export class VerificationTokenRepositoryImpl implements VerificationTokenReposit
       .select()
       .from(verificationsTable)
       .where(eq(verificationsTable.value, value))
-      .limit(1);
+      .limit(1)
 
     if (result.length === 0) {
-      return null;
+      return null
     }
 
-    return this.toEntity(result[0]!);
+    return this.toEntity(result[0]!)
   }
 
   async findByIdentifier(identifier: string): Promise<VerificationToken | null> {
@@ -63,43 +63,43 @@ export class VerificationTokenRepositoryImpl implements VerificationTokenReposit
       .select()
       .from(verificationsTable)
       .where(eq(verificationsTable.identifier, identifier.toLowerCase()))
-      .limit(1);
+      .limit(1)
 
     if (result.length === 0) {
-      return null;
+      return null
     }
 
-    return this.toEntity(result[0]!);
+    return this.toEntity(result[0]!)
   }
 
   async delete(id: string): Promise<boolean> {
-    const result = await this.db.delete(verificationsTable).where(eq(verificationsTable.id, id));
+    const result = await this.db.delete(verificationsTable).where(eq(verificationsTable.id, id))
 
-    return (result.rowCount ?? 0) > 0;
+    return (result.rowCount ?? 0) > 0
   }
 
   async deleteByIdentifier(identifier: string): Promise<boolean> {
     const result = await this.db
       .delete(verificationsTable)
-      .where(eq(verificationsTable.identifier, identifier.toLowerCase()));
+      .where(eq(verificationsTable.identifier, identifier.toLowerCase()))
 
-    return (result.rowCount ?? 0) > 0;
+    return (result.rowCount ?? 0) > 0
   }
 
   async deleteExpired(): Promise<number> {
     const result = await this.db
       .delete(verificationsTable)
-      .where(lt(verificationsTable.expiresAt, new Date()));
+      .where(lt(verificationsTable.expiresAt, new Date()))
 
-    return result.rowCount ?? 0;
+    return result.rowCount ?? 0
   }
 
   async isValid(value: string): Promise<boolean> {
-    const record = await this.findByValue(value);
+    const record = await this.findByValue(value)
     if (!record) {
-      return false;
+      return false
     }
-    return record.expiresAt > new Date();
+    return record.expiresAt > new Date()
   }
 
   private toEntity(record: typeof verificationsTable.$inferSelect): VerificationToken {
@@ -109,6 +109,6 @@ export class VerificationTokenRepositoryImpl implements VerificationTokenReposit
       value: record.value,
       expiresAt: record.expiresAt,
       createdAt: record.createdAt,
-    };
+    }
   }
 }

@@ -1,7 +1,7 @@
-import { Link } from "@/components/link";
+import { Link } from '@/components/link'
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear()
 
   return (
     <footer className="border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
@@ -22,5 +22,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

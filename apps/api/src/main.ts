@@ -1,44 +1,44 @@
-import { RequestMethod } from "@nestjs/common";
-import { NestFactory, Reflector } from "@nestjs/core";
-import { Logger } from "nestjs-pino";
+import { RequestMethod } from '@nestjs/common'
+import { NestFactory, Reflector } from '@nestjs/core'
+import { Logger } from 'nestjs-pino'
 
-import { corsConfig } from "@/app/config/security.config";
-import { setupSwagger } from "@/app/config/swagger.config";
-import { createValidationPipe } from "@/app/config/validation.config";
-import { AllExceptionsFilter } from "@/app/filters/all-exceptions.filter";
-import { DomainExceptionFilter } from "@/app/filters/domain-exception.filter";
-import { ProblemDetailsFilter } from "@/app/filters/problem-details.filter";
-import { ThrottlerExceptionFilter } from "@/app/filters/throttler-exception.filter";
-import { CorrelationIdInterceptor } from "@/app/interceptors/correlation-id.interceptor";
-import { DeprecationInterceptor } from "@/app/interceptors/deprecation.interceptor";
-import { LinkHeaderInterceptor } from "@/app/interceptors/link-header.interceptor";
-import { LocationHeaderInterceptor } from "@/app/interceptors/location-header.interceptor";
-import { RequestContextInterceptor } from "@/app/interceptors/request-context.interceptor";
-import { TimeoutInterceptor } from "@/app/interceptors/timeout.interceptor";
-import { TraceContextInterceptor } from "@/app/interceptors/trace-context.interceptor";
-import { TransformInterceptor } from "@/app/interceptors/transform.interceptor";
+import { corsConfig } from '@/app/config/security.config'
+import { setupSwagger } from '@/app/config/swagger.config'
+import { createValidationPipe } from '@/app/config/validation.config'
+import { AllExceptionsFilter } from '@/app/filters/all-exceptions.filter'
+import { DomainExceptionFilter } from '@/app/filters/domain-exception.filter'
+import { ProblemDetailsFilter } from '@/app/filters/problem-details.filter'
+import { ThrottlerExceptionFilter } from '@/app/filters/throttler-exception.filter'
+import { CorrelationIdInterceptor } from '@/app/interceptors/correlation-id.interceptor'
+import { DeprecationInterceptor } from '@/app/interceptors/deprecation.interceptor'
+import { LinkHeaderInterceptor } from '@/app/interceptors/link-header.interceptor'
+import { LocationHeaderInterceptor } from '@/app/interceptors/location-header.interceptor'
+import { RequestContextInterceptor } from '@/app/interceptors/request-context.interceptor'
+import { TimeoutInterceptor } from '@/app/interceptors/timeout.interceptor'
+import { TraceContextInterceptor } from '@/app/interceptors/trace-context.interceptor'
+import { TransformInterceptor } from '@/app/interceptors/transform.interceptor'
 
-import { AppModule } from "./app.module";
+import { AppModule } from './app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
-  });
+  })
 
-  app.useLogger(app.get(Logger));
+  app.useLogger(app.get(Logger))
 
-  app.enableCors(corsConfig);
+  app.enableCors(corsConfig)
 
-  app.setGlobalPrefix("api", {
+  app.setGlobalPrefix('api', {
     exclude: [
       // Exclude Swagger dev credentials endpoint
-      { path: ".well-known", method: RequestMethod.ALL },
-      { path: ".well-known/{*path}", method: RequestMethod.ALL },
+      { path: '.well-known', method: RequestMethod.ALL },
+      { path: '.well-known/{*path}', method: RequestMethod.ALL },
       // Exclude health check endpoints
-      { path: "health", method: RequestMethod.ALL },
-      { path: "health/{*path}", method: RequestMethod.ALL },
+      { path: 'health', method: RequestMethod.ALL },
+      { path: 'health/{*path}', method: RequestMethod.ALL },
     ],
-  });
+  })
 
   // Global exception filters (specific to general)
   // Order matters: most specific first, most general last
@@ -47,7 +47,7 @@ async function bootstrap() {
     app.get(ThrottlerExceptionFilter), // Rate limiting
     app.get(ProblemDetailsFilter), // HTTP exceptions
     app.get(AllExceptionsFilter), // Catch-all (most general)
-  );
+  )
 
   // Global interceptors (in execution order)
   app.useGlobalInterceptors(
@@ -70,20 +70,20 @@ async function bootstrap() {
 
     // 6. Response formatting (executed last)
     new TransformInterceptor(app.get(Reflector)),
-  );
+  )
 
   // Global validation pipe
-  app.useGlobalPipes(createValidationPipe());
+  app.useGlobalPipes(createValidationPipe())
 
-  await setupSwagger(app);
+  await setupSwagger(app)
 
-  const port = process.env.PORT ?? 3000;
-  await app.listen(port);
+  const port = process.env.PORT ?? 3000
+  await app.listen(port)
 
-  const logger = app.get(Logger);
-  const env = process.env.NODE_ENV ?? "development";
-  const nodeVersion = process.version;
-  const baseUrl = `http://localhost:${port}`;
+  const logger = app.get(Logger)
+  const env = process.env.NODE_ENV ?? 'development'
+  const nodeVersion = process.version
+  const baseUrl = `http://localhost:${port}`
 
   const startupMessage = `
 ┌─────────────────────────────────────────────────────┐
@@ -99,9 +99,9 @@ async function bootstrap() {
 │  - Swagger:    ${`${baseUrl}/swagger`.padEnd(35)}  │
 │  - YAML:       ${`${baseUrl}/openapi.yaml`.padEnd(35)}  │
 │  - Health:     ${`${baseUrl}/health`.padEnd(35)}  │
-└─────────────────────────────────────────────────────┘`;
+└─────────────────────────────────────────────────────┘`
 
-  logger.log(startupMessage);
+  logger.log(startupMessage)
 }
 
-await bootstrap();
+await bootstrap()
