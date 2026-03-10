@@ -34,7 +34,7 @@ export class UserRepositoryImpl implements UserRepository {
       })
       .returning();
 
-    return this.toEntity(result[0] as any);
+    return this.toEntity(result[0]!);
   }
 
   async findById(id: string): Promise<User | null> {
@@ -44,7 +44,7 @@ export class UserRepositoryImpl implements UserRepository {
       return null;
     }
 
-    return this.toEntity(result[0] as any);
+    return this.toEntity(result[0]!);
   }
 
   async setBanned(id: string, banned: boolean, reason?: string, expires?: Date): Promise<boolean> {

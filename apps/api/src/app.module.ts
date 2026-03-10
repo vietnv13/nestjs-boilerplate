@@ -9,6 +9,7 @@ import { createClsConfig } from "@/app/config/cls.config";
 import { validateEnv } from "@/app/config/env.schema";
 import { throttlerConfig } from "@/app/config/security.config";
 import { AllExceptionsFilter } from "@/app/filters/all-exceptions.filter";
+import { DomainExceptionFilter } from "@/app/filters/domain-exception.filter";
 import { ProblemDetailsFilter } from "@/app/filters/problem-details.filter";
 import { ThrottlerExceptionFilter } from "@/app/filters/throttler-exception.filter";
 import { HealthModule } from "@/app/health/health.module";
@@ -22,8 +23,11 @@ import { ETagMiddleware } from "@/app/middleware/etag.middleware";
 import { SwaggerDevController } from "@/app/swagger/swagger-dev.controller";
 import { AuthModule } from "@/modules/auth/auth.module";
 import { TodoModule } from "@/modules/todo/todo.module";
+import { UsersModule } from "@/modules/users/users.module";
+import { CacheModule } from "@/shared-kernel/infrastructure/cache/cache.module";
 import { DrizzleModule } from "@/shared-kernel/infrastructure/db/db.module";
 import { DomainEventsModule } from "@/shared-kernel/infrastructure/events/domain-events.module";
+import { EventsModule } from "@/shared-kernel/infrastructure/events/events.module";
 
 import type { NestModule, MiddlewareConsumer } from "@nestjs/common";
 
@@ -59,6 +63,10 @@ import type { NestModule, MiddlewareConsumer } from "@nestjs/common";
     DrizzleModule.forRoot(),
     // Domain events module: global domain event publisher
     DomainEventsModule,
+    // Events module: sagas and event store
+    EventsModule,
+    // Cache module: caching infrastructure
+    CacheModule,
     // Rate limiting module: prevent API abuse
     ThrottlerModule.forRoot([
       {
@@ -68,7 +76,8 @@ import type { NestModule, MiddlewareConsumer } from "@nestjs/common";
     ]),
     HealthModule, // Health check module
     // Business modules
-    TodoModule, // Todo module (anemic model example)
+    UsersModule, // User management module (CQRS example)
+    TodoModule, // Todo module (enhanced with events)
     AuthModule, // Auth module (authentication + DDD example)
   ],
   controllers: [
@@ -84,6 +93,7 @@ import type { NestModule, MiddlewareConsumer } from "@nestjs/common";
     // Exception filters (require ClsService injection)
     AllExceptionsFilter,
     ProblemDetailsFilter,
+    DomainExceptionFilter,
     ThrottlerExceptionFilter,
     // Interceptors (require ClsService injection)
     RequestContextInterceptor,

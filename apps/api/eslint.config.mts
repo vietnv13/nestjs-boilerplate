@@ -45,6 +45,19 @@ export default [
     },
   },
   {
+    // Test files live outside src/ so they cannot use @/ path aliases
+    files: ['test/**/*.ts'],
+    rules: {
+      'no-restricted-imports': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+  {
     files: ['src/modules/auth/**/*.ts'],
     rules: {
       'boundaries/element-types': [

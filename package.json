@@ -20,7 +20,7 @@
     "typescript": "^5.9.3"
   },
   "engines": {
-    "node": ">=22.18.0"
+    "node": ">=25.8.0"
   },
   "packageManager": "pnpm@10.25.0",
   "pnpm": {
@@ -34,9 +34,13 @@
       "@scarf/scarf",
       "@swc/core",
       "bcrypt",
+      "cpu-features",
       "esbuild",
+      "msgpackr-extract",
       "msw",
+      "protobufjs",
       "sharp",
+      "ssh2",
       "unrs-resolver"
     ]
   }

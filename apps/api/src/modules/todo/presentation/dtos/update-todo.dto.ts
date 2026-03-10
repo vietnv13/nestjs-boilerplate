@@ -1,3 +1,4 @@
+import { ApiPropertyOptional } from "@nestjs/swagger";
 import { IsBoolean, IsOptional, IsString, MaxLength } from "class-validator";
 
 /**
@@ -9,8 +10,12 @@ import { IsBoolean, IsOptional, IsString, MaxLength } from "class-validator";
 export class UpdateTodoDto {
   /**
    * Todo title
-   * @example Complete project documentation
    */
+  @ApiPropertyOptional({
+    description: "Todo title",
+    example: "Complete project documentation",
+    maxLength: 200,
+  })
   @IsString()
   @IsOptional()
   @MaxLength(200)
@@ -18,8 +23,12 @@ export class UpdateTodoDto {
 
   /**
    * Todo description
-   * @example Write API docs and architecture guide
    */
+  @ApiPropertyOptional({
+    description: "Todo description",
+    example: "Write API docs and architecture guide",
+    maxLength: 1000,
+  })
   @IsString()
   @IsOptional()
   @MaxLength(1000)
@@ -27,8 +36,11 @@ export class UpdateTodoDto {
 
   /**
    * Completed status
-   * @example true
    */
+  @ApiPropertyOptional({
+    description: "Completion status",
+    example: true,
+  })
   @IsBoolean()
   @IsOptional()
   isCompleted?: boolean;
