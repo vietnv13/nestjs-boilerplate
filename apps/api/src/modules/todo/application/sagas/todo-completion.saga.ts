@@ -1,24 +1,23 @@
 import { Injectable } from "@nestjs/common";
-import { type IEvent, Saga } from "@nestjs/cqrs";
+import { Saga } from "@nestjs/cqrs";
 import { Observable } from "rxjs";
-import { map, delay } from "rxjs/operators";
-import { BaseSaga } from "./base.saga";
+import { delay, map } from "rxjs/operators";
+
 import { TodoCompletedEvent } from "@/modules/todo/domain/events/todo.events";
+import { BaseSaga } from "@/shared-kernel/infrastructure/events/sagas/base.saga";
+
+import type { IEvent } from "@nestjs/cqrs";
 
 /**
  * Todo Completion Saga
  *
- * Orchestrates actions when a todo is completed:
- * 1. Update user statistics
- * 2. Check for achievements
- * 3. Send notification if needed
- *
- * This demonstrates saga pattern for business workflows
+ * Reacts to TodoCompletedEvent and orchestrates follow-up actions
+ * (update user statistics, check achievements, etc.).
  */
 @Injectable()
 export class TodoCompletionSaga extends BaseSaga {
   @Saga()
-  saga(events$: Observable<IEvent>): Observable<any> {
+  saga(events$: Observable<IEvent>): Observable<IEvent | null> {
     return this.filterEvents(events$, TodoCompletedEvent).pipe(
       delay(50),
       map((event: TodoCompletedEvent) => {
@@ -27,7 +26,6 @@ export class TodoCompletionSaga extends BaseSaga {
           eventType: event.eventType,
         });
 
-        // In production, these would be commands
         this.updateUserStatistics(event.todoId);
         this.checkAchievements(event.todoId);
 

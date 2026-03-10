@@ -13,8 +13,8 @@ import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 import { CreateTodoCommand } from "@/modules/todo/application/commands/create-todo.command";
-import { UpdateTodoCommand } from "@/modules/todo/application/commands/update-todo.command";
 import { DeleteTodoCommand } from "@/modules/todo/application/commands/delete-todo.command";
+import { UpdateTodoCommand } from "@/modules/todo/application/commands/update-todo.command";
 import { GetAllTodosQuery } from "@/modules/todo/application/queries/get-all-todos.query";
 import { GetTodoByIdQuery } from "@/modules/todo/application/queries/get-todo-by-id.query";
 import { CreateTodoDto } from "@/modules/todo/presentation/dtos/create-todo.dto";

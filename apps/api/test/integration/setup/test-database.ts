@@ -1,8 +1,10 @@
-import { PostgreSqlContainer, type StartedPostgreSqlContainer } from "@testcontainers/postgresql";
+import { PostgreSqlContainer } from "@testcontainers/postgresql";
+import * as schema from "@workspace/database/schemas";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Pool } from "pg";
-import * as schema from "@workspace/database/schemas";
+
+import type { StartedPostgreSqlContainer } from "@testcontainers/postgresql";
 
 export class TestDatabase {
   private container: StartedPostgreSqlContainer | null = null;

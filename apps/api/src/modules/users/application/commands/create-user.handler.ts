@@ -1,10 +1,15 @@
-import { CommandHandler, EventBus, type ICommandHandler } from "@nestjs/cqrs";
 import { Inject } from "@nestjs/common";
-import { CreateUserCommand } from "./create-user.command";
-import { USER_REPOSITORY, type UserRepository } from "../ports/user.repository.port";
-import { UserCreatedEvent } from "../../domain/events/user.events";
+import { CommandHandler, EventBus } from "@nestjs/cqrs";
+
+import { USER_REPOSITORY } from "@/modules/users/application/ports/user.repository.port";
+import { UserCreatedEvent } from "@/modules/users/domain/events/user.events";
 import { UserAlreadyExistsException } from "@/shared-kernel/domain/exceptions";
-import type { User } from "../../domain/user.entity";
+
+import { CreateUserCommand } from "./create-user.command";
+
+import type { UserRepository } from "@/modules/users/application/ports/user.repository.port";
+import type { User } from "@/modules/users/domain/user.entity";
+import type { ICommandHandler } from "@nestjs/cqrs";
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand, User> {

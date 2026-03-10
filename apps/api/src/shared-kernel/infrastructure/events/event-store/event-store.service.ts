@@ -1,6 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
+
+import type { EventFilter, StoredEvent } from "./event-store.types";
 import type { IEvent } from "@nestjs/cqrs";
-import type { StoredEvent, EventFilter } from "./event-store.types";
 
 /**
  * Event Store Service
@@ -18,7 +19,7 @@ export class EventStoreService {
   private events: StoredEvent[] = [];
   private eventVersion = 0;
 
-  async store(event: IEvent, aggregateId: string, userId?: string): Promise<StoredEvent> {
+  store(event: IEvent, aggregateId: string, userId?: string): StoredEvent {
     const storedEvent: StoredEvent = {
       id: crypto.randomUUID(),
       aggregateId,
@@ -41,11 +42,11 @@ export class EventStoreService {
     return storedEvent;
   }
 
-  async getEventsForAggregate(aggregateId: string): Promise<StoredEvent[]> {
+  getEventsForAggregate(aggregateId: string): StoredEvent[] {
     return this.events.filter((e) => e.aggregateId === aggregateId);
   }
 
-  async getEvents(filter: EventFilter = {}): Promise<StoredEvent[]> {
+  getEvents(filter: EventFilter = {}): StoredEvent[] {
     let filtered = [...this.events];
 
     if (filter.aggregateId) filtered = filtered.filter((e) => e.aggregateId === filter.aggregateId);
@@ -57,18 +58,18 @@ export class EventStoreService {
     return filtered;
   }
 
-  async replayEvents(aggregateId: string): Promise<IEvent[]> {
-    const events = await this.getEventsForAggregate(aggregateId);
+  replayEvents(aggregateId: string): IEvent[] {
+    const events = this.getEventsForAggregate(aggregateId);
     this.logger.debug(`Replaying ${events.length} events for aggregate ${aggregateId}`);
-    return events.map((e) => e.eventData);
+    return events.map((e) => e.eventData as IEvent);
   }
 
-  async getEventCount(filter: EventFilter = {}): Promise<number> {
-    return (await this.getEvents(filter)).length;
+  getEventCount(filter: EventFilter = {}): number {
+    return this.getEvents(filter).length;
   }
 
   /** Clear all events — intended for testing only */
-  async clear(): Promise<void> {
+  clear(): void {
     this.events = [];
     this.eventVersion = 0;
     this.logger.debug("Cleared all events");

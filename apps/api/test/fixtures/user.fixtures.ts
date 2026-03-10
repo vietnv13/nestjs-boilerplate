@@ -1,4 +1,5 @@
 import { usersTable } from "@workspace/database/schemas/auth";
+
 import type { DrizzleDb } from "@/shared-kernel/infrastructure/db/db.port";
 
 export interface CreateUserFixture {

@@ -12,13 +12,18 @@ import {
 } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { CreateUserDto, UpdateUserDto, UserResponseDto } from "../dtos/user.dto";
-import { CreateUserCommand } from "../../application/commands/create-user.command";
-import { UpdateUserCommand } from "../../application/commands/update-user.command";
-import { DeleteUserCommand } from "../../application/commands/delete-user.command";
-import { GetUserByIdQuery } from "../../application/queries/get-user-by-id.query";
-import { GetUserByEmailQuery } from "../../application/queries/get-user-by-email.query";
-import { GetAllUsersQuery } from "../../application/queries/get-all-users.query";
+
+import { CreateUserCommand } from "@/modules/users/application/commands/create-user.command";
+import { DeleteUserCommand } from "@/modules/users/application/commands/delete-user.command";
+import { UpdateUserCommand } from "@/modules/users/application/commands/update-user.command";
+import { GetAllUsersQuery } from "@/modules/users/application/queries/get-all-users.query";
+import { GetUserByEmailQuery } from "@/modules/users/application/queries/get-user-by-email.query";
+import { GetUserByIdQuery } from "@/modules/users/application/queries/get-user-by-id.query";
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  UserResponseDto,
+} from "@/modules/users/presentation/dtos/user.dto";
 
 @ApiTags("users")
 @Controller("users")

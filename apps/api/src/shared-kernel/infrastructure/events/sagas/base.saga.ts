@@ -1,5 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { EventBus, type IEvent, ofType } from "@nestjs/cqrs";
+import { EventBus, ofType } from "@nestjs/cqrs";
+
+import type { IEvent } from "@nestjs/cqrs";
 import type { Observable } from "rxjs";
 
 /**
@@ -16,12 +18,13 @@ export abstract class BaseSaga {
 
   constructor(protected readonly eventBus: EventBus) {}
 
-  abstract saga(events$: Observable<IEvent>): Observable<any>;
+  abstract saga(events$: Observable<IEvent>): Observable<IEvent | null>;
 
   /** Filter the event stream to a specific event type */
   protected filterEvents<T extends IEvent>(
     events$: Observable<IEvent>,
-    ...eventTypes: Array<new (...args: any[]) => T>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ...eventTypes: (new (...args: any[]) => T)[]
   ): Observable<T> {
     return events$.pipe(ofType(...eventTypes));
   }

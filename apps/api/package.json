@@ -90,5 +90,8 @@
     "unplugin-swc": "^1.5.9",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.15"
+  },
+  "engines": {
+    "node": ">=25.8.0"
   }
 }

@@ -1,11 +1,14 @@
-import { QueryHandler } from "@nestjs/cqrs";
-import type { IQueryHandler } from "@nestjs/cqrs";
 import { Inject } from "@nestjs/common";
-import { GetTodoByIdQuery } from "./get-todo-by-id.query";
-import { TODO_REPOSITORY } from "../ports/todo.repository.port";
-import type { TodoRepository } from "../ports/todo.repository.port";
-import type { Todo } from "@workspace/database";
+import { QueryHandler } from "@nestjs/cqrs";
+
+import { TODO_REPOSITORY } from "@/modules/todo/application/ports/todo.repository.port";
 import { NotFoundException } from "@/shared-kernel/domain/exceptions";
+
+import { GetTodoByIdQuery } from "./get-todo-by-id.query";
+
+import type { TodoRepository } from "@/modules/todo/application/ports/todo.repository.port";
+import type { IQueryHandler } from "@nestjs/cqrs";
+import type { Todo } from "@workspace/database";
 
 @QueryHandler(GetTodoByIdQuery)
 export class GetTodoByIdHandler implements IQueryHandler<GetTodoByIdQuery, Todo> {

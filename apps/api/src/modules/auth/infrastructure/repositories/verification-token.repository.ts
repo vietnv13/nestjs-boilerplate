@@ -55,7 +55,7 @@ export class VerificationTokenRepositoryImpl implements VerificationTokenReposit
       return null;
     }
 
-    return this.toEntity(result[0] as any);
+    return this.toEntity(result[0]!);
   }
 
   async findByIdentifier(identifier: string): Promise<VerificationToken | null> {
@@ -69,7 +69,7 @@ export class VerificationTokenRepositoryImpl implements VerificationTokenReposit
       return null;
     }
 
-    return this.toEntity(result[0] as any);
+    return this.toEntity(result[0]!);
   }
 
   async delete(id: string): Promise<boolean> {

@@ -1,11 +1,16 @@
 import { Injectable, Inject } from "@nestjs/common";
-import { eq } from "drizzle-orm";
 import { usersTable } from "@workspace/database";
-import { DB_TOKEN, type DrizzleDb } from "@/shared-kernel/infrastructure/db/db.port";
-import type { UserRepository } from "../../application/ports/user.repository.port";
-import type { User, CreateUserData, UpdateUserData } from "../../domain/user.entity";
-import { CacheService } from "@/shared-kernel/infrastructure/cache/cache.service";
+import { eq } from "drizzle-orm";
+
 import { CacheKeyGenerator } from "@/shared-kernel/infrastructure/cache/cache-key.generator";
+import { CacheService } from "@/shared-kernel/infrastructure/cache/cache.service";
+import { DB_TOKEN } from "@/shared-kernel/infrastructure/db/db.port";
+
+import type { UserRepository } from "@/modules/users/application/ports/user.repository.port";
+import type { User, CreateUserData, UpdateUserData } from "@/modules/users/domain/user.entity";
+import type { DrizzleDb } from "@/shared-kernel/infrastructure/db/db.port";
+
+type UserRow = typeof usersTable.$inferSelect;
 
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {
@@ -16,7 +21,7 @@ export class UserRepositoryImpl implements UserRepository {
   ) {}
 
   async create(data: CreateUserData): Promise<User> {
-    const [user] = await this.db
+    const rows = await this.db
       .insert(usersTable)
       .values({
         id: crypto.randomUUID(),
@@ -30,44 +35,27 @@ export class UserRepositoryImpl implements UserRepository {
       })
       .returning();
 
-    const entity = this.toEntity(user as any);
-
-    // Cache the new user
+    const entity = this.toEntity(rows[0]!);
     await this.cacheUser(entity);
-
     return entity;
   }
 
   async findById(id: string): Promise<User | null> {
-    const cacheKey = CacheKeyGenerator.user(id);
-
-    return this.cacheService.getOrSet(cacheKey, async () => {
+    return this.cacheService.getOrSet(CacheKeyGenerator.user(id), async () => {
       const result = await this.db.select().from(usersTable).where(eq(usersTable.id, id));
-
-      if (result.length === 0) {
-        return null;
-      }
-
-      return this.toEntity(result[0] as any);
+      return result.length === 0 ? null : this.toEntity(result[0]!);
     });
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    const cacheKey = CacheKeyGenerator.userByEmail(email);
+    const user = await this.cacheService.getOrSet(
+      CacheKeyGenerator.userByEmail(email),
+      async () => {
+        const result = await this.db.select().from(usersTable).where(eq(usersTable.email, email));
+        return result.length === 0 ? null : this.toEntity(result[0]!);
+      },
+    );
 
-    const user = await this.cacheService.getOrSet(cacheKey, async () => {
-      const result = await this.db.select().from(usersTable).where(eq(usersTable.email, email));
-
-      if (result.length === 0) {
-        // Return null if not found (cache service handles null/undefined differently depending on implementation basic cache manager might not cache undefined)
-        // In our wrapper case, we return what factory returns
-        return null;
-      }
-
-      return this.toEntity(result[0] as any);
-    });
-
-    // Also cache by ID if found via email
     if (user) {
       await this.cacheService.set(CacheKeyGenerator.user(user.id), user);
     }
@@ -76,31 +64,21 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async update(id: string, data: UpdateUserData): Promise<User | null> {
-    const [updated] = await this.db
+    const rows = await this.db
       .update(usersTable)
-      .set({
-        ...data,
-        updatedAt: new Date(),
-      })
+      .set({ ...data, updatedAt: new Date() })
       .where(eq(usersTable.id, id))
       .returning();
 
-    if (!updated) {
-      return null;
-    }
+    if (rows.length === 0) return null;
 
-    const entity = this.toEntity(updated as any);
-
-    // Update cache
+    const entity = this.toEntity(rows[0]!);
     await this.cacheUser(entity);
-
     return entity;
   }
 
   async delete(id: string): Promise<boolean> {
-    // Get user first to invalidate email cache
     const user = await this.findById(id);
-
     const result = await this.db.delete(usersTable).where(eq(usersTable.id, id)).returning();
     const deleted = result.length > 0;
 
@@ -113,16 +91,12 @@ export class UserRepositoryImpl implements UserRepository {
 
   async findAll(limit: number = 10, offset: number = 0): Promise<User[]> {
     const results = await this.db.select().from(usersTable).limit(limit).offset(offset);
-
-    return results.map((r) => this.toEntity(r as any));
+    return results.map((r) => this.toEntity(r));
   }
 
   async existsByEmail(email: string): Promise<boolean> {
-    // Check cache first
-    const cachedUser = await this.cacheService.get<User>(CacheKeyGenerator.userByEmail(email));
-    if (cachedUser) {
-      return true;
-    }
+    const cached = await this.cacheService.get<User>(CacheKeyGenerator.userByEmail(email));
+    if (cached) return true;
 
     const result = await this.db
       .select({ id: usersTable.id })
@@ -132,15 +106,15 @@ export class UserRepositoryImpl implements UserRepository {
     return result.length > 0;
   }
 
-  private toEntity(row: any): User {
+  private toEntity(row: UserRow): User {
     return {
       id: row.id,
       email: row.email,
       name: row.name,
-      role: row.role,
+      role: (row.role ?? "user") as "user" | "admin",
       emailVerified: row.emailVerified,
       image: row.image,
-      banned: row.banned,
+      banned: row.banned ?? false,
       banReason: row.banReason,
       banExpires: row.banExpires,
       createdAt: row.createdAt,

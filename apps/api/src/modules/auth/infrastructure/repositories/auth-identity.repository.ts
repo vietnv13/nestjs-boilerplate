@@ -58,7 +58,7 @@ export class AuthIdentityRepositoryImpl implements AuthIdentityRepository {
       return null;
     }
 
-    return this.toDomain(result[0] as any);
+    return this.toDomain(result[0]!);
   }
 
   async findByUserId(userId: string): Promise<AuthIdentity[]> {
@@ -84,7 +84,7 @@ export class AuthIdentityRepositoryImpl implements AuthIdentityRepository {
       return null;
     }
 
-    return this.toDomain(result[0] as any);
+    return this.toDomain(result[0]!);
   }
 
   async findByProviderAndIdentifier(
@@ -106,7 +106,7 @@ export class AuthIdentityRepositoryImpl implements AuthIdentityRepository {
       return null;
     }
 
-    return this.toDomain(result[0] as any);
+    return this.toDomain(result[0]!);
   }
 
   async findByIdentifier(accountId: string): Promise<AuthIdentity | null> {
@@ -120,7 +120,7 @@ export class AuthIdentityRepositoryImpl implements AuthIdentityRepository {
       return null;
     }
 
-    return this.toDomain(result[0] as any);
+    return this.toDomain(result[0]!);
   }
 
   async existsByIdentifier(accountId: string): Promise<boolean> {

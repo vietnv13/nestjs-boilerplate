@@ -51,7 +51,7 @@ export class AuthSessionRepositoryImpl implements AuthSessionRepository {
       return null;
     }
 
-    return this.toDomain(result[0] as any);
+    return this.toDomain(result[0]!);
   }
 
   async findByToken(token: string): Promise<AuthSession | null> {
@@ -65,7 +65,7 @@ export class AuthSessionRepositoryImpl implements AuthSessionRepository {
       return null;
     }
 
-    return this.toDomain(result[0] as any);
+    return this.toDomain(result[0]!);
   }
 
   async findActiveByUserId(userId: string): Promise<AuthSession[]> {

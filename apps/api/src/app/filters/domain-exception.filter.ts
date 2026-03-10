@@ -1,9 +1,11 @@
-import { Catch, Logger, type ArgumentsHost } from "@nestjs/common";
+import { Catch, Logger } from "@nestjs/common";
 import { ClsService } from "nestjs-cls";
-import type { ExceptionFilter } from "@nestjs/common";
-import type { Response, Request } from "express";
+
 import { DomainException } from "@/shared-kernel/domain/exceptions/domain.exception";
+
 import type { ProblemDetailsDto } from "@/shared-kernel/infrastructure/dtos/problem-details.dto";
+import type { ArgumentsHost, ExceptionFilter } from "@nestjs/common";
+import type { Response, Request } from "express";
 
 /**
  * Domain Exception Filter
@@ -61,7 +63,7 @@ export class DomainExceptionFilter implements ExceptionFilter {
    */
   private getTypeUri(code: string): string {
     const baseUrl = process.env.API_BASE_URL ?? "https://api.example.com";
-    const errorType = code.toLowerCase().replace(/_/g, "-");
+    const errorType = code.toLowerCase().replaceAll("_", "-");
     return `${baseUrl}/errors/${errorType}`;
   }
 

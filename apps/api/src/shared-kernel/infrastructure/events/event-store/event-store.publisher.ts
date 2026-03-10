@@ -1,7 +1,10 @@
-import { Injectable, Logger, type OnModuleInit } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { EventBus } from "@nestjs/cqrs";
-import type { IEvent } from "@nestjs/cqrs";
+
 import { EventStoreService } from "./event-store.service";
+
+import type { OnModuleInit } from "@nestjs/common";
+import type { IEvent } from "@nestjs/cqrs";
 
 /**
  * Event Store Publisher
@@ -24,10 +27,11 @@ export class EventStorePublisher implements OnModuleInit {
     });
   }
 
-  private async storeEvent(event: IEvent): Promise<void> {
+  private storeEvent(event: IEvent): void {
     try {
-      const aggregateId = (event as any).aggregateId ?? (event as any).userId ?? "unknown";
-      await this.eventStore.store(event, aggregateId);
+      const record = event as Record<string, unknown>;
+      const aggregateId = (record.aggregateId ?? record.userId ?? "unknown") as string;
+      this.eventStore.store(event, aggregateId);
     } catch (error) {
       this.logger.error("Failed to store event", { eventType: event.constructor.name, error });
     }

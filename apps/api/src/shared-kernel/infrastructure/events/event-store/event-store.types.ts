@@ -2,7 +2,7 @@ export interface StoredEvent {
   id: string;
   aggregateId: string;
   eventType: string;
-  eventData: any;
+  eventData: unknown;
   metadata: {
     timestamp: Date;
     version: number;

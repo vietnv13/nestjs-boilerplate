@@ -1,9 +1,12 @@
-import { QueryHandler } from "@nestjs/cqrs";
-import type { IQueryHandler } from "@nestjs/cqrs";
 import { Inject } from "@nestjs/common";
+import { QueryHandler } from "@nestjs/cqrs";
+
+import { TODO_REPOSITORY } from "@/modules/todo/application/ports/todo.repository.port";
+
 import { GetAllTodosQuery } from "./get-all-todos.query";
-import { TODO_REPOSITORY } from "../ports/todo.repository.port";
-import type { TodoRepository } from "../ports/todo.repository.port";
+
+import type { TodoRepository } from "@/modules/todo/application/ports/todo.repository.port";
+import type { IQueryHandler } from "@nestjs/cqrs";
 import type { Todo } from "@workspace/database";
 
 @QueryHandler(GetAllTodosQuery)

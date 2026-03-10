@@ -1,10 +1,12 @@
 import { describe, it, expect, beforeEach } from "vitest";
+
+import { UserRepositoryImpl } from "@/shared-kernel/infrastructure/repositories/user.repository";
+
+import { UserFixtures } from "../../fixtures/user.fixtures";
 import { testDb } from "../setup/test-database";
 import { TestModuleBuilder } from "../setup/test-module";
-import { UserRepositoryImpl } from "@/shared-kernel/infrastructure/repositories/user.repository";
-import { UserFixtures } from "../../fixtures/user.fixtures";
 
-describe("UserRepository Integration Tests", () => {
+describe("userRepository Integration Tests", () => {
   let userRepository: UserRepositoryImpl;
   let fixtures: UserFixtures;
 

@@ -1,23 +1,23 @@
 import { Module } from "@nestjs/common";
 import { CqrsModule } from "@nestjs/cqrs";
-import { UserRegistrationSaga } from "./sagas/user-registration.saga";
-import { TodoCompletionSaga } from "./sagas/todo-completion.saga";
-import { EventStoreService } from "./event-store/event-store.service";
-import { EventStorePublisher } from "./event-store/event-store.publisher";
 
-const Sagas = [UserRegistrationSaga, TodoCompletionSaga];
+import { EventStorePublisher } from "./event-store/event-store.publisher";
+import { EventStoreService } from "./event-store/event-store.service";
 
 /**
  * Events Module
  *
- * Provides domain event infrastructure:
- * - Sagas for complex workflows
- * - Event store for event sourcing
- * - Event replay capabilities
+ * Provides shared event-sourcing infrastructure:
+ * - EventStoreService: in-memory event store (swap for persistent backend in production)
+ * - EventStorePublisher: subscribes to EventBus and persists every event
+ *
+ * Module-specific sagas live in their own bounded context:
+ * - TodoCompletionSaga → modules/todo/application/sagas/
+ * - UserRegistrationSaga → modules/users/application/sagas/
  */
 @Module({
   imports: [CqrsModule],
-  providers: [...Sagas, EventStoreService, EventStorePublisher],
+  providers: [EventStoreService, EventStorePublisher],
   exports: [EventStoreService],
 })
 export class EventsModule {}

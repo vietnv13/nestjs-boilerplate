@@ -1,5 +1,5 @@
-import { IsBoolean, IsOptional, IsString, MaxLength } from "class-validator";
 import { ApiPropertyOptional } from "@nestjs/swagger";
+import { IsBoolean, IsOptional, IsString, MaxLength } from "class-validator";
 
 /**
  * Update Todo DTO

@@ -1,9 +1,14 @@
-import { CommandHandler, EventBus, type ICommandHandler } from "@nestjs/cqrs";
 import { Inject } from "@nestjs/common";
-import { DeleteUserCommand } from "./delete-user.command";
-import { USER_REPOSITORY, type UserRepository } from "../ports/user.repository.port";
-import { UserDeletedEvent } from "../../domain/events/user.events";
+import { CommandHandler, EventBus } from "@nestjs/cqrs";
+
+import { USER_REPOSITORY } from "@/modules/users/application/ports/user.repository.port";
+import { UserDeletedEvent } from "@/modules/users/domain/events/user.events";
 import { UserNotFoundException } from "@/shared-kernel/domain/exceptions";
+
+import { DeleteUserCommand } from "./delete-user.command";
+
+import type { UserRepository } from "@/modules/users/application/ports/user.repository.port";
+import type { ICommandHandler } from "@nestjs/cqrs";
 
 @CommandHandler(DeleteUserCommand)
 export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand, void> {

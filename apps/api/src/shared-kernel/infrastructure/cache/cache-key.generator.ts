@@ -3,12 +3,12 @@
  *
  * Centralized cache key management to avoid key collisions
  */
-export class CacheKeyGenerator {
-  static user(id: string): string {
+export const CacheKeyGenerator = {
+  user(id: string): string {
     return `user:${id}`;
-  }
+  },
 
-  static userByEmail(email: string): string {
+  userByEmail(email: string): string {
     return `user:email:${email}`;
-  }
-}
+  },
+};

@@ -4,7 +4,7 @@ export class BusinessRuleException extends DomainException {
   constructor(
     message: string,
     code: string = "BUSINESS_RULE_VIOLATION",
-    metadata?: Record<string, any>,
+    metadata?: Record<string, unknown>,
   ) {
     super(message, code, 422, metadata);
   }

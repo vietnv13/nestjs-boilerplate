@@ -46,7 +46,7 @@ export class ProblemDetailsDto {
   code?: string;
 
   @ApiPropertyOptional()
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 
   @ApiPropertyOptional({ type: [FieldError] })
   errors?: FieldError[];

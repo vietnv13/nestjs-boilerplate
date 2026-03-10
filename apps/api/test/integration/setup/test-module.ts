@@ -1,16 +1,16 @@
-import type { TestingModule } from "@nestjs/testing";
-import { Test } from "@nestjs/testing";
 import { ConfigModule } from "@nestjs/config";
 import { EventEmitterModule } from "@nestjs/event-emitter";
+import { Test } from "@nestjs/testing";
 import { ClsModule } from "nestjs-cls";
-import { testDb } from "./test-database";
+
 import { DB_TOKEN } from "@/shared-kernel/infrastructure/db/db.port";
 
-export class TestModuleBuilder {
-  static async createTestingModule(
-    imports: any[] = [],
-    providers: any[] = [],
-  ): Promise<TestingModule> {
+import { testDb } from "./test-database";
+
+import type { TestingModule } from "@nestjs/testing";
+
+export const TestModuleBuilder = {
+  async createTestingModule(imports: any[] = [], providers: any[] = []): Promise<TestingModule> {
     return Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
@@ -38,5 +38,5 @@ export class TestModuleBuilder {
         ...providers,
       ],
     }).compile();
-  }
-}
+  },
+};

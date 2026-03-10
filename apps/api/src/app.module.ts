@@ -24,10 +24,10 @@ import { SwaggerDevController } from "@/app/swagger/swagger-dev.controller";
 import { AuthModule } from "@/modules/auth/auth.module";
 import { TodoModule } from "@/modules/todo/todo.module";
 import { UsersModule } from "@/modules/users/users.module";
+import { CacheModule } from "@/shared-kernel/infrastructure/cache/cache.module";
 import { DrizzleModule } from "@/shared-kernel/infrastructure/db/db.module";
 import { DomainEventsModule } from "@/shared-kernel/infrastructure/events/domain-events.module";
 import { EventsModule } from "@/shared-kernel/infrastructure/events/events.module";
-import { CacheModule } from "@/shared-kernel/infrastructure/cache/cache.module";
 
 import type { NestModule, MiddlewareConsumer } from "@nestjs/common";
 
