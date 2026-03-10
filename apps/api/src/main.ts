@@ -6,6 +6,7 @@ import { corsConfig } from "@/app/config/security.config";
 import { setupSwagger } from "@/app/config/swagger.config";
 import { createValidationPipe } from "@/app/config/validation.config";
 import { AllExceptionsFilter } from "@/app/filters/all-exceptions.filter";
+import { DomainExceptionFilter } from "@/app/filters/domain-exception.filter";
 import { ProblemDetailsFilter } from "@/app/filters/problem-details.filter";
 import { ThrottlerExceptionFilter } from "@/app/filters/throttler-exception.filter";
 import { CorrelationIdInterceptor } from "@/app/interceptors/correlation-id.interceptor";
@@ -21,16 +22,13 @@ import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    bufferLogs: true, // Buffer logs until Logger is ready
+    bufferLogs: true,
   });
 
-  // Use nestjs-pino Logger
   app.useLogger(app.get(Logger));
 
-  // CORS config
   app.enableCors(corsConfig);
 
-  // Global route prefix
   app.setGlobalPrefix("api", {
     exclude: [
       // Exclude Swagger dev credentials endpoint
@@ -43,10 +41,12 @@ async function bootstrap() {
   });
 
   // Global exception filters (specific to general)
+  // Order matters: most specific first, most general last
   app.useGlobalFilters(
-    app.get(ThrottlerExceptionFilter),
-    app.get(ProblemDetailsFilter),
-    app.get(AllExceptionsFilter),
+    app.get(DomainExceptionFilter), // Domain exceptions (most specific)
+    app.get(ThrottlerExceptionFilter), // Rate limiting
+    app.get(ProblemDetailsFilter), // HTTP exceptions
+    app.get(AllExceptionsFilter), // Catch-all (most general)
   );
 
   // Global interceptors (in execution order)
@@ -75,7 +75,6 @@ async function bootstrap() {
   // Global validation pipe
   app.useGlobalPipes(createValidationPipe());
 
-  // Swagger docs
   await setupSwagger(app);
 
   const port = process.env.PORT ?? 3000;
