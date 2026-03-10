@@ -13,7 +13,7 @@ import { EventStoreService } from './event-store/event-store.service'
  *
  * Module-specific sagas live in their own bounded context:
  * - TodoCompletionSaga → modules/todo/application/sagas/
- * - UserRegistrationSaga → modules/users/application/sagas/
+ * - UserRegistrationSaga → modules/user/application/sagas/
  */
 @Module({
   imports: [CqrsModule],

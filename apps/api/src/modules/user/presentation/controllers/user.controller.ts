@@ -13,21 +13,21 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'
 
-import { CreateUserCommand } from '@/modules/users/application/commands/create-user.command'
-import { DeleteUserCommand } from '@/modules/users/application/commands/delete-user.command'
-import { UpdateUserCommand } from '@/modules/users/application/commands/update-user.command'
-import { GetAllUsersQuery } from '@/modules/users/application/queries/get-all-users.query'
-import { GetUserByEmailQuery } from '@/modules/users/application/queries/get-user-by-email.query'
-import { GetUserByIdQuery } from '@/modules/users/application/queries/get-user-by-id.query'
+import { CreateUserCommand } from '@/modules/user/application/commands/create-user.command'
+import { DeleteUserCommand } from '@/modules/user/application/commands/delete-user.command'
+import { UpdateUserCommand } from '@/modules/user/application/commands/update-user.command'
+import { GetAllUsersQuery } from '@/modules/user/application/queries/get-all-users.query'
+import { GetUserByEmailQuery } from '@/modules/user/application/queries/get-user-by-email.query'
+import { GetUserByIdQuery } from '@/modules/user/application/queries/get-user-by-id.query'
 import {
   CreateUserDto,
   UpdateUserDto,
   UserResponseDto,
-} from '@/modules/users/presentation/dtos/user.dto'
+} from '@/modules/user/presentation/dtos/user.dto'
 
 @ApiTags('users')
 @Controller('users')
-export class UsersController {
+export class UserController {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,

@@ -71,7 +71,7 @@ Test multiple components working together with a real database.
 import { describe, it, expect, beforeEach } from 'vitest'
 import { testDb } from '../setup/test-database'
 import { TestModuleBuilder } from '../setup/test-module'
-import { UserRepositoryImpl } from '@/modules/users/infrastructure/repositories/user.repository'
+import { UserRepositoryImpl } from '@/modules/user/infrastructure/repositories/user.repository'
 
 describe('UserRepository Integration Tests', () => {
   let userRepository: UserRepositoryImpl

@@ -3,7 +3,7 @@ import { Saga } from '@nestjs/cqrs'
 import { Observable } from 'rxjs'
 import { delay, map } from 'rxjs/operators'
 
-import { UserCreatedEvent } from '@/modules/users/domain/events/user.events'
+import { UserCreatedEvent } from '@/modules/user/domain/events/user.events'
 import { BaseSaga } from '@/shared-kernel/infrastructure/events/sagas/base.saga'
 
 import type { IEvent } from '@nestjs/cqrs'

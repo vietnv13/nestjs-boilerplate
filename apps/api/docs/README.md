@@ -31,7 +31,7 @@ pnpm --filter api test:integration
 
 ## Key Concepts
 
-- **CQRS** — `todo` and `users` modules split reads/writes into Query/Command handlers
+- **CQRS** — `todo` and `user` modules split reads/writes into Query/Command handlers
 - **DDD** — domain layer is pure TypeScript with no NestJS or Drizzle imports
 - **Application Service** — `auth` uses `AuthService` for complex multi-aggregate workflows
 - **RFC 9457 Problem Details** — all errors return `application/problem+json`
@@ -45,7 +45,7 @@ pnpm --filter api test:integration
 | -------- | ------------ | ------------------------------------------ |
 | `auth`   | `/api/auth`  | Register, login, refresh, logout, sessions |
 | `todos`  | `/api/todos` | CRUD for todos                             |
-| `users`  | `/api/users` | CRUD for users                             |
+| `user`   | `/api/users` | CRUD for users                             |
 | `health` | `/health`    | Liveness / readiness                       |
 
 Interactive API reference: `http://localhost:3000/docs` (Scalar)

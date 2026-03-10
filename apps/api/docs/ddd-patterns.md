@@ -9,7 +9,7 @@ In this codebase, entities are typed as plain TypeScript interfaces backed by th
 schema types from `@workspace/database`.
 
 ```typescript
-// modules/users/domain/user.entity.ts
+// modules/user/domain/user.entity.ts
 export interface User {
   id: string
   email: string
@@ -118,7 +118,7 @@ export class TodoRepositoryImpl implements TodoRepository { … }
 
 ## CQRS Pattern
 
-Used by `todo` and `users` modules. **Commands** mutate state; **Queries** read state.
+Used by `todo` and `user` modules. **Commands** mutate state; **Queries** read state.
 Controllers never contain business logic — they only construct and dispatch.
 
 ```typescript
@@ -202,7 +202,7 @@ Each module is a bounded context with an **anti-corruption layer** at its bounda
 
 ```
 ┌──────────────────┐    domain events     ┌──────────────────┐
-│   auth context   │ ──────────────────► │  users context   │
+│   auth context   │ ──────────────────► │  user context   │
 │                  │                      │                  │
 │  AuthIdentity    │    shared kernel     │  User entity     │
 │  AuthSession     │ ◄──────────────────  │  UserRepository  │
@@ -210,7 +210,7 @@ Each module is a bounded context with an **anti-corruption layer** at its bounda
 ```
 
 The `auth` module accesses user data through the **shared-kernel `UserRepository` port**,
-not the users module's port. This prevents a circular dependency and keeps auth's user
+not the user module's port. This prevents a circular dependency and keeps auth's user
 concept minimal (id, name, email, role, banned).
 
 ---

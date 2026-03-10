@@ -23,7 +23,7 @@ import { ETagMiddleware } from '@/app/middleware/etag.middleware'
 import { SwaggerDevController } from '@/app/swagger/swagger-dev.controller'
 import { AuthModule } from '@/modules/auth/auth.module'
 import { TodoModule } from '@/modules/todo/todo.module'
-import { UsersModule } from '@/modules/users/users.module'
+import { UserModule } from '@/modules/user/user.module'
 import { CacheModule } from '@/shared-kernel/infrastructure/cache/cache.module'
 import { DrizzleModule } from '@/shared-kernel/infrastructure/db/db.module'
 import { DomainEventsModule } from '@/shared-kernel/infrastructure/events/domain-events.module'
@@ -76,7 +76,7 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
     ]),
     HealthModule, // Health check module
     // Business modules
-    UsersModule, // User management module (CQRS example)
+    UserModule, // User management module (CQRS example)
     TodoModule, // Todo module (enhanced with events)
     AuthModule, // Auth module (authentication + DDD example)
   ],

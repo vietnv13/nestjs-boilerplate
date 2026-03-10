@@ -35,7 +35,7 @@ src/
 ├── modules/                     # Business bounded contexts
 │   ├── auth/                    # Authentication (AuthService + Passport JWT)
 │   ├── todo/                    # Todo management (CQRS)
-│   └── users/                   # User management (CQRS)
+│   └── user/                    # User management (CQRS)
 │
 └── shared-kernel/               # Shared primitives (no business logic)
     ├── application/ports/       # Cross-module repository contracts
@@ -98,7 +98,7 @@ coordination that is cleaner expressed as a single service.
 5. Issues access JWT + refresh JWT; persists `AuthSession` via `AuthSessionRepository`.
 6. Returns `{ user, accessToken, refreshToken }`.
 
-### `users` — User Management (CQRS)
+### `user` — User Management (CQRS)
 
 Full CQRS pattern. Controllers dispatch commands/queries through `CommandBus`/`QueryBus`.
 The repository implementation includes Redis caching for reads.
@@ -113,7 +113,7 @@ Domain events published by handlers: `UserCreatedEvent`, `UserUpdatedEvent`, `Us
 
 ### `todo` — Todo Management (CQRS)
 
-Same CQRS pattern as users. No caching at the repository layer (todos change frequently).
+Same CQRS pattern as user. No caching at the repository layer (todos change frequently).
 
 | Commands            | Queries            |
 | ------------------- | ------------------ |
@@ -161,7 +161,7 @@ Cross-module repository contracts used by the auth module to access core user da
 
 ---
 
-## CQRS Pattern (Todo & Users)
+## CQRS Pattern (Todo & User)
 
 ```
 HTTP Request
@@ -191,7 +191,7 @@ Two complementary mechanisms coexist:
 
 ### 1. CQRS `EventBus` (`@nestjs/cqrs`)
 
-Used by `Todo` and `Users` handlers. Events dispatched with:
+Used by `Todo` and `User` handlers. Events dispatched with:
 
 ```typescript
 this.eventBus.publish(new UserCreatedEvent(user.id, user.email, user.name))
