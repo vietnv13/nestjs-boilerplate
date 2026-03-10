@@ -2,8 +2,9 @@ import { composeConfig } from './src/index'
 
 import type { Linter } from 'eslint'
 
-const config: Linter.Config [] = composeConfig({
+const config: Linter.Config[] = composeConfig({
   typescript: { tsconfigRootDir: import.meta.dirname },
   imports: { typescript: true },
+  prettier: true,
 })
 export default config

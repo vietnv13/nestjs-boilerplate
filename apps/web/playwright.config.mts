@@ -7,7 +7,10 @@ config({ path: '.env.e2e' })
 
 const e2eEnvSchema = z.object({
   BASE_URL: z.string().url().default('http://localhost:3000'),
-  USE_API_MOCK: z.string().default('false').transform((v) => v === 'true'),
+  USE_API_MOCK: z
+    .string()
+    .default('false')
+    .transform((v) => v === 'true'),
 })
 const e2eEnv = e2eEnvSchema.parse(process.env)
 

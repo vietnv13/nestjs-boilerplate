@@ -76,7 +76,7 @@ export class AuthController {
   async getSession(
     @Request()
     req: Express.Request & {
-      user: { id: string, email: string, roles: string[], sessionId: string }
+      user: { id: string; email: string; roles: string[]; sessionId: string }
     },
   ): Promise<SessionResponseDto> {
     const role = req.user.roles[0] ?? null
@@ -92,7 +92,7 @@ export class AuthController {
   @ApiOperation({ summary: 'List sessions' })
   @ApiResponse({ status: 200, type: SessionsListResponseDto })
   async listSessions(
-    @Request() req: Express.Request & { user: { id: string, sessionId: string } },
+    @Request() req: Express.Request & { user: { id: string; sessionId: string } },
   ): Promise<SessionsListResponseDto> {
     return this.authService.listSessions(req.user.id, req.user.sessionId)
   }
@@ -123,7 +123,7 @@ export class AuthController {
   @ApiResponse({ status: 200, type: RevokeSessionResponseDto })
   async revokeSession(
     @Body() dto: RevokeSessionDto,
-    @Request() req: Express.Request & { user: { id: string, sessionId: string } },
+    @Request() req: Express.Request & { user: { id: string; sessionId: string } },
   ): Promise<RevokeSessionResponseDto> {
     return this.authService.revokeSession(dto.sessionId, req.user.id, req.user.sessionId)
   }

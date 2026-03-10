@@ -31,7 +31,7 @@ export const AUTH_COOKIE_OPTIONS = {
 export async function proxyAuthRequest<T>(
   path: string,
   body: unknown,
-): Promise<{ data: T, ok: boolean, status: number }> {
+): Promise<{ data: T; ok: boolean; status: number }> {
   const response = await fetch(`${env.API_UPSTREAM_BASE_URL}${path}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

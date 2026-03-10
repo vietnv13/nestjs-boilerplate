@@ -81,7 +81,7 @@ export function imports(options: ImportsOptions = {}): Linter.Config[] {
               'import-x/order': [
                 'error',
                 {
-                  'groups': [
+                  groups: [
                     'builtin', // Node.js built-in modules (fs, path, etc.)
                     'external', // npm packages
                     'internal', // Internal modules (@/ alias)
@@ -90,19 +90,19 @@ export function imports(options: ImportsOptions = {}): Linter.Config[] {
                     'type', // Type imports
                   ],
                   'newlines-between': 'always', // Blank lines between groups
-                  'alphabetize': {
+                  alphabetize: {
                     order: 'asc', // Ascending alphabetical order
                     caseInsensitive: true, // Ignore case
                   },
-                  'pathGroups': [
+                  pathGroups: [
                     {
                       pattern: '@/**', // @ alias paths
                       group: 'internal',
                       position: 'before',
                     },
                   ],
-                  'pathGroupsExcludedImportTypes': ['type'], // Type imports not affected by pathGroups
-                  'distinctGroup': true, // Group type imports separately
+                  pathGroupsExcludedImportTypes: ['type'], // Type imports not affected by pathGroups
+                  distinctGroup: true, // Group type imports separately
                 },
               ],
             }

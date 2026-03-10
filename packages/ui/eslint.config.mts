@@ -7,6 +7,7 @@ const codeConfig: Linter.Config[] = composeConfig({
     tsconfigRootDir: import.meta.dirname,
   },
   react: true,
+  prettier: true,
 })
 
 const config: Linter.Config[] = [

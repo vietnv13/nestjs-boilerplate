@@ -59,7 +59,7 @@ export class AuthV2Controller {
   async getSession(
     @Request()
     req: Express.Request & {
-      user: { id: string, email: string, roles: string[], sessionId: string }
+      user: { id: string; email: string; roles: string[]; sessionId: string }
     },
   ): Promise<SessionResponseDto> {
     const role = req.user.roles[0] ?? null

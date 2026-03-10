@@ -48,10 +48,10 @@ export function parseTraceparent(traceparent: string): TraceContext | null {
 
   // Validate format
   if (
-    version?.length !== 2
-    || traceId?.length !== 32
-    || parentId?.length !== 16
-    || traceFlags?.length !== 2
+    version?.length !== 2 ||
+    traceId?.length !== 32 ||
+    parentId?.length !== 16 ||
+    traceFlags?.length !== 2
   ) {
     return null
   }
@@ -59,10 +59,10 @@ export function parseTraceparent(traceparent: string): TraceContext | null {
   // Validate hexadecimal
   const hexRegex = /^[0-9a-f]+$/i
   if (
-    !hexRegex.test(version)
-    || !hexRegex.test(traceId)
-    || !hexRegex.test(parentId)
-    || !hexRegex.test(traceFlags)
+    !hexRegex.test(version) ||
+    !hexRegex.test(traceId) ||
+    !hexRegex.test(parentId) ||
+    !hexRegex.test(traceFlags)
   ) {
     return null
   }

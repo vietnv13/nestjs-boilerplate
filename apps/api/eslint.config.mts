@@ -4,7 +4,7 @@ const baseConfig = composeConfig({
   typescript: {
     tsconfigRootDir: import.meta.dirname,
   },
-  prettier: false,
+  prettier: true,
   packageJson: {
     overrides: {
       'package-json/valid-devDependencies': 'off',

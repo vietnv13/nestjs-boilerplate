@@ -9,8 +9,8 @@ export const queryConfig = {
   },
 } satisfies DefaultOptions
 
-type ApiFunctionReturnType<FunctionType extends (...arguments_: unknown[]) => Promise<unknown>>
-  = Awaited<ReturnType<FunctionType>>
+type ApiFunctionReturnType<FunctionType extends (...arguments_: unknown[]) => Promise<unknown>> =
+  Awaited<ReturnType<FunctionType>>
 
 export type QueryConfig<T extends (...arguments_: unknown[]) => unknown> = Omit<
   ReturnType<T>,
