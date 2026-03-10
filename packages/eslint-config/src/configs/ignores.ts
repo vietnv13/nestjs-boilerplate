@@ -53,11 +53,10 @@ export function ignores(
   // Handle gitignore import
   if (gitignorePath !== false) {
     try {
-      // Use ternary instead of if-else
-      const gitignoreFile =
-        typeof gitignorePath === 'string'
-          ? path.resolve(gitignorePath) // Use specified path
-          : path.resolve(process.cwd(), '.gitignore') // Default: find in project root
+      let gitignoreFile = path.resolve(process.cwd(), '.gitignore') // Default: find in project root
+      if (typeof gitignorePath === 'string') {
+        gitignoreFile = path.resolve(gitignorePath) // Use specified path
+      }
 
       // Import only if file exists
       if (existsSync(gitignoreFile)) {
@@ -69,12 +68,12 @@ export function ignores(
   }
 
   // Handle default and user-defined ignore rules
-  const finalIgnores =
-    userIgnores === false
-      ? []
-      : userIgnores
-        ? [...DEFAULT_IGNORES, ...userIgnores]
-        : DEFAULT_IGNORES
+  let finalIgnores = DEFAULT_IGNORES
+  if (userIgnores === false) {
+    finalIgnores = []
+  } else if (userIgnores && userIgnores.length > 0) {
+    finalIgnores = [...DEFAULT_IGNORES, ...userIgnores]
+  }
 
   if (finalIgnores.length > 0) {
     configs.push({

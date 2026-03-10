@@ -7,8 +7,9 @@ import { GLOB_TESTS, isInEditorEnv } from '../utils'
 import type { OptionsFiles, OptionsOverrides } from '../types'
 import type { ESLint, Linter } from 'eslint'
 
-export type VitestOptions = OptionsFiles &
-  OptionsOverrides & {
+export type VitestOptions = OptionsFiles
+  & OptionsOverrides
+  & {
     /**
      * Running in editor
      * .skip/.only show warnings in editor, errors in CI

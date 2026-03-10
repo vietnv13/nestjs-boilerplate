@@ -175,9 +175,9 @@ export class ProblemDetailsFilter implements ExceptionFilter {
     exceptionResponse: string | Record<string, unknown>,
   ): FieldError[] | undefined {
     if (
-      typeof exceptionResponse === 'object' &&
-      'message' in exceptionResponse &&
-      Array.isArray(exceptionResponse.message)
+      typeof exceptionResponse === 'object'
+      && 'message' in exceptionResponse
+      && Array.isArray(exceptionResponse.message)
     ) {
       const errors: FieldError[] = []
 
@@ -218,10 +218,10 @@ export class ProblemDetailsFilter implements ExceptionFilter {
    */
   private isValidationErrorItem(item: unknown): item is ValidationErrorItem {
     return (
-      typeof item === 'object' &&
-      item !== null &&
-      'property' in item &&
-      typeof (item as ValidationErrorItem).property === 'string'
+      typeof item === 'object'
+      && item !== null
+      && 'property' in item
+      && typeof (item as ValidationErrorItem).property === 'string'
     )
   }
 

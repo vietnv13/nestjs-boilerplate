@@ -169,7 +169,7 @@ export class AuthService {
     sessionId: string,
     userId: string,
     currentSessionId: string,
-  ): Promise<{ success: boolean; message: string }> {
+  ): Promise<{ success: boolean, message: string }> {
     // Cannot revoke current session
     if (sessionId === currentSessionId) {
       return {
@@ -288,8 +288,8 @@ export class AuthService {
     const refreshToken = randomUUID()
 
     // Calculate expiration time (default 7 days)
-    const refreshExpiresIn =
-      this.configService.get('JWT_REFRESH_EXPIRES_IN', { infer: true }) ?? '7d'
+    const refreshExpiresIn
+      = this.configService.get('JWT_REFRESH_EXPIRES_IN', { infer: true }) ?? '7d'
     const expiresAt = this.parseExpiration(refreshExpiresIn)
 
     // Create session (create first to get sessionId)

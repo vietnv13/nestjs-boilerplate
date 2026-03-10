@@ -22,13 +22,15 @@ const Nav = () => {
       <Logo />
       <div className="flex flex-1 items-center justify-end">
         <ThemeToggle />
-        {isSuccess ? (
-          <NavUser username={email} />
-        ) : (
-          <Link href="/login">
-            <Button variant="ghost">Login</Button>
-          </Link>
-        )}
+        {isSuccess
+          ? (
+              <NavUser username={email} />
+            )
+          : (
+              <Link href="/login">
+                <Button variant="ghost">Login</Button>
+              </Link>
+            )}
       </div>
     </Header>
   )

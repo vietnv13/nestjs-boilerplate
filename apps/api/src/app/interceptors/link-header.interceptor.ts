@@ -42,12 +42,12 @@ export class LinkHeaderInterceptor implements NestInterceptor {
    */
   private isListResponse(data: unknown): data is Record<string, unknown> {
     return (
-      typeof data === 'object' &&
-      data !== null &&
-      'object' in data &&
-      data.object === 'list' &&
-      'data' in data &&
-      Array.isArray(data.data)
+      typeof data === 'object'
+      && data !== null
+      && 'object' in data
+      && data.object === 'list'
+      && 'data' in data
+      && Array.isArray(data.data)
     )
   }
 
@@ -56,14 +56,14 @@ export class LinkHeaderInterceptor implements NestInterceptor {
    */
   private isOffsetListResponse(
     data: unknown,
-  ): data is { total: number; page: number; page_size: number; has_more: boolean } {
+  ): data is { total: number, page: number, page_size: number, has_more: boolean } {
     return (
-      typeof data === 'object' &&
-      data !== null &&
-      'total' in data &&
-      'page' in data &&
-      'page_size' in data &&
-      typeof (data as Record<string, unknown>).total === 'number'
+      typeof data === 'object'
+      && data !== null
+      && 'total' in data
+      && 'page' in data
+      && 'page_size' in data
+      && typeof (data as Record<string, unknown>).total === 'number'
     )
   }
 
@@ -77,11 +77,11 @@ export class LinkHeaderInterceptor implements NestInterceptor {
     // Cursor pagination
     if ('next_cursor' in data) {
       if (
-        'has_more' in data &&
-        data.has_more &&
-        'next_cursor' in data &&
-        data.next_cursor &&
-        typeof data.next_cursor === 'string'
+        'has_more' in data
+        && data.has_more
+        && 'next_cursor' in data
+        && data.next_cursor
+        && typeof data.next_cursor === 'string'
       ) {
         const nextUrl = this.buildUrl(baseUrl, request.query, {
           cursor: data.next_cursor,
