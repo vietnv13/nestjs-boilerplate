@@ -83,6 +83,22 @@ fetchClient.use({
   },
 })
 
+let refreshInFlight: Promise<boolean> | null = null
+
+async function refreshAccessToken(): Promise<boolean> {
+  refreshInFlight ??= fetch('/api/auth/refresh', {
+    method: 'POST',
+    credentials: 'include',
+  })
+    .then((res) => res.ok)
+    .catch(() => false)
+    .finally(() => {
+      refreshInFlight = null
+    })
+
+  return refreshInFlight
+}
+
 // Middleware: 401 intercept and auto token refresh (client only)
 fetchClient.use({
   async onResponse({ response, request }) {
@@ -90,19 +106,23 @@ fetchClient.use({
     if (globalThis.window === undefined) {
       return response
     }
+    // Avoid infinite retry loops
+    if (request.headers.get('x-auth-refresh-retry') === '1') {
+      return response
+    }
     // On 401 and not auth write route, try refresh token
     if (
       response.status === 401 &&
       !AUTH_WRITE_ROUTES.some((route) => request.url.includes(route))
     ) {
-      const refreshRes = await fetch('/api/auth/refresh', {
-        method: 'POST',
-        credentials: 'include',
-      })
-
-      if (refreshRes.ok) {
+      const refreshOk = await refreshAccessToken()
+      if (refreshOk) {
         // Refresh success, retry original request
-        return fetch(request.clone())
+        const cloned = request.clone()
+        const headers = new Headers(cloned.headers)
+        headers.set('x-auth-refresh-retry', '1')
+        const retryRequest = new Request(cloned, { headers })
+        return fetch(retryRequest)
       }
     }
     return response
