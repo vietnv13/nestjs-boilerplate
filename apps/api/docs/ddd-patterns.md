@@ -9,7 +9,7 @@ In this codebase, entities are typed as plain TypeScript interfaces backed by th
 schema types from `@workspace/database`.
 
 ```typescript
-// modules/user/domain/user.entity.ts
+// modules/user/domain/entities/user.entity.ts
 export interface User {
   id: string
   email: string

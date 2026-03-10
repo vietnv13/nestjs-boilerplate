@@ -1,4 +1,8 @@
-import type { User, CreateUserData, UpdateUserData } from '@/modules/user/domain/user.entity'
+import type {
+  User,
+  CreateUserData,
+  UpdateUserData,
+} from '@/modules/user/domain/entities/user.entity'
 
 export interface UserRepository {
   create(data: CreateUserData): Promise<User>

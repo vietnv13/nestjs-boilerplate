@@ -8,7 +8,7 @@ import { UserAlreadyExistsException } from '@/shared-kernel/domain/exceptions'
 import { CreateUserCommand } from './create-user.command'
 
 import type { UserRepository } from '@/modules/user/application/ports/user.repository.port'
-import type { User } from '@/modules/user/domain/user.entity'
+import type { User } from '@/modules/user/domain/entities/user.entity'
 import type { ICommandHandler } from '@nestjs/cqrs'
 
 @CommandHandler(CreateUserCommand)

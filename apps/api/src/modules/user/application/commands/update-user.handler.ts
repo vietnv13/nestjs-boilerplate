@@ -8,7 +8,7 @@ import { UserNotFoundException } from '@/shared-kernel/domain/exceptions'
 import { UpdateUserCommand } from './update-user.command'
 
 import type { UserRepository } from '@/modules/user/application/ports/user.repository.port'
-import type { User } from '@/modules/user/domain/user.entity'
+import type { User } from '@/modules/user/domain/entities/user.entity'
 import type { ICommandHandler } from '@nestjs/cqrs'
 
 @CommandHandler(UpdateUserCommand)

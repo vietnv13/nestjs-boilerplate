@@ -7,7 +7,11 @@ import { CacheService } from '@/shared-kernel/infrastructure/cache/cache.service
 import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
 
 import type { UserRepository } from '@/modules/user/application/ports/user.repository.port'
-import type { User, CreateUserData, UpdateUserData } from '@/modules/user/domain/user.entity'
+import type {
+  User,
+  CreateUserData,
+  UpdateUserData,
+} from '@/modules/user/domain/entities/user.entity'
 import type { DrizzleDb } from '@/shared-kernel/infrastructure/db/db.port'
 
 type UserRow = typeof usersTable.$inferSelect
