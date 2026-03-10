@@ -26,8 +26,8 @@ type LinkProperties = {
   className?: string
   children: React.ReactNode
   target?: string
-} & NextLinkProperties &
-  VariantProps<typeof linkVariants>
+} & NextLinkProperties
+& VariantProps<typeof linkVariants>
 
 export const Link = ({ className, children, href, variant, ...properties }: LinkProperties) => {
   return (

@@ -54,8 +54,8 @@ export class DeprecationInterceptor implements NestInterceptor {
         response.setHeader('Link', `<${deprecationInfo.migrationGuide}>; rel="${linkRel}"`)
 
         // Add Warning header (RFC 9110 §5.5)
-        const warningMessage =
-          now >= sixMonthsBeforeSunset
+        const warningMessage
+          = now >= sixMonthsBeforeSunset
             ? `API version ${apiVersion} will sunset on ${deprecationInfo.sunsetAt.toISOString().split('T')[0]}`
             : `API version ${apiVersion} is deprecated`
 
