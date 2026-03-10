@@ -44,12 +44,12 @@ export class TransformInterceptor implements NestInterceptor {
    */
   private isListResponse(data: unknown): boolean {
     return (
-      typeof data === 'object'
-      && data !== null
-      && 'object' in data
-      && data.object === 'list'
-      && 'data' in data
-      && Array.isArray(data.data)
+      typeof data === 'object' &&
+      data !== null &&
+      'object' in data &&
+      data.object === 'list' &&
+      'data' in data &&
+      Array.isArray(data.data)
     )
   }
 }

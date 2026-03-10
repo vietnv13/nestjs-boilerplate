@@ -58,7 +58,7 @@ export const fetchClient = createFetchClient<paths>({
   credentials: 'include',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    Accept: 'application/json',
   },
 })
 
@@ -92,8 +92,8 @@ fetchClient.use({
     }
     // On 401 and not auth write route, try refresh token
     if (
-      response.status === 401
-      && !AUTH_WRITE_ROUTES.some((route) => request.url.includes(route))
+      response.status === 401 &&
+      !AUTH_WRITE_ROUTES.some((route) => request.url.includes(route))
     ) {
       const refreshRes = await fetch('/api/auth/refresh', {
         method: 'POST',

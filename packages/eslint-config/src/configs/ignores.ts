@@ -54,8 +54,8 @@ export function ignores(
   if (gitignorePath !== false) {
     try {
       // Use ternary instead of if-else
-      const gitignoreFile
-        = typeof gitignorePath === 'string'
+      const gitignoreFile =
+        typeof gitignorePath === 'string'
           ? path.resolve(gitignorePath) // Use specified path
           : path.resolve(process.cwd(), '.gitignore') // Default: find in project root
 
@@ -69,12 +69,12 @@ export function ignores(
   }
 
   // Handle default and user-defined ignore rules
-  const finalIgnores
-    = userIgnores === false
+  const finalIgnores =
+    userIgnores === false
       ? []
-      : (userIgnores
-          ? [...DEFAULT_IGNORES, ...userIgnores]
-          : DEFAULT_IGNORES)
+      : userIgnores
+        ? [...DEFAULT_IGNORES, ...userIgnores]
+        : DEFAULT_IGNORES
 
   if (finalIgnores.length > 0) {
     configs.push({

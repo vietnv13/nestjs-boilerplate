@@ -138,9 +138,7 @@ const RegisterForm = () => {
             Create account
           </Button>
           <FieldDescription className="text-center">
-            Already have an account?
-            {' '}
-            <Link href={appPaths.auth.login.getHref()}>Login</Link>
+            Already have an account? <Link href={appPaths.auth.login.getHref()}>Login</Link>
           </FieldDescription>
         </Field>
       </CardFooter>

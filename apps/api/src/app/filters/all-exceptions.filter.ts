@@ -54,10 +54,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
       ...(correlationId && { correlation_id: correlationId }),
       ...(traceId && { trace_id: traceId }),
       // Hide stack trace in production
-      ...(process.env.NODE_ENV !== 'production'
-        && exception instanceof Error && {
-        stack: exception.stack,
-      }),
+      ...(process.env.NODE_ENV !== 'production' &&
+        exception instanceof Error && {
+          stack: exception.stack,
+        }),
     }
 
     const tracePrefix = this.buildTracePrefix(requestId, correlationId, traceId)

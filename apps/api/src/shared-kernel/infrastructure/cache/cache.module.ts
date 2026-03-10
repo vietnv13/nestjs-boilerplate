@@ -1,8 +1,7 @@
-import { createKeyv } from '@keyv/redis'
+import KeyvRedis from '@keyv/redis'
 import { CacheModule as NestCacheModule } from '@nestjs/cache-manager'
 import { Global, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import Keyv from 'keyv'
 
 import { CacheService } from './cache.service'
 
@@ -30,11 +29,12 @@ import type { Env } from '@/app/config/env.schema'
           ? `redis://:${password}@${host}:${port}`
           : `redis://${host}:${port}`
 
-        const store = createKeyv(redisUrl, { namespace: 'api' })
+        // Pass the adapter (not a Keyv instance) so @nestjs/cache-manager can wrap it correctly.
+        // This avoids `instanceof Keyv` mismatches between ESM/CJS entrypoints that can lead to
+        // Keyv being constructed with a Keyv instance as its "store" (and crashing on opts.url).
+        const store = new KeyvRedis(redisUrl)
 
-        return {
-          stores: [new Keyv({ store, ttl })],
-        }
+        return { stores: [store], ttl, namespace: 'api' }
       },
     }),
   ],

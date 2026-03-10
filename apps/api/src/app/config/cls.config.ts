@@ -56,8 +56,8 @@ function setupClsContext(cls: ClsService, request: Request) {
   }
 
   // API version
-  const apiVersion
-    = (request.headers['api-version'] as string) || (request.headers['x-api-version'] as string)
+  const apiVersion =
+    (request.headers['api-version'] as string) || (request.headers['x-api-version'] as string)
   if (apiVersion) {
     cls.set('apiVersion', apiVersion)
   }
