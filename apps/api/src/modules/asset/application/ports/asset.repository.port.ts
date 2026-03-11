@@ -35,6 +35,12 @@ export interface AssetRepository {
     deletedAt: Date
   }): Promise<number>
 
+  findLinksByOwner(params: {
+    ownerType: string
+    ownerId: string
+    slot?: string
+  }): Promise<AssetLinkDatabase[]>
+
   findPurgeCandidates(cutoff: Date, limit: number): Promise<PurgeCandidate[]>
   hardDeleteAsset(id: string): Promise<boolean>
 }

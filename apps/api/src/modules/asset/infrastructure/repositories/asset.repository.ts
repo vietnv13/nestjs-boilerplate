@@ -115,6 +115,27 @@ export class AssetRepositoryImpl implements AssetRepository {
     return result.rowCount ?? 0
   }
 
+  async findLinksByOwner(params: {
+    ownerType: string
+    ownerId: string
+    slot?: string
+  }): Promise<AssetLinkDatabase[]> {
+    const conditions = [
+      eq(assetLinksTable.ownerType, params.ownerType),
+      eq(assetLinksTable.ownerId, params.ownerId),
+      isNull(assetLinksTable.deletedAt),
+    ]
+
+    if (params.slot) {
+      conditions.push(eq(assetLinksTable.slot, params.slot))
+    }
+
+    return await this.db
+      .select()
+      .from(assetLinksTable)
+      .where(and(...conditions))
+  }
+
   async findPurgeCandidates(cutoff: Date, limit: number): Promise<PurgeCandidate[]> {
     const rows = await this.db
       .select({ id: assetsTable.id, key: assetsTable.key })

@@ -48,7 +48,9 @@ export class AssetService {
       throw new BadRequestException('Public assets cannot have a creator')
     }
 
-    const prefix = params.isPublic ? 'assets/public' : `assets/users/${params.creatorId}`
+    const datePath = buildDatePath()
+    const prefix = `assets/${datePath}`
+
     const upload = await this.storage.uploadBuffer({
       buffer: params.buffer,
       filename: params.filename,
@@ -158,6 +160,26 @@ export class AssetService {
     await this.repo.softDeleteAsset(assetId, now)
   }
 
+  async getLinksForOwner(params: {
+    ownerType: string
+    ownerId: string
+    slot?: string
+  }): Promise<AssetLinkDatabase[]> {
+    return await this.repo.findLinksByOwner(params)
+  }
+
+  async getUrlForOwnerSlot(params: {
+    ownerType: string
+    ownerId: string
+    slot: string
+  }): Promise<string | undefined> {
+    const [link] = await this.repo.findLinksByOwner(params)
+    if (!link) return undefined
+    const asset = await this.repo.findAssetById(link.assetId)
+    if (!asset || asset.deletedAt) return undefined
+    return await this.storage.getUrl(asset.key)
+  }
+
   async purgeExpiredAssets(params: {
     cutoff: Date
     limit?: number
@@ -180,6 +202,15 @@ export class AssetService {
 
     return { purged, failed }
   }
+}
+
+function buildDatePath(): string {
+  const now = new Date()
+  const year = now.getUTCFullYear()
+  const month = String(now.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(now.getUTCDate()).padStart(2, '0')
+  const hour = String(now.getUTCHours()).padStart(2, '0')
+  return `${year}/${month}/${day}/${hour}`
 }
 
 function normalizeSlot(value?: string): string {
