@@ -20,7 +20,6 @@ export class CreateTodoHandler implements ICommandHandler<CreateTodoCommand, Tod
   ) {}
 
   async execute(command: CreateTodoCommand): Promise<Todo> {
-    // Validate title
     if (!command.title || command.title.trim().length === 0) {
       throw new ValidationException('Title is required and cannot be empty')
     }
@@ -29,13 +28,11 @@ export class CreateTodoHandler implements ICommandHandler<CreateTodoCommand, Tod
       throw new ValidationException('Title cannot exceed 200 characters')
     }
 
-    // Create todo
     const todo = await this.todoRepository.create({
       title: command.title.trim(),
       description: command.description?.trim(),
     })
 
-    // Publish domain event
     this.eventBus.publish(new TodoCreatedEvent(todo.id, todo.title))
 
     return todo

@@ -11,8 +11,8 @@ import type { IEvent } from '@nestjs/cqrs'
 /**
  * Todo Completion Saga
  *
- * Reacts to TodoCompletedEvent and orchestrates follow-up actions
- * (update user statistics, check achievements, etc.).
+ * Reacts to TodoCompletedEvent. Extend this to dispatch follow-up commands
+ * (e.g. update user statistics, check achievements).
  */
 @Injectable()
 export class TodoCompletionSaga extends BaseSaga {
@@ -26,21 +26,8 @@ export class TodoCompletionSaga extends BaseSaga {
           eventType: event.eventType,
         })
 
-        this.updateUserStatistics(event.todoId)
-        this.checkAchievements(event.todoId)
-
         return null
       }),
     )
-  }
-
-  private updateUserStatistics(todoId: string): void {
-    this.log('Updating user statistics', { todoId })
-    // TODO: Dispatch UpdateUserStatisticsCommand
-  }
-
-  private checkAchievements(todoId: string): void {
-    this.log('Checking for achievements', { todoId })
-    // TODO: Dispatch CheckAchievementsCommand
   }
 }

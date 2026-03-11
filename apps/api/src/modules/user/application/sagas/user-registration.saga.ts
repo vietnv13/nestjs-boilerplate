@@ -11,8 +11,8 @@ import type { IEvent } from '@nestjs/cqrs'
 /**
  * User Registration Saga
  *
- * Reacts to UserCreatedEvent and orchestrates the post-registration workflow:
- * send welcome email, create user profile, assign default permissions.
+ * Reacts to UserCreatedEvent. Extend this to dispatch post-registration commands
+ * (e.g. send welcome email, create user profile, assign default permissions).
  */
 @Injectable()
 export class UserRegistrationSaga extends BaseSaga {
@@ -26,27 +26,8 @@ export class UserRegistrationSaga extends BaseSaga {
           eventType: event.eventType,
         })
 
-        this.sendWelcomeEmail(event.userId)
-        this.createUserProfile(event.userId)
-        this.assignDefaultPermissions(event.userId)
-
         return null
       }),
     )
-  }
-
-  private sendWelcomeEmail(userId: string): void {
-    this.log('Sending welcome email', { userId })
-    // TODO: Dispatch SendWelcomeEmailCommand
-  }
-
-  private createUserProfile(userId: string): void {
-    this.log('Creating user profile', { userId })
-    // TODO: Dispatch CreateUserProfileCommand
-  }
-
-  private assignDefaultPermissions(userId: string): void {
-    this.log('Assigning default permissions', { userId })
-    // TODO: Dispatch AssignDefaultPermissionsCommand
   }
 }

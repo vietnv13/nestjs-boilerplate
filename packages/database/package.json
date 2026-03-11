@@ -18,8 +18,8 @@
       "types": "./dist/relations.d.ts"
     },
     "./auth": {
-      "import": "./dist/schemas/auth",
-      "types": "./dist/schemas/auth"
+      "import": "./dist/schemas/auth/index.js",
+      "types": "./dist/schemas/auth/index.d.ts"
     }
   },
   "scripts": {
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
-    "@types/pg": "8.15.6",
+    "@types/pg": "8.18.0",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "bcrypt": "^6.0.0",

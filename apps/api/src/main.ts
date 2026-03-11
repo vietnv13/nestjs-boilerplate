@@ -49,30 +49,18 @@ async function bootstrap() {
     app.get(AllExceptionsFilter), // Catch-all (most general)
   )
 
-  // Global interceptors (in execution order)
+  // Global interceptors — order determines execution sequence
   app.useGlobalInterceptors(
-    // 1. Request context (add trace headers to response)
     app.get(RequestContextInterceptor),
     app.get(CorrelationIdInterceptor),
     app.get(TraceContextInterceptor),
-
-    // 2. Timeout control (30s)
     new TimeoutInterceptor(30_000),
-
-    // 3. Location header (201 Created)
     new LocationHeaderInterceptor(),
-
-    // 4. Link header (pagination links)
     new LinkHeaderInterceptor(),
-
-    // 5. Deprecation warning
     app.get(DeprecationInterceptor),
-
-    // 6. Response formatting (executed last)
     new TransformInterceptor(app.get(Reflector)),
   )
 
-  // Global validation pipe
   app.useGlobalPipes(createValidationPipe())
 
   await setupSwagger(app)

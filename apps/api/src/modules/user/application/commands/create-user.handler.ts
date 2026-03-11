@@ -20,20 +20,17 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand, Use
   ) {}
 
   async execute(command: CreateUserCommand): Promise<User> {
-    // Check if user already exists
     const exists = await this.userRepository.existsByEmail(command.email)
     if (exists) {
       throw new UserAlreadyExistsException(command.email)
     }
 
-    // Create user
     const user = await this.userRepository.create({
       email: command.email,
       name: command.name,
       role: command.role,
     })
 
-    // Publish domain event
     this.eventBus.publish(new UserCreatedEvent(user.id, user.email, user.name))
 
     return user

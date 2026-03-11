@@ -26,7 +26,6 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand, Use
       throw new UserNotFoundException(command.id)
     }
 
-    // Publish domain event
     this.eventBus.publish(new UserUpdatedEvent(user.id, command.data))
 
     return user

@@ -25,7 +25,6 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand, voi
       throw new UserNotFoundException(command.id)
     }
 
-    // Publish domain event
     this.eventBus.publish(new UserDeletedEvent(command.id))
   }
 }

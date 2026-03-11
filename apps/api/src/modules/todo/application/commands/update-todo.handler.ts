@@ -20,7 +20,6 @@ export class UpdateTodoHandler implements ICommandHandler<UpdateTodoCommand, Tod
   ) {}
 
   async execute(command: UpdateTodoCommand): Promise<Todo> {
-    // Validate title if provided
     if (command.data.title !== undefined) {
       if (!command.data.title || command.data.title.trim().length === 0) {
         throw new ValidationException('Title cannot be empty')
@@ -30,23 +29,18 @@ export class UpdateTodoHandler implements ICommandHandler<UpdateTodoCommand, Tod
       }
     }
 
-    // Get existing todo to check completion status
     const existingTodo = await this.todoRepository.findById(command.id)
     if (!existingTodo) {
       throw new NotFoundException('Todo', command.id)
     }
 
-    // Update todo
     const todo = await this.todoRepository.update(command.id, command.data)
-
     if (!todo) {
       throw new NotFoundException('Todo', command.id)
     }
 
-    // Publish update event
     this.eventBus.publish(new TodoUpdatedEvent(todo.id, command.data))
 
-    // Publish completion event if status changed to completed
     if (command.data.isCompleted === true && !existingTodo.isCompleted) {
       this.eventBus.publish(new TodoCompletedEvent(todo.id))
     }
