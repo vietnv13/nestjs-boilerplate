@@ -93,6 +93,12 @@ export const envSchema = z.object({
       message: 'REDIS_TTL must be greater than 0',
     }),
 
+  // Scheduler
+  SCHEDULER_ENABLED: z
+    .string()
+    .default('false')
+    .transform((v) => v.toLowerCase() === 'true'),
+
   // Swagger auto-login (dev only)
   SWAGGER_TEST_EMAIL: z.email().optional(),
   SWAGGER_TEST_PASSWORD: z.string().optional(),

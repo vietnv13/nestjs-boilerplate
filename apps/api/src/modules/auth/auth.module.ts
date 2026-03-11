@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 
+import { CleanupExpiredTokensJob } from '@/modules/auth/application/jobs/cleanup-expired-tokens.job'
 import { AUTH_IDENTITY_REPOSITORY } from '@/modules/auth/application/ports/auth-identity.repository.port'
 import { AUTH_SESSION_REPOSITORY } from '@/modules/auth/application/ports/auth-session.repository.port'
 import { PASSWORD_HASHER } from '@/modules/auth/application/ports/password-hasher.port'
@@ -78,6 +79,7 @@ import type { Env } from '@/app/config/env.schema'
       provide: USER_REPOSITORY,
       useClass: UserRepositoryImpl,
     },
+    CleanupExpiredTokensJob,
   ],
   exports: [AuthService, USER_ROLE_REPOSITORY],
 })

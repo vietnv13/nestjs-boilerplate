@@ -28,6 +28,7 @@ import { CacheModule } from '@/shared-kernel/infrastructure/cache/cache.module'
 import { DrizzleModule } from '@/shared-kernel/infrastructure/db/db.module'
 import { DomainEventsModule } from '@/shared-kernel/infrastructure/events/domain-events.module'
 import { EventsModule } from '@/shared-kernel/infrastructure/events/events.module'
+import { SchedulerModule } from '@/shared-kernel/infrastructure/scheduler/scheduler.module'
 
 import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
 
@@ -67,6 +68,8 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
     EventsModule,
     // Cache module: caching infrastructure
     CacheModule,
+    // Scheduler module: distributed cron jobs with Redis locking
+    SchedulerModule,
     // Rate limiting module: prevent API abuse
     ThrottlerModule.forRoot([
       {
