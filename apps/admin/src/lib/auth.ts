@@ -12,6 +12,9 @@ export const AUTH_WRITE_ROUTES = [
   '/api/auth/logout',
   '/api/auth/refresh',
   '/api/auth/register',
+  '/api/admin/auth/login',
+  '/api/admin/auth/logout',
+  '/api/admin/auth/refresh',
 ] as const
 
 /**

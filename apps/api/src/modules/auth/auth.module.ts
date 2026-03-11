@@ -16,7 +16,6 @@ import { UserRoleRepositoryImpl } from '@/modules/auth/infrastructure/repositori
 import { VerificationTokenRepositoryImpl } from '@/modules/auth/infrastructure/repositories/verification-token.repository'
 import { BcryptPasswordHasher } from '@/modules/auth/infrastructure/services/bcrypt-password-hasher'
 import { JwtStrategy } from '@/modules/auth/infrastructure/strategies/jwt.strategy'
-import { AuthV2Controller } from '@/modules/auth/presentation/controllers/auth-v2.controller'
 import { AuthController } from '@/modules/auth/presentation/controllers/auth.controller'
 import { USER_REPOSITORY } from '@/shared-kernel/application/ports/user.repository.port'
 import { UserRepositoryImpl } from '@/shared-kernel/infrastructure/repositories/user.repository'
@@ -46,14 +45,10 @@ import type { Env } from '@/app/config/env.schema'
       inject: [ConfigService],
     }),
   ],
-  controllers: [
-    AuthController, // v1
-    AuthV2Controller, // v2
-  ],
+  controllers: [AuthController],
   providers: [
     AuthService,
     JwtStrategy,
-
     // Repository implementations (DIP)
     {
       provide: AUTH_IDENTITY_REPOSITORY,

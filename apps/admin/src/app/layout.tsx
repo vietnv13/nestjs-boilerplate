@@ -1,15 +1,14 @@
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
+import { Toaster } from 'sonner'
 
 import { AppProvider } from '@/app/provide'
+import { $api } from '@/lib/fetch-client'
+
+import './globals.css'
 
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
-
-import '@workspace/ui/globals.css'
-import { $api } from '@/lib/fetch-client'
-
-import { Toaster } from '@workspace/ui/components/ui/sonner'
 
 export const viewport: Viewport = {
   initialScale: 1,
@@ -18,10 +17,10 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    template: '%s · Starter',
-    default: 'Starter',
+    template: '%s · Admin',
+    default: 'Admin',
   },
-  description: 'Starter template',
+  description: 'Admin panel',
 }
 
 const Layout = async ({ children }: { children: ReactNode }) => {
@@ -32,8 +31,8 @@ const Layout = async ({ children }: { children: ReactNode }) => {
   const dehydratedState = dehydrate(queryClient)
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
+    <html lang="en">
+      <body>
         <AntdRegistry>
           <AppProvider>
             <HydrationBoundary state={dehydratedState}>
@@ -49,6 +48,4 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
 export default Layout
 
-// Disable pre-rendering, force dynamic execution on each request
-// User data depends on cookies, must be fetched at request time
 export const dynamic = 'force-dynamic'

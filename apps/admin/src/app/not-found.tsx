@@ -1,18 +1,29 @@
-import { BlankLayout } from '@/components/layouts'
-import { Link } from '@/components/link'
+import { Button, Result } from 'antd'
+import Link from 'next/link'
+
 import { appPaths } from '@/config/app-paths'
 
 const NotFoundPage = () => {
   return (
-    <BlankLayout>
-      <div className="mt-52 flex flex-col items-center font-semibold">
-        <h1>404 - Not Found</h1>
-        <p>Sorry, the page you are looking for does not exist.</p>
-        <Link href={appPaths.home.getHref()} replace>
-          Go to Home
-        </Link>
-      </div>
-    </BlankLayout>
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Result
+        status="404"
+        title="404"
+        subTitle="Sorry, the page you visited does not exist."
+        extra={
+          <Link href={appPaths.home.getHref()}>
+            <Button type="primary">Back to Dashboard</Button>
+          </Link>
+        }
+      />
+    </div>
   )
 }
 

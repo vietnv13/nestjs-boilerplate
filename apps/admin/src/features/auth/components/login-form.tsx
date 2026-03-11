@@ -26,16 +26,17 @@ const LoginForm = () => {
     },
   })
 
-  const { mutateAsync, isPending } = $api.useMutation('post', '/api/auth/login')
+  const { mutateAsync, isPending } = $api.useMutation('post', '/api/auth/login', {
+    onError: (error) => toast.error(error.detail ?? 'Login failed'),
+  })
 
   const onSubmit = async (data: LoginFormData) => {
-    await mutateAsync(
-      { body: data },
-      {
-        onError: (error) => toast.error(error.detail ?? 'Login failed'),
-      },
-    )
-    router.push('/dashboard')
+    try {
+      await mutateAsync({ body: data })
+      router.push('/dashboard')
+    } catch {
+      // error already surfaced via onError toast
+    }
   }
 
   return (

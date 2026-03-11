@@ -2,7 +2,6 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { ThemeProvider } from 'next-themes'
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
@@ -24,12 +23,10 @@ export const AppProvider = ({ children }: AppProviderProperties) => {
 
   return (
     <ErrorBoundary FallbackComponent={MainErrorFallback}>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <QueryClientProvider client={queryClient}>
-          {env.NODE_ENV === 'development' && <ReactQueryDevtools />}
-          {children}
-        </QueryClientProvider>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        {env.NODE_ENV === 'development' && <ReactQueryDevtools />}
+        {children}
+      </QueryClientProvider>
     </ErrorBoundary>
   )
 }

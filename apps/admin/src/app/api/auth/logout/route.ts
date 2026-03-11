@@ -11,14 +11,18 @@ import type { NextRequest } from 'next/server'
  * 2. Clear local cookies
  */
 export async function POST(request: NextRequest) {
+  const accessToken = request.cookies.get('access_token')?.value
   const refreshToken = request.cookies.get('refresh_token')?.value
 
   // Call backend logout (optional, continue even if fails)
-  if (refreshToken) {
+  if (refreshToken && accessToken) {
     try {
-      await fetch(`${env.API_UPSTREAM_BASE_URL}/api/auth/logout`, {
+      await fetch(`${env.API_UPSTREAM_BASE_URL}/api/admin/auth/logout`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
         body: JSON.stringify({ refreshToken }),
       })
     } catch {

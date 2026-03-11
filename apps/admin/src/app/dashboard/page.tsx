@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, Col, Row, Statistic, Typography } from 'antd'
 import { DashboardOutlined, FileOutlined, UserOutlined } from '@ant-design/icons'
 

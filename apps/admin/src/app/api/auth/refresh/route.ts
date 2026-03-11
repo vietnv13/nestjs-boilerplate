@@ -5,11 +5,6 @@ import { clearAuthCookies, proxyAuthRequest, setAuthCookies } from '@/lib/auth'
 import type { RefreshResponse } from '@/types/auth'
 import type { NextRequest } from 'next/server'
 
-/**
- * Token refresh endpoint
- * 1. Use refresh_token to get new tokens
- * 2. Update cookies
- */
 export async function POST(request: NextRequest) {
   const refreshToken = request.cookies.get('refresh_token')?.value
 
@@ -17,7 +12,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'No refresh token' }, { status: 401 })
   }
 
-  const { data, ok } = await proxyAuthRequest<RefreshResponse>('/api/auth/refresh-token', {
+  const { data, ok } = await proxyAuthRequest<RefreshResponse>('/api/admin/auth/refresh-token', {
     refreshToken,
   })
 

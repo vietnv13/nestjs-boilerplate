@@ -21,6 +21,7 @@ import { LoggerModule } from '@/app/logger/logger.module'
 import { ApiVersionMiddleware } from '@/app/middleware/api-version.middleware'
 import { ETagMiddleware } from '@/app/middleware/etag.middleware'
 import { SwaggerDevController } from '@/app/swagger/swagger-dev.controller'
+import { AdminModule } from '@/modules/admin/admin.module'
 import { AssetModule } from '@/modules/asset/asset.module'
 import { AuthModule } from '@/modules/auth/auth.module'
 import { TodoModule } from '@/modules/todo/todo.module'
@@ -86,6 +87,7 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
     UserModule, // User management module (CQRS example)
     TodoModule, // Todo module (enhanced with events)
     AuthModule, // Auth module (authentication + DDD example)
+    AdminModule, // Admin module (admin-only endpoints)
     AssetModule, // Asset module (file upload + linking + cleanup)
   ],
   controllers: [

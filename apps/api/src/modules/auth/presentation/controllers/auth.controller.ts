@@ -36,6 +36,7 @@ export class AuthController {
    */
   @Post('register')
   @ApiOperation({ summary: 'User registration' })
+  @ApiResponse({ status: 201, type: RegisterResponseDto })
   async register(@Body() dto: RegisterDto): Promise<RegisterResponseDto> {
     return await this.authService.register(dto.email, dto.password, dto.name)
   }
@@ -45,6 +46,7 @@ export class AuthController {
    */
   @Post('login')
   @ApiOperation({ summary: 'User login' })
+  @ApiResponse({ status: 200, type: LoginResponseDto })
   async login(@Body() dto: LoginDto): Promise<LoginResponseDto> {
     return await this.authService.login(dto.email, dto.password)
   }

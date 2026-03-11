@@ -1,18 +1,31 @@
-import { Button } from '@workspace/ui/components/ui/button'
+'use client'
+
+import { Button, Result } from 'antd'
 
 export const MainErrorFallback = () => {
   return (
     <div
-      className="flex h-screen w-screen flex-col items-center justify-center text-red-500"
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
       role="alert"
     >
-      <h2 className="text-lg font-semibold">Application Error</h2>
-      <Button
-        className="mt-4"
-        onClick={() => globalThis.location.assign(globalThis.location.origin)}
-      >
-        Refresh Page
-      </Button>
+      <Result
+        status="error"
+        title="Application Error"
+        subTitle="Something went wrong. Please try refreshing the page."
+        extra={
+          <Button
+            type="primary"
+            onClick={() => globalThis.location.assign(globalThis.location.origin)}
+          >
+            Refresh Page
+          </Button>
+        }
+      />
     </div>
   )
 }
