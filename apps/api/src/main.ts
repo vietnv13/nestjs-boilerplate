@@ -100,14 +100,22 @@ async function bootstrap() {
 
   // Graceful shutdown — drain in-flight requests before exiting.
   // PM2 sends SIGINT on `pm2 reload`; the kill_timeout gives us 10 s to finish.
+  let shuttingDown = false
   const shutdown = async (signal: string) => {
+    if (shuttingDown) return
+    shuttingDown = true
+
     logger.log(`Received ${signal} — shutting down gracefully`)
     await app.close()
-    process.exit(0)
+    process.exitCode = 0
   }
 
-  process.on('SIGINT', () => shutdown('SIGINT'))
-  process.on('SIGTERM', () => shutdown('SIGTERM'))
+  process.on('SIGINT', () => {
+    void shutdown('SIGINT')
+  })
+  process.on('SIGTERM', () => {
+    void shutdown('SIGTERM')
+  })
 }
 
 await bootstrap()
