@@ -110,6 +110,6 @@ export class AppModule implements NestModule {
         ApiVersionMiddleware, // API versioning (must be before ETag)
         ETagMiddleware, // ETag and 304 Not Modified support
       )
-      .forRoutes('{*path}') // Apply to all routes
+      .forRoutes('*path') // Apply to all routes (NestJS 11 / Express 5 named wildcard)
   }
 }

@@ -33,10 +33,10 @@ async function bootstrap() {
     exclude: [
       // Exclude Swagger dev credentials endpoint
       { path: '.well-known', method: RequestMethod.ALL },
-      { path: '.well-known/{*path}', method: RequestMethod.ALL },
+      { path: '.well-known/*path', method: RequestMethod.ALL },
       // Exclude health check endpoints
       { path: 'health', method: RequestMethod.ALL },
-      { path: 'health/{*path}', method: RequestMethod.ALL },
+      { path: 'health/*path', method: RequestMethod.ALL },
     ],
   })
 
