@@ -27,6 +27,7 @@ export function react(options: ReactOptions = {}): Linter.Config[] {
       },
     },
     rules: {
+      '@eslint-react/no-array-index-key': 'off',
       ...overrides,
     },
   })

@@ -30,6 +30,7 @@ import { CacheModule } from '@/shared-kernel/infrastructure/cache/cache.module'
 import { DrizzleModule } from '@/shared-kernel/infrastructure/db/db.module'
 import { DomainEventsModule } from '@/shared-kernel/infrastructure/events/domain-events.module'
 import { EventsModule } from '@/shared-kernel/infrastructure/events/events.module'
+import { QueueModule } from '@/shared-kernel/infrastructure/queue/queue.module'
 import { SchedulerModule } from '@/shared-kernel/infrastructure/scheduler/scheduler.module'
 import { StorageModule } from '@/shared-kernel/infrastructure/storage/storage.module'
 
@@ -89,6 +90,7 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
     AuthModule, // Auth module (authentication + DDD example)
     AdminModule, // Admin module (admin-only endpoints)
     AssetModule, // Asset module (file upload + linking + cleanup)
+    QueueModule.register(), // Queue module (sync / redis driver)
   ],
   controllers: [
     // Dev helper controller (dev only)

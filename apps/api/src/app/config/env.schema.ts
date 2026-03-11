@@ -94,6 +94,23 @@ export const envSchema = z
         message: 'REDIS_TTL must be greater than 0',
       }),
 
+    // Queue
+    QUEUE_DRIVER: z
+      .string()
+      .default('sync')
+      .transform((v) => v.toLowerCase())
+      .pipe(z.enum(['sync', 'redis'])),
+
+    QUEUE_NAME: z.string().default('default'),
+
+    QUEUE_CONCURRENCY: z
+      .string()
+      .default('5')
+      .transform((v) => Number.parseInt(v, 10))
+      .refine((v) => v > 0 && v <= 100, {
+        message: 'QUEUE_CONCURRENCY must be between 1-100',
+      }),
+
     // Scheduler
     SCHEDULER_ENABLED: z
       .string()
