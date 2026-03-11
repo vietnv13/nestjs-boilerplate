@@ -79,4 +79,26 @@ export default [
       ],
     },
   },
+  {
+    files: ['src/modules/admin/**/*.ts'],
+    rules: {
+      'boundaries/element-types': [
+        'error',
+        {
+          default: 'disallow',
+          rules: [
+            {
+              from: ['module'],
+              allow: [
+                'app',
+                'shared-kernel',
+                ['module', { moduleName: 'admin' }],
+                ['module', { moduleName: 'auth' }],
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  },
 ]

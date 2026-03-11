@@ -8,7 +8,7 @@ import {
   MailOutlined,
   UserOutlined,
 } from '@ant-design/icons'
-import { Avatar, Card, Col, Descriptions, Row, Skeleton, Tag, Typography } from 'antd'
+import { Avatar, Card, Col, Descriptions, Row, Skeleton, Space, Tag, Typography } from 'antd'
 
 import { $api } from '@/lib/fetch-client'
 
@@ -61,7 +61,7 @@ export default function ProfilePage() {
         <Col xs={24} md={17}>
           <Card
             title={
-              <Space>
+              <Space size={6}>
                 <IdcardOutlined />
                 Account Information
               </Space>
@@ -72,7 +72,7 @@ export default function ProfilePage() {
               <Descriptions column={1} size="large">
                 <Descriptions.Item
                   label={
-                    <Space>
+                    <Space size={6}>
                       <MailOutlined />
                       Email
                     </Space>
@@ -82,7 +82,7 @@ export default function ProfilePage() {
                 </Descriptions.Item>
                 <Descriptions.Item
                   label={
-                    <Space>
+                    <Space size={6}>
                       <IdcardOutlined />
                       User ID
                     </Space>
@@ -101,7 +101,7 @@ export default function ProfilePage() {
 
           <Card
             title={
-              <Space>
+              <Space size={6}>
                 <ClockCircleOutlined />
                 Current Session
               </Space>
@@ -111,7 +111,7 @@ export default function ProfilePage() {
               <Descriptions column={1} size="large">
                 <Descriptions.Item
                   label={
-                    <Space>
+                    <Space size={6}>
                       <ClockCircleOutlined />
                       Expires
                     </Space>
@@ -122,7 +122,7 @@ export default function ProfilePage() {
                 {sessionInfo?.ipAddress && (
                   <Descriptions.Item
                     label={
-                      <Space>
+                      <Space size={6}>
                         <GlobalOutlined />
                         IP Address
                       </Space>
@@ -134,7 +134,7 @@ export default function ProfilePage() {
                 {sessionInfo?.userAgent && (
                   <Descriptions.Item
                     label={
-                      <Space>
+                      <Space size={6}>
                         <LaptopOutlined />
                         Browser
                       </Space>
@@ -151,13 +151,5 @@ export default function ProfilePage() {
         </Col>
       </Row>
     </div>
-  )
-}
-
-function Space({ children, ...props }: { children: React.ReactNode; [k: string]: unknown }) {
-  return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }} {...props}>
-      {children}
-    </span>
   )
 }

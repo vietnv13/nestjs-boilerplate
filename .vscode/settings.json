@@ -1,9 +1,5 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "cSpell.words": ["initialised", "timestamptz", "traceparent", "varchar"],
-  "eslint.workingDirectories": [
-    {
-      "mode": "auto"
-    }
-  ]
+  "eslint.enable": false
 }

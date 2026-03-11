@@ -3,7 +3,7 @@
 import { useEffect, useMemo } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { useAdminSse } from '@/lib/admin-sse-context'
+import { useSse } from '@/lib/sse-context'
 
 export interface AdminNotification {
   id: string
@@ -25,13 +25,13 @@ function mergeIncoming(
   return [{ ...incoming, read: false }, ...prev].slice(0, 30)
 }
 
-export function useAdminNotifications() {
+export function useNotifications() {
   const queryClient = useQueryClient()
-  const { subscribe, isConnected } = useAdminSse()
+  const { subscribe, isConnected } = useSse()
 
   const { data: notifications = [] } = useQuery<AdminNotification[]>({
     queryKey: NOTIFICATIONS_QUERY_KEY,
-    queryFn: async () => [],
+    queryFn: () => [],
     staleTime: Infinity,
     initialData: [] as AdminNotification[],
   })

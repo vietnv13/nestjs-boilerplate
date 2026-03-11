@@ -3,7 +3,7 @@
 import { BellOutlined, CheckOutlined } from '@ant-design/icons'
 import { Badge, Button, Empty, Popover, Typography } from 'antd'
 
-import { useAdminNotifications } from '@/lib/use-admin-notifications'
+import { useNotifications } from '@/lib/use-notifications'
 
 const { Text } = Typography
 
@@ -18,7 +18,7 @@ export function NotificationBell({
   buttonSize = 36,
   iconSize = 18,
 }: NotificationBellProps) {
-  const { notifications, unreadCount, markAllRead, markRead } = useAdminNotifications()
+  const { notifications, unreadCount, markAllRead, markRead } = useNotifications()
 
   const content = (
     <div style={{ width: 300 }}>

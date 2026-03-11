@@ -1,3 +1,5 @@
+'use client'
+
 import { Button, Result } from 'antd'
 import Link from 'next/link'
 

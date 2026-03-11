@@ -3,8 +3,8 @@ import { ConfigService } from '@nestjs/config'
 import { createClient } from '@redis/client'
 
 import type { Env } from '@/app/config/env.schema'
-import type { RedisClientType } from '@redis/client'
 import type { OnModuleDestroy, OnModuleInit } from '@nestjs/common'
+import type { RedisClientType } from '@redis/client'
 
 type PatternHandler = (message: string, channel: string) => void
 
@@ -41,7 +41,7 @@ export class RedisPubSubService implements OnModuleInit, OnModuleDestroy {
     }
   }
 
-  async close(): Promise<void> {
+  close(): void {
     try {
       if (this.publisher.isOpen) this.publisher.destroy()
       if (this.subscriber.isOpen) this.subscriber.destroy()
@@ -54,8 +54,8 @@ export class RedisPubSubService implements OnModuleInit, OnModuleDestroy {
     await this.init()
   }
 
-  async onModuleDestroy(): Promise<void> {
-    await this.close()
+  onModuleDestroy(): void {
+    this.close()
   }
 
   get ready(): boolean {
@@ -83,10 +83,8 @@ export class RedisPubSubService implements OnModuleInit, OnModuleDestroy {
   async pSubscribe(pattern: string, handler: PatternHandler): Promise<boolean> {
     if (!this.isReady) return false
     try {
-      // @redis/client supports pSubscribe(pattern, listener)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (this.subscriber as any).pSubscribe(pattern, (message: string, channel: string) => {
-        handler(message, channel)
+      await this.subscriber.pSubscribe(pattern, (message, channel) => {
+        handler(String(message), String(channel))
       })
       return true
     } catch (error) {

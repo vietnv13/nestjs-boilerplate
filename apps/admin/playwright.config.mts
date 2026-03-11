@@ -6,7 +6,7 @@ import { z } from 'zod'
 config({ path: '.env.e2e' })
 
 const e2eEnvSchema = z.object({
-  BASE_URL: z.string().url().default('http://localhost:8001'),
+  BASE_URL: z.url().default('http://localhost:8001'),
   USE_API_MOCK: z
     .string()
     .default('false')

@@ -3,7 +3,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 import { Toaster } from 'sonner'
 
 import { AppProvider } from '@/app/provide'
-import { AdminSseProvider } from '@/lib/admin-sse-context'
+import { SseProvider } from '@/lib/sse-context'
 import { NavigationProgress } from '@/components/navigation-progress'
 import { $api } from '@/lib/fetch-client'
 
@@ -37,13 +37,13 @@ const Layout = async ({ children }: { children: ReactNode }) => {
       <body>
         <AntdRegistry>
           <AppProvider>
-            <AdminSseProvider>
+            <SseProvider>
               <NavigationProgress />
               <HydrationBoundary state={dehydratedState}>
                 {children}
                 <Toaster />
               </HydrationBoundary>
-            </AdminSseProvider>
+            </SseProvider>
           </AppProvider>
         </AntdRegistry>
       </body>

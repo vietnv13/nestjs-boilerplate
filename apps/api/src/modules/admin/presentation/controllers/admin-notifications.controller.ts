@@ -4,11 +4,11 @@ import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { SkipThrottle } from '@nestjs/throttler'
 
-import { AdminGuard } from '@/modules/admin/presentation/guards/admin.guard'
 import {
   AdminNotificationCreateDto,
   AdminNotificationPublishResponseDto,
 } from '@/modules/admin/presentation/dtos/admin-notification.dto'
+import { AdminGuard } from '@/modules/admin/presentation/guards/admin.guard'
 import { SseHubService } from '@/shared-kernel/infrastructure/sse/sse-hub.service'
 
 type AdminRequest = Express.Request & { user: { id: string; email: string; roles: string[] } }
