@@ -23,6 +23,10 @@ export const metadata: Metadata = {
     default: 'Admin',
   },
   description: 'Admin panel',
+  icons: {
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    shortcut: '/icon.svg',
+  },
 }
 
 const Layout = async ({ children }: { children: ReactNode }) => {

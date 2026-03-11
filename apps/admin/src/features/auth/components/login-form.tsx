@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
+import { AdminLogo } from '@/components/logo'
 import { appPaths } from '@/config/app-paths'
 import { $api } from '@/lib/fetch-client'
 
@@ -51,16 +52,13 @@ const LoginForm = () => {
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: 52,
-            height: 52,
             background: '#002140',
-            borderRadius: 12,
+            borderRadius: 16,
+            padding: '12px 20px',
             marginBottom: 16,
           }}
         >
-          <Text strong style={{ color: '#ffffff', fontSize: 20, letterSpacing: 2 }}>
-            A
-          </Text>
+          <AdminLogo scale={0.9} />
         </div>
         <Title level={3} style={{ margin: 0, color: '#002140' }}>
           Admin Panel

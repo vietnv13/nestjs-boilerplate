@@ -13,14 +13,12 @@ import { SetMetadata } from '@nestjs/common'
  * - Responses requiring additional metadata
  *
  * @example
- * // Single resource - no decorator, return directly
  * @Get(':id')
  * async getUser(@Param('id') id: string) {
  *   return { id, email: '...' };  // Direct return
  * }
  *
  * @example
- * // Collection resource - use decorator
  * @Get()
  * @UseEnvelope()  // ← Mark as needing envelope
  * async getUsers() {

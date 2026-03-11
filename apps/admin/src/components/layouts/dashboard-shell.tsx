@@ -14,6 +14,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useMemo, useState } from 'react'
 
+import { AdminLogo } from '@/components/logo'
 import { NotificationBell } from '@/components/layouts/notification-bell'
 
 import type { ReactNode } from 'react'
@@ -145,18 +146,9 @@ export function DashboardShell({ children, user }: DashboardShellProps) {
         }}
       >
         {/* Logo */}
-        <Text
-          strong
-          style={{
-            color: '#ffffff',
-            fontSize: 14,
-            letterSpacing: 2,
-            marginRight: 20,
-            flexShrink: 0,
-          }}
-        >
-          ADMIN
-        </Text>
+        <span style={{ marginRight: 20 }}>
+          <AdminLogo scale={0.75} />
+        </span>
 
         {/* Navigation — stretches to fill available space */}
         <div style={{ flex: 1, overflow: 'hidden' }}>

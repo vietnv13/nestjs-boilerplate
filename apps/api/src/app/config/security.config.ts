@@ -48,7 +48,7 @@ export const throttlerConfig = {
   // Time window (ms)
   ttl: 60_000, // 60 seconds
   // Max requests per window
-  limit: 10, // 10 requests per minute
+  limit: 1000, // 1000 requests per minute
   ignoreUserAgents: [],
   skipSuccessfulRequests: false,
   skipFailedRequests: false,
