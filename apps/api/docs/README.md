@@ -2,15 +2,15 @@
 
 ## Contents
 
-| Document                                         | Description                                             |
-| ------------------------------------------------ | ------------------------------------------------------- |
-| [Architecture Overview](./architecture.md)       | Layer structure, modules, request pipeline, env vars    |
-| [API Usage Examples](./api-usage.md)             | HTTP request/response examples for each endpoint        |
-| [Error Codes Reference](./error-codes.md)        | Domain error codes and their HTTP mappings              |
-| [Storage](./storage.md)                          | Local/S3 file uploads                                   |
-| [Notifications (SSE)](./notifications-sse.md)    | Real-time notifications via Server-Sent Events          |
-| [Testing Guide](./testing-guide.md)              | Unit, integration (Testcontainers), and E2E testing     |
-| [Production Error Checking](./error-checking.md) | How to check for errors in production                   |
+| Document                                         | Description                                          |
+| ------------------------------------------------ | ---------------------------------------------------- |
+| [Architecture Overview](./architecture.md)       | Layer structure, modules, request pipeline, env vars |
+| [API Usage Examples](./api-usage.md)             | HTTP request/response examples for each endpoint     |
+| [Error Codes Reference](./error-codes.md)        | Domain error codes and their HTTP mappings           |
+| [Storage](./storage.md)                          | Local/S3 file uploads                                |
+| [Notifications (SSE)](./notifications-sse.md)    | Real-time notifications via Server-Sent Events       |
+| [Testing Guide](./testing-guide.md)              | Unit, integration (Testcontainers), and E2E testing  |
+| [Production Error Checking](./error-checking.md) | How to check for errors in production                |
 
 ## Quick Start
 

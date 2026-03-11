@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 
-import type { ProblemDetailsDto } from '@workspace/nestjs-problem-details'
 import type { NestMiddleware } from '@nestjs/common'
+import type { ProblemDetailsDto } from '@workspace/nestjs-problem-details'
 import type { Request, Response, NextFunction } from 'express'
 
 /**

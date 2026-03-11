@@ -19,8 +19,8 @@ export class AppModule {}
 ```
 
 Headers supported:
+
 - `x-request-id`
 - `x-correlation-id`
 - `traceparent`, `tracestate`
 - `api-version`, `x-api-version`
-

@@ -90,10 +90,7 @@ Extend `BaseQueueHandler` and add it to the `providers` array of any feature mod
 ```ts
 // features/notification/jobs/send-welcome-email.handler.ts
 import { Injectable } from '@nestjs/common'
-import {
-  BaseQueueHandler,
-  QueueRegistry,
-} from '@workspace/nestjs-queue'
+import { BaseQueueHandler, QueueRegistry } from '@workspace/nestjs-queue'
 import type { HandlerResult } from '@workspace/nestjs-queue'
 
 interface Payload {

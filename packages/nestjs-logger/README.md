@@ -19,4 +19,3 @@ export class AppModule {}
 - `LoggerModule`
 - `createLoggerConfig(configService)`
 - `redactPaths` and `redactCensor`
-

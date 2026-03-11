@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 
-import { TodoRepository } from '@/modules/todo/infrastructure/repositories/todo.repository'
+import { TodoRepository } from '@/modules/todo/repositories/todo.repository'
 
 import type { InsertTodo, Todo } from '@workspace/database'
 
@@ -36,9 +36,9 @@ export class TodoService {
     data: Partial<Pick<InsertTodo, 'title' | 'description' | 'isCompleted'>>,
   ): Promise<Todo> {
     const updated = await this.todos.update(id, {
-      ...(data.title !== undefined ? { title: data.title.trim() } : {}),
-      ...(data.description !== undefined ? { description: data.description } : {}),
-      ...(data.isCompleted !== undefined ? { isCompleted: data.isCompleted } : {}),
+      ...(data.title === undefined ? {} : { title: data.title.trim() }),
+      ...(data.description === undefined ? {} : { description: data.description }),
+      ...(data.isCompleted === undefined ? {} : { isCompleted: data.isCompleted }),
     })
 
     if (!updated) {

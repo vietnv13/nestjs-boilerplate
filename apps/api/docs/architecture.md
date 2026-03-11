@@ -58,4 +58,3 @@ At startup (`src/main.ts`), the API:
 1. Loads config + validation.
 2. Installs global validation (DTOs) and exception handling (Problem Details).
 3. Sets up Swagger/Scalar docs in development.
-

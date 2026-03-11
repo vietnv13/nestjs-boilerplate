@@ -1,5 +1,5 @@
 import KeyvRedis from '@keyv/redis'
-import { CacheModule as NestCacheModule } from '@nestjs/cache-manager'
+import { CacheModule as NestCacheModule, type CacheModuleOptions } from '@nestjs/cache-manager'
 import { Global, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 
@@ -17,7 +17,7 @@ import { CacheService } from './cache.service.js'
     NestCacheModule.registerAsync({
       isGlobal: true,
       inject: [ConfigService],
-      useFactory: (configService: ConfigService): any => {
+      useFactory: (configService: ConfigService): CacheModuleOptions => {
         const host = configService.get<string>('REDIS_HOST')
         const ttl = (configService.get<number>('REDIS_TTL') ?? 60) * 1000 // ms
 

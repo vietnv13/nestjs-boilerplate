@@ -34,4 +34,3 @@ app.useGlobalFilters(app.get(ProblemDetailsFilter))
 ## Environment variables
 
 - `API_BASE_URL` (optional; used to build `type` URIs)
-

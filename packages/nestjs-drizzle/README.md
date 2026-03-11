@@ -4,7 +4,7 @@ NestJS module for creating a global Drizzle database instance (Postgres) and exp
 
 ## Usage
 
-1) Import `DrizzleModule` once (usually in `AppModule`):
+1. Import `DrizzleModule` once (usually in `AppModule`):
 
 ```ts
 import { Module } from '@nestjs/common'
@@ -17,7 +17,7 @@ import { DrizzleModule } from '@workspace/nestjs-drizzle'
 export class AppModule {}
 ```
 
-2) Inject the DB where needed:
+2. Inject the DB where needed:
 
 ```ts
 import { Inject, Injectable } from '@nestjs/common'
@@ -34,4 +34,3 @@ export class UsersRepository {
 
 - `DATABASE_URL` (required)
 - `DB_POOL_MAX`, `DB_POOL_MIN`, `DB_POOL_IDLE_TIMEOUT`, `DB_POOL_CONNECTION_TIMEOUT` (optional)
-

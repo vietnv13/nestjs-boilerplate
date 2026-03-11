@@ -3,20 +3,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 
-import { CleanupExpiredTokensJob } from '@/modules/auth/application/jobs/cleanup-expired-tokens.job'
-import { AUTH_IDENTITY_REPOSITORY } from '@/modules/auth/application/ports/auth-identity.repository.port'
-import { AUTH_SESSION_REPOSITORY } from '@/modules/auth/application/ports/auth-session.repository.port'
-import { PASSWORD_HASHER } from '@/modules/auth/application/ports/password-hasher.port'
-import { USER_ROLE_REPOSITORY } from '@/modules/auth/application/ports/user-role.repository.port'
-import { VERIFICATION_TOKEN_REPOSITORY } from '@/modules/auth/application/ports/verification-token.repository.port'
-import { AuthService } from '@/modules/auth/application/services/auth.service'
-import { AuthIdentityRepositoryImpl } from '@/modules/auth/infrastructure/repositories/auth-identity.repository'
-import { AuthSessionRepositoryImpl } from '@/modules/auth/infrastructure/repositories/auth-session.repository'
-import { UserRoleRepositoryImpl } from '@/modules/auth/infrastructure/repositories/user-role.repository'
-import { VerificationTokenRepositoryImpl } from '@/modules/auth/infrastructure/repositories/verification-token.repository'
-import { BcryptPasswordHasher } from '@/modules/auth/infrastructure/services/bcrypt-password-hasher'
-import { JwtStrategy } from '@/modules/auth/infrastructure/strategies/jwt.strategy'
-import { AuthController } from '@/modules/auth/presentation/controllers/auth.controller'
+import { AuthService } from '@/modules/auth/auth.service'
+import { AuthController } from '@/modules/auth/controllers/auth.controller'
+import { CleanupExpiredTokensJob } from '@/modules/auth/jobs/cleanup-expired-tokens.job'
+import { AuthIdentityRepository } from '@/modules/auth/repositories/auth-identity.repository'
+import { AuthSessionRepository } from '@/modules/auth/repositories/auth-session.repository'
+import { UserRoleRepository } from '@/modules/auth/repositories/user-role.repository'
+import { VerificationTokenRepository } from '@/modules/auth/repositories/verification-token.repository'
+import { BcryptPasswordHasher } from '@/modules/auth/services/bcrypt-password-hasher'
+import { JwtStrategy } from '@/modules/auth/strategies/jwt.strategy'
 import { UserModule } from '@/modules/user/user.module'
 
 import type { Env } from '@/app/config/env.schema'
@@ -49,29 +44,13 @@ import type { Env } from '@/app/config/env.schema'
   providers: [
     AuthService,
     JwtStrategy,
-    // Repository implementations (DIP)
-    {
-      provide: AUTH_IDENTITY_REPOSITORY,
-      useClass: AuthIdentityRepositoryImpl,
-    },
-    {
-      provide: AUTH_SESSION_REPOSITORY,
-      useClass: AuthSessionRepositoryImpl,
-    },
-    {
-      provide: PASSWORD_HASHER,
-      useClass: BcryptPasswordHasher,
-    },
-    {
-      provide: USER_ROLE_REPOSITORY,
-      useClass: UserRoleRepositoryImpl,
-    },
-    {
-      provide: VERIFICATION_TOKEN_REPOSITORY,
-      useClass: VerificationTokenRepositoryImpl,
-    },
+    AuthIdentityRepository,
+    AuthSessionRepository,
+    UserRoleRepository,
+    VerificationTokenRepository,
+    BcryptPasswordHasher,
     CleanupExpiredTokensJob,
   ],
-  exports: [AuthService, USER_ROLE_REPOSITORY],
+  exports: [AuthService],
 })
 export class AuthModule {}

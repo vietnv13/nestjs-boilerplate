@@ -1,9 +1,8 @@
 import { ConfigModule } from '@nestjs/config'
 import { Test } from '@nestjs/testing'
-import { ClsModule } from 'nestjs-cls'
-
 import { CacheModule } from '@workspace/nestjs-cache'
 import { DB_TOKEN } from '@workspace/nestjs-drizzle'
+import { ClsModule } from 'nestjs-cls'
 
 import { testDb } from './test-database'
 

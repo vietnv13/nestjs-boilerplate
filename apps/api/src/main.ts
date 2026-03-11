@@ -3,6 +3,7 @@ import path from 'node:path'
 import { RequestMethod } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
+import { ProblemDetailsFilter } from '@workspace/nestjs-problem-details'
 import express from 'express'
 import { Logger } from 'nestjs-pino'
 
@@ -20,7 +21,6 @@ import { TraceContextInterceptor } from '@/app/interceptors/trace-context.interc
 import { AppModule } from './app.module'
 
 import type { Env } from '@/app/config/env.schema'
-import { ProblemDetailsFilter } from '@workspace/nestjs-problem-details'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

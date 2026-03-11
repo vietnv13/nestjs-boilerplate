@@ -142,10 +142,7 @@ export class ProblemDetailsFilter implements ExceptionFilter {
   /**
    * Get detailed description (RFC 9457 §3.1.4)
    */
-  private getDetail(
-    exceptionResponse: unknown,
-    exception: unknown,
-  ): string {
+  private getDetail(exceptionResponse: unknown, exception: unknown): string {
     if (!(exception instanceof HttpException)) {
       if (exception instanceof Error) {
         return exception.message || 'Internal server error'
@@ -162,7 +159,7 @@ export class ProblemDetailsFilter implements ExceptionFilter {
     }
 
     if (typeof exceptionResponse === 'object' && 'message' in exceptionResponse) {
-      const message = exceptionResponse['message']
+      const message = exceptionResponse.message
       if (Array.isArray(message)) {
         return this.formatValidationErrors(message)
       }

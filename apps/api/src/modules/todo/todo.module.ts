@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 
-import { TodoRepository } from '@/modules/todo/infrastructure/repositories/todo.repository'
-import { TodoController } from '@/modules/todo/presentation/controllers/todo.controller'
+import { TodoController } from '@/modules/todo/controllers/todo.controller'
+import { TodoRepository } from '@/modules/todo/repositories/todo.repository'
 import { TodoService } from '@/modules/todo/todo.service'
 
 /**

@@ -7,9 +7,5 @@
     }
   },
   "include": ["src/**/*", "scripts/seed.ts", "*.config.ts", "*.config.mts"],
-  "exclude": [
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/__tests__/**/*"
-  ]
+  "exclude": ["**/*.test.ts", "**/*.spec.ts", "**/__tests__/**/*"]
 }

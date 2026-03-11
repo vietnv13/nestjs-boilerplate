@@ -6,10 +6,7 @@ import { QueueJobRepository } from '../queue-job.repository.js'
 import { QueueRegistry } from '../queue.registry.js'
 
 import type { IQueueDriver } from '../queue.port.js'
-import type {
-  DispatchOptions,
-  DispatchedJob,
-} from '../queue.types.js'
+import type { DispatchOptions, DispatchedJob } from '../queue.types.js'
 
 /**
  * SyncQueueDriver

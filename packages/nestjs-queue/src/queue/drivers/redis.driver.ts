@@ -7,10 +7,7 @@ import { QueueJobRepository } from '../queue-job.repository.js'
 import { QueueRegistry } from '../queue.registry.js'
 
 import type { IQueueDriver } from '../queue.port.js'
-import type {
-  DispatchOptions,
-  DispatchedJob,
-} from '../queue.types.js'
+import type { DispatchOptions, DispatchedJob } from '../queue.types.js'
 import type { Job as BullJob, Queue as BullQueue } from 'bullmq'
 
 export const BULL_QUEUE_NAME = 'BULL_QUEUE_NAME'

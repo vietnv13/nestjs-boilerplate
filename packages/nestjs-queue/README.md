@@ -64,4 +64,3 @@ export class UsersService {
 - `QUEUE_NAME` (default `default`)
 - `QUEUE_CONCURRENCY` (default `5`, redis driver only)
 - `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD` (redis driver only)
-

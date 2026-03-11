@@ -45,4 +45,3 @@ export class CleanupJob extends BaseJob {
 
 - `SCHEDULER_ENABLED` (default `false`)
 - `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD`
-

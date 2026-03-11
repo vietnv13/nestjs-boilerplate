@@ -1,6 +1,5 @@
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
-
 import { ProblemDetailsDto } from '@workspace/nestjs-problem-details'
 
 import type { INestApplication } from '@nestjs/common'
@@ -78,6 +77,8 @@ function addDefaultErrorResponses(document: OpenAPIObject): void {
  * - /swagger - Swagger UI (fallback)
  */
 export async function setupSwagger(app: INestApplication): Promise<void> {
+  await Promise.resolve()
+
   const config = new DocumentBuilder()
     .setTitle(swaggerConfig.title)
     .setDescription(swaggerConfig.description)

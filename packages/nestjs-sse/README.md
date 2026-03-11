@@ -19,7 +19,7 @@ Inject `SseHubService` to broadcast events to connected clients.
 ## Environment variables
 
 When using Redis pub/sub:
+
 - `REDIS_HOST` (required)
 - `REDIS_PORT` (default `6379`)
 - `REDIS_PASSWORD` (optional)
-

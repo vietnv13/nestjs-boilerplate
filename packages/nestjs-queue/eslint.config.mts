@@ -10,4 +10,3 @@ const config: Linter.Config[] = composeConfig({
 })
 
 export default config
-

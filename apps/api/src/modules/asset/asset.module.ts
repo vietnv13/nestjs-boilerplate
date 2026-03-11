@@ -1,22 +1,14 @@
 import { Global, Module } from '@nestjs/common'
 
-import { CleanupAssetsJob } from '@/modules/asset/application/jobs/cleanup-assets.job'
-import { ASSET_REPOSITORY } from '@/modules/asset/application/ports/asset.repository.port'
-import { AssetService } from '@/modules/asset/application/services/asset.service'
-import { AssetRepositoryImpl } from '@/modules/asset/infrastructure/repositories/asset.repository'
-import { AssetController } from '@/modules/asset/presentation/controllers/asset.controller'
+import { AssetService } from '@/modules/asset/asset.service'
+import { AssetController } from '@/modules/asset/controllers/asset.controller'
+import { CleanupAssetsJob } from '@/modules/asset/jobs/cleanup-assets.job'
+import { AssetRepository } from '@/modules/asset/repositories/asset.repository'
 
 @Global()
 @Module({
   controllers: [AssetController],
-  providers: [
-    AssetService,
-    CleanupAssetsJob,
-    {
-      provide: ASSET_REPOSITORY,
-      useClass: AssetRepositoryImpl,
-    },
-  ],
+  providers: [AssetService, CleanupAssetsJob, AssetRepository],
   exports: [AssetService],
 })
 export class AssetModule {}

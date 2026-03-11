@@ -1,14 +1,20 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 
-import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository'
+import { UserRepository } from '@/modules/user/repositories/user.repository'
 
-import type { CreateUserDto, UpdateUserDto, UserResponseDto } from '@/modules/user/presentation/dtos/user.dto'
+import type { CreateUserDto, UpdateUserDto, UserResponseDto } from '@/modules/user/dtos/user.dto'
+import type { UserDatabase } from '@workspace/database'
 
 @Injectable()
 export class UsersService {
   constructor(private readonly users: UserRepository) {}
 
-  private toResponseDto(user: any): UserResponseDto {
+  private toResponseDto(user: UserDatabase): UserResponseDto {
     return {
       ...user,
       role: user.role === 'admin' ? 'admin' : 'user',
