@@ -1,4 +1,6 @@
-import { index, jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import { index, jsonb, pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+
+export const articleStatusEnum = pgEnum('article_status', ['draft', 'published', 'archived'])
 
 /**
  * Articles table
@@ -10,9 +12,7 @@ export const articlesTable = pgTable(
     title: text('title').notNull(),
     content: text('content').notNull(),
     slug: text('slug').notNull().unique(),
-    status: text('status', { enum: ['draft', 'published', 'archived'] })
-      .notNull()
-      .default('draft'),
+    status: articleStatusEnum('status').notNull().default('draft'),
     tags: jsonb('tags').$type<string[]>().notNull().default([]),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })

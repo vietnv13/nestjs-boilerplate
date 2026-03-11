@@ -1,5 +1,5 @@
 {
-  "id": "3c37652d-cc3f-4c8e-aa07-3a0133d2056c",
+  "id": "e14a0787-8ade-4708-ba27-9c3711d6aec1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -35,7 +35,8 @@
         },
         "status": {
           "name": "status",
-          "type": "text",
+          "type": "article_status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'draft'"
@@ -285,7 +286,7 @@
           "name": "preferences",
           "type": "jsonb",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "'{}'::jsonb"
         },
         "created_at": {
@@ -491,7 +492,7 @@
           "name": "banned",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": false
         },
         "ban_reason": {
@@ -502,7 +503,7 @@
         },
         "ban_expires": {
           "name": "ban_expires",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
         },
@@ -603,6 +604,21 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "verifications_expires_at_idx": {
+          "name": "verifications_expires_at_idx",
+          "columns": [
+            {
+              "expression": "expires_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {},
@@ -657,7 +673,38 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "todos_is_completed_idx": {
+          "name": "todos_is_completed_idx",
+          "columns": [
+            {
+              "expression": "is_completed",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "todos_created_at_idx": {
+          "name": "todos_created_at_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -666,7 +713,13 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.article_status": {
+      "name": "article_status",
+      "schema": "public",
+      "values": ["draft", "published", "archived"]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},

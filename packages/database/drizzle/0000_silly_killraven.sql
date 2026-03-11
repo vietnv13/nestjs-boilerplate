@@ -1,9 +1,12 @@
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+--> statement-breakpoint
+CREATE TYPE "public"."article_status" AS ENUM('draft', 'published', 'archived');--> statement-breakpoint
 CREATE TABLE "articles" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" text NOT NULL,
 	"content" text NOT NULL,
 	"slug" text NOT NULL,
-	"status" text DEFAULT 'draft' NOT NULL,
+	"status" "article_status" DEFAULT 'draft' NOT NULL,
 	"tags" jsonb DEFAULT '[]'::jsonb NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
@@ -32,7 +35,7 @@ CREATE TABLE "profiles" (
 	"display_name" varchar(50),
 	"avatar_url" text,
 	"bio" varchar(500),
-	"preferences" jsonb DEFAULT '{}'::jsonb,
+	"preferences" jsonb DEFAULT '{}'::jsonb NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
@@ -56,9 +59,9 @@ CREATE TABLE "users" (
 	"email_verified" boolean DEFAULT false NOT NULL,
 	"image" text,
 	"role" text,
-	"banned" boolean DEFAULT false,
+	"banned" boolean DEFAULT false NOT NULL,
 	"ban_reason" text,
-	"ban_expires" timestamp,
+	"ban_expires" timestamp with time zone,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
@@ -92,4 +95,7 @@ CREATE INDEX "sessions_user_id_idx" ON "sessions" USING btree ("user_id");--> st
 CREATE UNIQUE INDEX "sessions_token_idx" ON "sessions" USING btree ("token");--> statement-breakpoint
 CREATE INDEX "sessions_expires_at_idx" ON "sessions" USING btree ("expires_at");--> statement-breakpoint
 CREATE UNIQUE INDEX "users_email_idx" ON "users" USING btree ("email");--> statement-breakpoint
-CREATE INDEX "verifications_identifier_idx" ON "verifications" USING btree ("identifier");
+CREATE INDEX "verifications_identifier_idx" ON "verifications" USING btree ("identifier");--> statement-breakpoint
+CREATE INDEX "verifications_expires_at_idx" ON "verifications" USING btree ("expires_at");--> statement-breakpoint
+CREATE INDEX "todos_is_completed_idx" ON "todos" USING btree ("is_completed");--> statement-breakpoint
+CREATE INDEX "todos_created_at_idx" ON "todos" USING btree ("created_at");

@@ -20,7 +20,10 @@ export const verificationsTable = pgTable(
       .defaultNow()
       .$onUpdate(() => new Date()),
   },
-  (table) => [index('verifications_identifier_idx').on(table.identifier)],
+  (table) => [
+    index('verifications_identifier_idx').on(table.identifier),
+    index('verifications_expires_at_idx').on(table.expiresAt),
+  ],
 )
 
 export type VerificationTokenDatabase = typeof verificationsTable.$inferSelect

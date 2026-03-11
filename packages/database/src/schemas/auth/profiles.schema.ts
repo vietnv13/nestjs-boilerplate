@@ -25,7 +25,7 @@ export const profilesTable = pgTable('profiles', {
   displayName: varchar('display_name', { length: 50 }),
   avatarUrl: text('avatar_url'),
   bio: varchar('bio', { length: 500 }),
-  preferences: jsonb('preferences').$type<UserPreferences>().default({}),
+  preferences: jsonb('preferences').$type<UserPreferences>().notNull().default({}),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true })
     .notNull()
