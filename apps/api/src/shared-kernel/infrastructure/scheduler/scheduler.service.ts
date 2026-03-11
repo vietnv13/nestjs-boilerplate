@@ -11,7 +11,7 @@ import { ScheduledJobRepository } from './scheduled-job.repository'
 import { SchedulerRegistry } from './scheduler.registry'
 
 import type { Env } from '@/app/config/env.schema'
-import type { OnModuleDestroy, OnModuleInit } from '@nestjs/common'
+import type { OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common'
 
 class JobTimeoutError extends Error {
   constructor(jobName: string, ms: number) {
@@ -34,7 +34,7 @@ class JobTimeoutError extends Error {
  *   4. Release the Redis lock.
  */
 @Injectable()
-export class SchedulerService implements OnModuleInit, OnModuleDestroy {
+export class SchedulerService implements OnApplicationBootstrap, OnModuleDestroy {
   private readonly logger = new Logger(SchedulerService.name)
   private readonly cronJobs: Croner[] = []
 
@@ -52,7 +52,25 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
     private readonly config: ConfigService<Env, true>,
   ) {}
 
-  async onModuleInit(): Promise<void> {
+  /**
+   * Manually trigger a job run (used by dev-only diagnostics endpoints).
+   * Uses the DB-configured timeout if the job exists, or inserts defaults first.
+   */
+  async runOnce(jobName: string): Promise<void> {
+    const job = this.registry.get(jobName)
+    if (!job) throw new Error(`Job not found in registry: ${jobName}`)
+
+    const config = await this.scheduledJobRepo.ensureExists(
+      job.jobName,
+      job.defaultCron,
+      job.defaultTimeoutMs,
+      job.description,
+    )
+
+    await this.runJob(jobName, config.timeoutMs)
+  }
+
+  async onApplicationBootstrap(): Promise<void> {
     const enabled = this.config.get('SCHEDULER_ENABLED', { infer: true })
     if (!enabled) {
       this.logger.log('Scheduler is DISABLED (set SCHEDULER_ENABLED=true to enable)')
@@ -61,6 +79,11 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
 
     const jobs = this.registry.getAll()
     this.logger.log(`Initializing ${jobs.length} scheduled job(s) [instance=${this.instanceId}]`)
+    if (jobs.length === 0) {
+      this.logger.warn(
+        'No scheduled jobs registered. Ensure job providers are included in their feature module providers array.',
+      )
+    }
 
     for (const job of jobs) {
       const config = await this.scheduledJobRepo.ensureExists(
@@ -79,12 +102,18 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
         config.cron,
         { protect: true }, // prevent overlapping runs on the same instance
         () => {
-          void this.runJob(job.jobName, config.timeoutMs)
+          // Croner callback can be async; always catch so errors never become silent unhandled rejections.
+          void this.runJob(job.jobName, config.timeoutMs).catch((error: unknown) => {
+            this.logger.error(`[${job.jobName}] scheduler tick failed`, { error })
+          })
         },
       )
 
       this.cronJobs.push(cronJob)
-      this.logger.log(`  ✓  ${job.jobName} [${config.cron}]`)
+      const nextRun = cronJob.nextRun()
+      this.logger.log(
+        `  ✓  ${job.jobName} [${config.cron}] next=${nextRun?.toISOString() ?? 'n/a'}`,
+      )
     }
   }
 

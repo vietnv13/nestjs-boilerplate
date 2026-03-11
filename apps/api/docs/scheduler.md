@@ -81,7 +81,7 @@ AppModule init
 Each feature module init
   └── MyJob.onModuleInit()           ← calls registry.register(this)
 
-SchedulerService.onModuleInit()
+SchedulerService.onApplicationBootstrap()
   ├── reads SCHEDULER_ENABLED env
   ├── for each registered job:
   │     ├── ensureExists() in scheduled_jobs (insert if new, keep if exists)
