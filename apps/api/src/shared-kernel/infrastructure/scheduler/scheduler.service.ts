@@ -118,10 +118,16 @@ export class SchedulerService implements OnApplicationBootstrap, OnModuleDestroy
   }
 
   onModuleDestroy(): void {
+    if (this.cronJobs.length === 0) {
+      return
+    }
+
     for (const job of this.cronJobs) {
       job.stop()
     }
-    this.logger.log('All scheduled jobs stopped')
+    this.logger.log(
+      `Scheduler stopped (${this.cronJobs.length} cron job(s)) [instance=${this.instanceId}]`,
+    )
   }
 
   private async runJob(jobName: string, timeoutMs: number): Promise<void> {

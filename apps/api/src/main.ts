@@ -27,6 +27,10 @@ async function bootstrap() {
 
   app.useLogger(app.get(Logger))
 
+  // Use Nest's built-in shutdown hooks (SIGTERM/SIGINT) instead of custom handlers.
+  // This avoids noisy "shutdown" logs during `nest start --watch` restarts.
+  app.enableShutdownHooks()
+
   app.enableCors(corsConfig)
 
   app.setGlobalPrefix('api', {
@@ -97,25 +101,6 @@ async function bootstrap() {
   if (process.send) {
     process.send('ready')
   }
-
-  // Graceful shutdown — drain in-flight requests before exiting.
-  // PM2 sends SIGINT on `pm2 reload`; the kill_timeout gives us 10 s to finish.
-  let shuttingDown = false
-  const shutdown = async (signal: string) => {
-    if (shuttingDown) return
-    shuttingDown = true
-
-    logger.log(`Received ${signal} — shutting down gracefully`)
-    await app.close()
-    process.exitCode = 0
-  }
-
-  process.on('SIGINT', () => {
-    void shutdown('SIGINT')
-  })
-  process.on('SIGTERM', () => {
-    void shutdown('SIGTERM')
-  })
 }
 
 await bootstrap()

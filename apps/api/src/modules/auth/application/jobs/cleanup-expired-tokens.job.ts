@@ -29,7 +29,6 @@ export class CleanupExpiredTokensJob extends BaseJob {
   }
 
   async run(): Promise<JobResult> {
-    console.log(`[${this.jobName}] Starting cleanup of expired verification tokens...`)
     const deleted = await this.tokenRepo.deleteExpired()
     return { deleted }
   }
