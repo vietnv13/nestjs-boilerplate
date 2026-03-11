@@ -2,11 +2,10 @@ import { Inject, Injectable } from '@nestjs/common'
 import { usersTable } from '@workspace/database'
 import { eq } from 'drizzle-orm'
 
-import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
+import { DB_TOKEN } from '@workspace/nestjs-drizzle'
 
-import type { UserRoleRepository } from '@/modules/auth/application/ports/user-role.repository.port'
-import type { RoleType } from '@/shared-kernel/domain/value-objects/role.vo'
-import type { DrizzleDb } from '@/shared-kernel/infrastructure/db/db.port'
+import type { Role, UserRoleRepository } from '@/modules/auth/application/ports/user-role.repository.port'
+import type { DrizzleDb } from '@workspace/nestjs-drizzle'
 
 /**
  * Drizzle UserRole Repository implementation
@@ -20,7 +19,7 @@ export class UserRoleRepositoryImpl implements UserRoleRepository {
     private readonly db: DrizzleDb,
   ) {}
 
-  async setRole(userId: string, role: RoleType | null): Promise<void> {
+  async setRole(userId: string, role: Role | null): Promise<void> {
     await this.db
       .update(usersTable)
       .set({
@@ -30,7 +29,7 @@ export class UserRoleRepositoryImpl implements UserRoleRepository {
       .where(eq(usersTable.id, userId))
   }
 
-  async getRole(userId: string): Promise<RoleType | null> {
+  async getRole(userId: string): Promise<Role | null> {
     const result = await this.db
       .select({ role: usersTable.role })
       .from(usersTable)
@@ -41,15 +40,15 @@ export class UserRoleRepositoryImpl implements UserRoleRepository {
       return null
     }
 
-    return result[0]!.role as RoleType | null
+    return result[0]!.role as Role | null
   }
 
-  async hasRole(userId: string, role: RoleType): Promise<boolean> {
+  async hasRole(userId: string, role: Role): Promise<boolean> {
     const userRole = await this.getRole(userId)
     return userRole === role
   }
 
-  async getUserIdsByRole(role: RoleType): Promise<string[]> {
+  async getUserIdsByRole(role: Role): Promise<string[]> {
     const results = await this.db
       .select({ id: usersTable.id })
       .from(usersTable)

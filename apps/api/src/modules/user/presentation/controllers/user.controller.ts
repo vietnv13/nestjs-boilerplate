@@ -10,28 +10,19 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common'
-import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'
 
-import { CreateUserCommand } from '@/modules/user/application/commands/create-user.command'
-import { DeleteUserCommand } from '@/modules/user/application/commands/delete-user.command'
-import { UpdateUserCommand } from '@/modules/user/application/commands/update-user.command'
-import { GetAllUsersQuery } from '@/modules/user/application/queries/get-all-users.query'
-import { GetUserByEmailQuery } from '@/modules/user/application/queries/get-user-by-email.query'
-import { GetUserByIdQuery } from '@/modules/user/application/queries/get-user-by-id.query'
 import {
   CreateUserDto,
   UpdateUserDto,
   UserResponseDto,
 } from '@/modules/user/presentation/dtos/user.dto'
+import { UsersService } from '@/modules/user/users.service'
 
 @ApiTags('users')
 @Controller('users')
 export class UserController {
-  constructor(
-    private readonly commandBus: CommandBus,
-    private readonly queryBus: QueryBus,
-  ) {}
+  constructor(private readonly users: UsersService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
@@ -39,8 +30,7 @@ export class UserController {
   @ApiResponse({ status: 400, description: 'Invalid input' })
   @ApiResponse({ status: 409, description: 'User already exists' })
   async createUser(@Body() dto: CreateUserDto): Promise<UserResponseDto> {
-    const command = new CreateUserCommand(dto.email, dto.name, dto.role)
-    return this.commandBus.execute(command)
+    return this.users.create(dto)
   }
 
   @Get()
@@ -54,8 +44,7 @@ export class UserController {
     @Query('limit') limit: number = 10,
     @Query('offset') offset: number = 0,
   ): Promise<UserResponseDto[]> {
-    const query = new GetAllUsersQuery(Number(limit), Number(offset))
-    return this.queryBus.execute(query)
+    return this.users.findAll(Number(limit), Number(offset))
   }
 
   @Get(':id')
@@ -63,8 +52,7 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'User found', type: UserResponseDto })
   @ApiResponse({ status: 404, description: 'User not found' })
   async getUserById(@Param('id') id: string): Promise<UserResponseDto> {
-    const query = new GetUserByIdQuery(id)
-    return this.queryBus.execute(query)
+    return this.users.findById(id)
   }
 
   @Get('email/:email')
@@ -72,8 +60,7 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'User found', type: UserResponseDto })
   @ApiResponse({ status: 404, description: 'User not found' })
   async getUserByEmail(@Param('email') email: string): Promise<UserResponseDto> {
-    const query = new GetUserByEmailQuery(email)
-    return this.queryBus.execute(query)
+    return this.users.findByEmail(email)
   }
 
   @Put(':id')
@@ -81,8 +68,7 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'User updated successfully', type: UserResponseDto })
   @ApiResponse({ status: 404, description: 'User not found' })
   async updateUser(@Param('id') id: string, @Body() dto: UpdateUserDto): Promise<UserResponseDto> {
-    const command = new UpdateUserCommand(id, dto)
-    return this.commandBus.execute(command)
+    return this.users.update(id, dto)
   }
 
   @Delete(':id')
@@ -91,7 +77,6 @@ export class UserController {
   @ApiResponse({ status: 204, description: 'User deleted successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
   async deleteUser(@Param('id') id: string): Promise<void> {
-    const command = new DeleteUserCommand(id)
-    await this.commandBus.execute(command)
+    await this.users.delete(id)
   }
 }

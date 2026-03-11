@@ -2,20 +2,20 @@ import { randomUUID } from 'node:crypto'
 
 import { describe, it, expect, beforeEach } from 'vitest'
 
-import { UserRepositoryImpl } from '@/shared-kernel/infrastructure/repositories/user.repository'
+import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository'
 
 import { UserFixtures } from '../../fixtures/user.fixtures'
 import { testDb } from '../setup/test-database'
 import { TestModuleBuilder } from '../setup/test-module'
 
 describe('userRepository Integration Tests', () => {
-  let userRepository: UserRepositoryImpl
+  let userRepository: UserRepository
   let fixtures: UserFixtures
 
   beforeEach(async () => {
-    const module = await TestModuleBuilder.createTestingModule([], [UserRepositoryImpl])
+    const module = await TestModuleBuilder.createTestingModule([], [UserRepository])
 
-    userRepository = module.get<UserRepositoryImpl>(UserRepositoryImpl)
+    userRepository = module.get<UserRepository>(UserRepository)
     fixtures = new UserFixtures(testDb.db!)
   })
 
@@ -62,9 +62,14 @@ describe('userRepository Integration Tests', () => {
     it('should ban a user', async () => {
       const user = await fixtures.createUser()
 
-      const result = await userRepository.setBanned(user.id, true, 'Violation of terms')
+      const updated = await userRepository.update(user.id, {
+        banned: true,
+        banReason: 'Violation of terms',
+      })
 
-      expect(result).toBe(true)
+      expect(updated).toBeDefined()
+      expect(updated?.banned).toBe(true)
+      expect(updated?.banReason).toBe('Violation of terms')
 
       const bannedUser = await userRepository.findById(user.id)
       expect(bannedUser?.banned).toBe(true)
@@ -73,11 +78,11 @@ describe('userRepository Integration Tests', () => {
 
     it('should unban a user', async () => {
       const user = await fixtures.createUser()
-      await userRepository.setBanned(user.id, true, 'Test ban')
+      await userRepository.update(user.id, { banned: true, banReason: 'Test ban' })
 
-      const result = await userRepository.setBanned(user.id, false)
-
-      expect(result).toBe(true)
+      const updated = await userRepository.update(user.id, { banned: false, banReason: null })
+      expect(updated).toBeDefined()
+      expect(updated?.banned).toBe(false)
 
       const unbannedUser = await userRepository.findById(user.id)
       expect(unbannedUser?.banned).toBe(false)

@@ -2,10 +2,9 @@ import { Injectable } from '@nestjs/common'
 import dayjs from 'dayjs'
 
 import { AssetService } from '@/modules/asset/application/services/asset.service'
-import { BaseJob } from '@/shared-kernel/infrastructure/scheduler/base.job'
-import { SchedulerRegistry } from '@/shared-kernel/infrastructure/scheduler/scheduler.registry'
+import { BaseJob, SchedulerRegistry } from '@workspace/nestjs-scheduler'
 
-import type { JobResult } from '@/shared-kernel/infrastructure/scheduler/types'
+import type { JobResult } from '@workspace/nestjs-scheduler'
 
 /**
  * CleanupAssetsJob

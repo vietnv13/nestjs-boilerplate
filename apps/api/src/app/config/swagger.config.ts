@@ -1,8 +1,7 @@
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
 
-import metadata from '@/metadata'
-import { ProblemDetailsDto } from '@/shared-kernel/infrastructure/dtos/problem-details.dto'
+import { ProblemDetailsDto } from '@workspace/nestjs-problem-details'
 
 import type { INestApplication } from '@nestjs/common'
 import type { OpenAPIObject, SwaggerCustomOptions } from '@nestjs/swagger'
@@ -79,8 +78,6 @@ function addDefaultErrorResponses(document: OpenAPIObject): void {
  * - /swagger - Swagger UI (fallback)
  */
 export async function setupSwagger(app: INestApplication): Promise<void> {
-  await SwaggerModule.loadPluginMetadata(metadata)
-
   const config = new DocumentBuilder()
     .setTitle(swaggerConfig.title)
     .setDescription(swaggerConfig.description)

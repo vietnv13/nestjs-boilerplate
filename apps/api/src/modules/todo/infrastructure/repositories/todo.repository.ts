@@ -2,10 +2,9 @@ import { Inject, Injectable } from '@nestjs/common'
 import { todosTable } from '@workspace/database'
 import { eq } from 'drizzle-orm'
 
-import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
+import { DB_TOKEN } from '@workspace/nestjs-drizzle'
 
-import type { TodoRepository } from '@/modules/todo/application/ports/todo.repository.port'
-import type { DrizzleDb } from '@/shared-kernel/infrastructure/db/db.port'
+import type { DrizzleDb } from '@workspace/nestjs-drizzle'
 import type { Todo, InsertTodo } from '@workspace/database'
 
 /**
@@ -14,7 +13,7 @@ import type { Todo, InsertTodo } from '@workspace/database'
  * Implements TodoRepository interface using Drizzle ORM
  */
 @Injectable()
-export class TodoRepositoryImpl implements TodoRepository {
+export class TodoRepository {
   constructor(@Inject(DB_TOKEN) private readonly db: DrizzleDb) {}
 
   async findAll(): Promise<Todo[]> {

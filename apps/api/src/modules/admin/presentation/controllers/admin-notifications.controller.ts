@@ -9,7 +9,7 @@ import {
   AdminNotificationPublishResponseDto,
 } from '@/modules/admin/presentation/dtos/admin-notification.dto'
 import { AdminGuard } from '@/modules/admin/presentation/guards/admin.guard'
-import { SseHubService } from '@/shared-kernel/infrastructure/sse/sse-hub.service'
+import { SseHubService } from '@workspace/nestjs-sse'
 
 type AdminRequest = Express.Request & { user: { id: string; email: string; roles: string[] } }
 

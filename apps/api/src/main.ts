@@ -2,17 +2,13 @@ import path from 'node:path'
 
 import { RequestMethod } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { NestFactory, Reflector } from '@nestjs/core'
+import { NestFactory } from '@nestjs/core'
 import express from 'express'
 import { Logger } from 'nestjs-pino'
 
 import { corsConfig } from '@/app/config/security.config'
 import { setupSwagger } from '@/app/config/swagger.config'
 import { createValidationPipe } from '@/app/config/validation.config'
-import { AllExceptionsFilter } from '@/app/filters/all-exceptions.filter'
-import { DomainExceptionFilter } from '@/app/filters/domain-exception.filter'
-import { ProblemDetailsFilter } from '@/app/filters/problem-details.filter'
-import { ThrottlerExceptionFilter } from '@/app/filters/throttler-exception.filter'
 import { CorrelationIdInterceptor } from '@/app/interceptors/correlation-id.interceptor'
 import { DeprecationInterceptor } from '@/app/interceptors/deprecation.interceptor'
 import { LinkHeaderInterceptor } from '@/app/interceptors/link-header.interceptor'
@@ -20,11 +16,11 @@ import { LocationHeaderInterceptor } from '@/app/interceptors/location-header.in
 import { RequestContextInterceptor } from '@/app/interceptors/request-context.interceptor'
 import { TimeoutInterceptor } from '@/app/interceptors/timeout.interceptor'
 import { TraceContextInterceptor } from '@/app/interceptors/trace-context.interceptor'
-import { TransformInterceptor } from '@/app/interceptors/transform.interceptor'
 
 import { AppModule } from './app.module'
 
 import type { Env } from '@/app/config/env.schema'
+import { ProblemDetailsFilter } from '@workspace/nestjs-problem-details'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -57,14 +53,8 @@ async function bootstrap() {
     ],
   })
 
-  // Global exception filters (specific to general)
-  // Order matters: most specific first, most general last
-  app.useGlobalFilters(
-    app.get(DomainExceptionFilter), // Domain exceptions (most specific)
-    app.get(ThrottlerExceptionFilter), // Rate limiting
-    app.get(ProblemDetailsFilter), // HTTP exceptions
-    app.get(AllExceptionsFilter), // Catch-all (most general)
-  )
+  // Global exception filter (RFC 9457 Problem Details)
+  app.useGlobalFilters(app.get(ProblemDetailsFilter))
 
   // Global interceptors — order determines execution sequence
   app.useGlobalInterceptors(
@@ -75,7 +65,6 @@ async function bootstrap() {
     new LocationHeaderInterceptor(),
     new LinkHeaderInterceptor(),
     app.get(DeprecationInterceptor),
-    new TransformInterceptor(app.get(Reflector)),
   )
 
   app.useGlobalPipes(createValidationPipe())

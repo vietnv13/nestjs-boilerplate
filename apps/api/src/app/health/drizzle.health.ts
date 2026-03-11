@@ -1,9 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common'
 import { sql } from 'drizzle-orm'
 
-import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
+import { DB_TOKEN } from '@workspace/nestjs-drizzle'
 
-import type { DrizzleDb } from '@/shared-kernel/infrastructure/db/db.port'
+import type { DrizzleDb } from '@workspace/nestjs-drizzle'
 import type { HealthIndicatorResult } from '@nestjs/terminus'
 
 /**

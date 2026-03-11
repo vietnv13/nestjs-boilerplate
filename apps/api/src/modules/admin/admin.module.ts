@@ -4,7 +4,7 @@ import { AdminAuthController } from '@/modules/admin/presentation/controllers/ad
 import { AdminNotificationsController } from '@/modules/admin/presentation/controllers/admin-notifications.controller'
 import { AdminSseController } from '@/modules/admin/presentation/controllers/admin-sse.controller'
 import { AuthModule } from '@/modules/auth/auth.module'
-import { SseModule } from '@/shared-kernel/infrastructure/sse/sse.module'
+import { SseModule } from '@workspace/nestjs-sse'
 
 /**
  * Admin Module

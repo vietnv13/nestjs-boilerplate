@@ -3,10 +3,10 @@ import { sessionsTable } from '@workspace/database'
 import { eq, lt } from 'drizzle-orm'
 
 import { AuthSession } from '@/modules/auth/domain/entities/auth-session.entity'
-import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
+import { DB_TOKEN } from '@workspace/nestjs-drizzle'
 
 import type { AuthSessionRepository } from '@/modules/auth/application/ports/auth-session.repository.port'
-import type { DrizzleDb } from '@/shared-kernel/infrastructure/db/db.port'
+import type { DrizzleDb } from '@workspace/nestjs-drizzle'
 
 @Injectable()
 export class AuthSessionRepositoryImpl implements AuthSessionRepository {

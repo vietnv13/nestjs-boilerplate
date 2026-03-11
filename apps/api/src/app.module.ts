@@ -1,23 +1,16 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
-import { EventEmitterModule } from '@nestjs/event-emitter'
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
 import { ClsModule } from 'nestjs-cls'
 
-import { createClsConfig } from '@/app/config/cls.config'
 import { validateEnv } from '@/app/config/env.schema'
 import { throttlerConfig } from '@/app/config/security.config'
-import { AllExceptionsFilter } from '@/app/filters/all-exceptions.filter'
-import { DomainExceptionFilter } from '@/app/filters/domain-exception.filter'
-import { ProblemDetailsFilter } from '@/app/filters/problem-details.filter'
-import { ThrottlerExceptionFilter } from '@/app/filters/throttler-exception.filter'
 import { HealthModule } from '@/app/health/health.module'
 import { CorrelationIdInterceptor } from '@/app/interceptors/correlation-id.interceptor'
 import { DeprecationInterceptor } from '@/app/interceptors/deprecation.interceptor'
 import { RequestContextInterceptor } from '@/app/interceptors/request-context.interceptor'
 import { TraceContextInterceptor } from '@/app/interceptors/trace-context.interceptor'
-import { LoggerModule } from '@/app/logger/logger.module'
 import { ApiVersionMiddleware } from '@/app/middleware/api-version.middleware'
 import { ETagMiddleware } from '@/app/middleware/etag.middleware'
 import { SwaggerDevController } from '@/app/swagger/swagger-dev.controller'
@@ -26,13 +19,14 @@ import { AssetModule } from '@/modules/asset/asset.module'
 import { AuthModule } from '@/modules/auth/auth.module'
 import { TodoModule } from '@/modules/todo/todo.module'
 import { UserModule } from '@/modules/user/user.module'
-import { CacheModule } from '@/shared-kernel/infrastructure/cache/cache.module'
-import { DrizzleModule } from '@/shared-kernel/infrastructure/db/db.module'
-import { DomainEventsModule } from '@/shared-kernel/infrastructure/events/domain-events.module'
-import { EventsModule } from '@/shared-kernel/infrastructure/events/events.module'
-import { QueueModule } from '@/shared-kernel/infrastructure/queue/queue.module'
-import { SchedulerModule } from '@/shared-kernel/infrastructure/scheduler/scheduler.module'
-import { StorageModule } from '@/shared-kernel/infrastructure/storage/storage.module'
+import { CacheModule } from '@workspace/nestjs-cache'
+import { DrizzleModule } from '@workspace/nestjs-drizzle'
+import { QueueModule } from '@workspace/nestjs-queue'
+import { SchedulerModule } from '@workspace/nestjs-scheduler'
+import { StorageModule } from '@workspace/nestjs-storage'
+import { LoggerModule } from '@workspace/nestjs-logger'
+import { ProblemDetailsFilter } from '@workspace/nestjs-problem-details'
+import { createClsConfig } from '@workspace/nestjs-request-context'
 
 import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
 
@@ -42,7 +36,6 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
  * Architecture:
  * - Modular Layered Architecture
  * - Dependency Inversion Principle (DIP)
- * - DDD (Domain-Driven Design) where appropriate
  */
 @Module({
   imports: [
@@ -56,20 +49,8 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
     ClsModule.forRoot(createClsConfig()),
     // Logger module: high-performance structured logging (Pino)
     LoggerModule,
-    // Event module: domain and integration events
-    EventEmitterModule.forRoot({
-      wildcard: true, // Support wildcard event listeners (e.g., 'user.*')
-      delimiter: '.', // Event name delimiter
-      maxListeners: 10, // Max listeners per event
-      verboseMemoryLeak: true, // Warn when exceeding maxListeners
-      ignoreErrors: false, // Don't ignore event handler errors
-    }),
     // Database module: global Drizzle instance
     DrizzleModule.forRoot(),
-    // Domain events module: global domain event publisher
-    DomainEventsModule,
-    // Events module: sagas and event store
-    EventsModule,
     // Cache module: caching infrastructure
     CacheModule,
     // Storage module: local/S3 file storage
@@ -85,9 +66,9 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
     ]),
     HealthModule, // Health check module
     // Business modules
-    UserModule, // User management module (CQRS example)
-    TodoModule, // Todo module (enhanced with events)
-    AuthModule, // Auth module (authentication + DDD example)
+    UserModule,
+    TodoModule,
+    AuthModule,
     AdminModule, // Admin module (admin-only endpoints)
     AssetModule, // Asset module (file upload + linking + cleanup)
     QueueModule.register(), // Queue module (sync / redis driver)
@@ -102,11 +83,7 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
-    // Exception filters (require ClsService injection)
-    AllExceptionsFilter,
     ProblemDetailsFilter,
-    DomainExceptionFilter,
-    ThrottlerExceptionFilter,
     // Interceptors (require ClsService injection)
     RequestContextInterceptor,
     CorrelationIdInterceptor,

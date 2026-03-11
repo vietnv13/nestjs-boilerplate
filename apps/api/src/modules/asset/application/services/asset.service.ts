@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 
 import { ASSET_REPOSITORY } from '@/modules/asset/application/ports/asset.repository.port'
-import { StorageService } from '@/shared-kernel/infrastructure/storage/storage.service'
+import { StorageService } from '@workspace/nestjs-storage'
 
 import type { AssetRepository } from '@/modules/asset/application/ports/asset.repository.port'
 import type { AssetDatabase, AssetLinkDatabase } from '@workspace/database'

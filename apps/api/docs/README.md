@@ -5,7 +5,6 @@
 | Document                                         | Description                                             |
 | ------------------------------------------------ | ------------------------------------------------------- |
 | [Architecture Overview](./architecture.md)       | Layer structure, modules, request pipeline, env vars    |
-| [DDD Patterns](./ddd-patterns.md)                | Entities, aggregates, events, CQRS, repositories, sagas |
 | [API Usage Examples](./api-usage.md)             | HTTP request/response examples for each endpoint        |
 | [Error Codes Reference](./error-codes.md)        | Domain error codes and their HTTP mappings              |
 | [Storage](./storage.md)                          | Local/S3 file uploads                                   |
@@ -34,12 +33,10 @@ pnpm --filter api test:integration
 
 ## Key Concepts
 
-- **CQRS** — `todo` and `user` modules split reads/writes into Query/Command handlers
-- **DDD** — domain layer is pure TypeScript with no NestJS or Drizzle imports
-- **Application Service** — `auth` uses `AuthService` for complex multi-aggregate workflows
+- **Feature modules** — controllers call services; services use repositories (simple, SOLID)
 - **RFC 9457 Problem Details** — all errors return `application/problem+json`
-- **Event-Driven** — `BaseDomainEvent` + EventBus/EventEmitter2 for decoupled side effects
-- **Redis Cache** — `CacheService` wraps `@nestjs/cache-manager` with automatic invalidation
+- **Reusable packages** — cache/queue/scheduler/storage are workspace packages under `packages/`
+- **Redis cache** — `CacheService` wraps `@nestjs/cache-manager` with automatic invalidation
 - **Pino Logging** — structured JSON logs with request-scoped correlation IDs
 
 ## API Endpoints

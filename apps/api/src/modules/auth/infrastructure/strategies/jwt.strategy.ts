@@ -4,7 +4,6 @@ import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
 import type { Env } from '@/app/config/env.schema'
-import type { RoleType } from '@/shared-kernel/domain/value-objects/role.vo'
 
 /**
  * JWT payload
@@ -12,7 +11,7 @@ import type { RoleType } from '@/shared-kernel/domain/value-objects/role.vo'
 export interface JwtPayload {
   sub: string // User ID
   email: string
-  roles: RoleType[]
+  roles: string[]
   sessionId: string // Session ID
 }
 

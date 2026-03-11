@@ -11,9 +11,6 @@ const baseConfig = composeConfig({
     },
   },
   vitest: true,
-  boundaries: {
-    preset: 'modules',
-  },
   unicorn: {
     overrides: {
       'unicorn/no-null': 'off',
@@ -55,50 +52,6 @@ export default [
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-    },
-  },
-  {
-    files: ['src/modules/auth/**/*.ts'],
-    rules: {
-      'boundaries/element-types': [
-        'error',
-        {
-          default: 'disallow',
-          rules: [
-            {
-              from: ['module'],
-              allow: [
-                'app',
-                'shared-kernel',
-                ['module', { moduleName: 'auth' }],
-                ['module', { moduleName: 'profile' }],
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    files: ['src/modules/admin/**/*.ts'],
-    rules: {
-      'boundaries/element-types': [
-        'error',
-        {
-          default: 'disallow',
-          rules: [
-            {
-              from: ['module'],
-              allow: [
-                'app',
-                'shared-kernel',
-                ['module', { moduleName: 'admin' }],
-                ['module', { moduleName: 'auth' }],
-              ],
-            },
-          ],
-        },
-      ],
     },
   },
 ]

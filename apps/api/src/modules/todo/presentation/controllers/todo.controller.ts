@@ -9,32 +9,24 @@ import {
   Patch,
   Post,
 } from '@nestjs/common'
-import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
-import { CreateTodoCommand } from '@/modules/todo/application/commands/create-todo.command'
-import { DeleteTodoCommand } from '@/modules/todo/application/commands/delete-todo.command'
-import { UpdateTodoCommand } from '@/modules/todo/application/commands/update-todo.command'
-import { GetAllTodosQuery } from '@/modules/todo/application/queries/get-all-todos.query'
-import { GetTodoByIdQuery } from '@/modules/todo/application/queries/get-todo-by-id.query'
 import { CreateTodoDto } from '@/modules/todo/presentation/dtos/create-todo.dto'
 import { TodoResponseDto } from '@/modules/todo/presentation/dtos/todo-response.dto'
 import { UpdateTodoDto } from '@/modules/todo/presentation/dtos/update-todo.dto'
+import { TodoService } from '@/modules/todo/todo.service'
 
 import type { Todo } from '@workspace/database'
 
 /**
  * Todo Controller
  *
- * Handles HTTP requests for todos using CQRS pattern
+ * Handles HTTP requests for todos.
  */
 @ApiTags('todos')
 @Controller('todos')
 export class TodoController {
-  constructor(
-    private readonly commandBus: CommandBus,
-    private readonly queryBus: QueryBus,
-  ) {}
+  constructor(private readonly todos: TodoService) {}
 
   /**
    * Get all todos
@@ -47,8 +39,7 @@ export class TodoController {
     type: [TodoResponseDto],
   })
   async findAll(): Promise<Todo[]> {
-    const query = new GetAllTodosQuery()
-    return this.queryBus.execute(query)
+    return this.todos.findAll()
   }
 
   /**
@@ -66,8 +57,7 @@ export class TodoController {
     description: 'Todo not found',
   })
   async findById(@Param('id') id: string): Promise<Todo> {
-    const query = new GetTodoByIdQuery(id)
-    return this.queryBus.execute(query)
+    return this.todos.findById(id)
   }
 
   /**
@@ -86,8 +76,7 @@ export class TodoController {
     description: 'Validation failed',
   })
   async create(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
-    const command = new CreateTodoCommand(createTodoDto.title, createTodoDto.description)
-    return this.commandBus.execute(command)
+    return this.todos.create(createTodoDto)
   }
 
   /**
@@ -109,8 +98,7 @@ export class TodoController {
     description: 'Validation failed',
   })
   async update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto): Promise<Todo> {
-    const command = new UpdateTodoCommand(id, updateTodoDto)
-    return this.commandBus.execute(command)
+    return this.todos.update(id, updateTodoDto)
   }
 
   /**
@@ -128,7 +116,6 @@ export class TodoController {
     description: 'Todo not found',
   })
   async delete(@Param('id') id: string): Promise<void> {
-    const command = new DeleteTodoCommand(id)
-    await this.commandBus.execute(command)
+    await this.todos.delete(id)
   }
 }

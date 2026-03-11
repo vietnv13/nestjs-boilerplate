@@ -93,8 +93,8 @@ import { Injectable } from '@nestjs/common'
 import {
   BaseQueueHandler,
   QueueRegistry,
-  HandlerResult,
-} from '@/shared-kernel/infrastructure/queue'
+} from '@workspace/nestjs-queue'
+import type { HandlerResult } from '@workspace/nestjs-queue'
 
 interface Payload {
   userId: string
@@ -141,7 +141,7 @@ export class NotificationModule {}
 Inject `QueueService` anywhere and call `dispatch()`:
 
 ```ts
-import { QueueService } from '@/shared-kernel/infrastructure/queue'
+import { QueueService } from '@workspace/nestjs-queue'
 
 @Injectable()
 export class UserService {

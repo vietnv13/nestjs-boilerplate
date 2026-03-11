@@ -10,16 +10,14 @@ import { PASSWORD_HASHER } from '@/modules/auth/application/ports/password-hashe
 import { USER_ROLE_REPOSITORY } from '@/modules/auth/application/ports/user-role.repository.port'
 import { AuthIdentity } from '@/modules/auth/domain/aggregates/auth-identity.aggregate'
 import { AuthSession } from '@/modules/auth/domain/entities/auth-session.entity'
-import { USER_REPOSITORY } from '@/shared-kernel/application/ports/user.repository.port'
+import { UserRepository } from '@/modules/user/infrastructure/repositories/user.repository'
 
 import type { Env } from '@/app/config/env.schema'
 import type { AuthIdentityRepository } from '@/modules/auth/application/ports/auth-identity.repository.port'
 import type { AuthSessionRepository } from '@/modules/auth/application/ports/auth-session.repository.port'
 import type { PasswordHasher } from '@/modules/auth/application/ports/password-hasher.port'
-import type { UserRoleRepository } from '@/modules/auth/application/ports/user-role.repository.port'
+import type { Role, UserRoleRepository } from '@/modules/auth/application/ports/user-role.repository.port'
 import type { JwtPayload } from '@/modules/auth/infrastructure/strategies/jwt.strategy'
-import type { UserRepository } from '@/shared-kernel/application/ports/user.repository.port'
-import type { RoleType } from '@/shared-kernel/domain/value-objects/role.vo'
 
 /**
  * Device information interface
@@ -49,7 +47,6 @@ export class AuthService {
     private readonly passwordHasher: PasswordHasher,
     @Inject(USER_ROLE_REPOSITORY)
     private readonly userRoleRepo: UserRoleRepository,
-    @Inject(USER_REPOSITORY)
     private readonly userRepo: UserRepository,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService<Env, true>,
@@ -92,7 +89,7 @@ export class AuthService {
     password: string,
     name: string,
     deviceContext?: DeviceContext,
-    initialRole: RoleType = 'USER',
+    initialRole: Role = 'user',
   ) {
     // 1. Check if email already exists
     const exists = await this.authIdentityRepo.existsByIdentifier(email)
@@ -101,22 +98,20 @@ export class AuthService {
     }
 
     // 2. Create user
-    const userId = randomUUID()
-    await this.userRepo.create({
-      id: userId,
-      name,
+    const user = await this.userRepo.create({
       email,
+      name,
       role: initialRole,
     })
 
     // 3. Create authentication identity
     const identityId = randomUUID()
     const passwordHash = await this.passwordHasher.hash(password)
-    const identity = AuthIdentity.createEmailIdentity(identityId, userId, email, passwordHash)
+    const identity = AuthIdentity.createEmailIdentity(identityId, user.id, email, passwordHash)
     await this.authIdentityRepo.save(identity)
 
     // 4. Generate tokens
-    return this.generateTokens(userId, email, initialRole, deviceContext)
+    return this.generateTokens(user.id, email, initialRole, deviceContext)
   }
 
   /**
@@ -281,7 +276,7 @@ export class AuthService {
   private async generateTokens(
     userId: string,
     email: string,
-    role: RoleType | null,
+    role: Role | null,
     deviceContext?: DeviceContext,
   ) {
     // Generate Refresh Token

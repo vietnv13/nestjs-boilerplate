@@ -1,5 +1,3 @@
-import { BaseAggregateRoot } from '@/shared-kernel/domain/base-aggregate-root'
-
 import type { AuthProvider } from '@/modules/auth/domain/value-objects/auth-provider'
 
 /**
@@ -14,7 +12,7 @@ import type { AuthProvider } from '@/modules/auth/domain/value-objects/auth-prov
  * - One user can have multiple authentication identities
  * - password only used for password-based auth (OAuth is null)
  */
-export class AuthIdentity extends BaseAggregateRoot {
+export class AuthIdentity {
   readonly #id: string
   readonly #userId: string
   readonly #providerId: AuthProvider
@@ -42,7 +40,6 @@ export class AuthIdentity extends BaseAggregateRoot {
     createdAt: Date,
     updatedAt: Date,
   ) {
-    super()
     this.#id = id
     this.#userId = userId
     this.#providerId = providerId

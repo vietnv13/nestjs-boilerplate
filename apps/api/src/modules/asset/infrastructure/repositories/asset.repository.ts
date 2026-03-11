@@ -2,13 +2,13 @@ import { Inject, Injectable } from '@nestjs/common'
 import { assetLinksTable, assetsTable } from '@workspace/database'
 import { and, eq, isNull, lt, or, sql } from 'drizzle-orm'
 
-import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
+import { DB_TOKEN } from '@workspace/nestjs-drizzle'
 
 import type {
   AssetRepository,
   PurgeCandidate,
 } from '@/modules/asset/application/ports/asset.repository.port'
-import type { DrizzleDb } from '@/shared-kernel/infrastructure/db/db.port'
+import type { DrizzleDb } from '@workspace/nestjs-drizzle'
 import type {
   AssetDatabase,
   AssetLinkDatabase,

@@ -17,8 +17,7 @@ import { VerificationTokenRepositoryImpl } from '@/modules/auth/infrastructure/r
 import { BcryptPasswordHasher } from '@/modules/auth/infrastructure/services/bcrypt-password-hasher'
 import { JwtStrategy } from '@/modules/auth/infrastructure/strategies/jwt.strategy'
 import { AuthController } from '@/modules/auth/presentation/controllers/auth.controller'
-import { USER_REPOSITORY } from '@/shared-kernel/application/ports/user.repository.port'
-import { UserRepositoryImpl } from '@/shared-kernel/infrastructure/repositories/user.repository'
+import { UserModule } from '@/modules/user/user.module'
 
 import type { Env } from '@/app/config/env.schema'
 
@@ -34,6 +33,7 @@ import type { Env } from '@/app/config/env.schema'
 @Module({
   imports: [
     PassportModule,
+    UserModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService<Env, true>) => ({
@@ -69,10 +69,6 @@ import type { Env } from '@/app/config/env.schema'
     {
       provide: VERIFICATION_TOKEN_REPOSITORY,
       useClass: VerificationTokenRepositoryImpl,
-    },
-    {
-      provide: USER_REPOSITORY,
-      useClass: UserRepositoryImpl,
     },
     CleanupExpiredTokensJob,
   ],

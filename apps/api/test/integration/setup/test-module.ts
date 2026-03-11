@@ -1,9 +1,9 @@
 import { ConfigModule } from '@nestjs/config'
-import { EventEmitterModule } from '@nestjs/event-emitter'
 import { Test } from '@nestjs/testing'
 import { ClsModule } from 'nestjs-cls'
 
-import { DB_TOKEN } from '@/shared-kernel/infrastructure/db/db.port'
+import { CacheModule } from '@workspace/nestjs-cache'
+import { DB_TOKEN } from '@workspace/nestjs-drizzle'
 
 import { testDb } from './test-database'
 
@@ -27,7 +27,7 @@ export const TestModuleBuilder = {
           global: true,
           middleware: { mount: false },
         }),
-        EventEmitterModule.forRoot(),
+        CacheModule,
         ...imports,
       ],
       providers: [

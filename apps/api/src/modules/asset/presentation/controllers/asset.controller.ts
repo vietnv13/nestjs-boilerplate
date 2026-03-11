@@ -26,8 +26,8 @@ import { memoryStorage } from 'multer'
 import { AssetService } from '@/modules/asset/application/services/asset.service'
 import { AssetUploadResponseDto } from '@/modules/asset/presentation/dtos/asset-upload-response.dto'
 import { UploadAssetDto } from '@/modules/asset/presentation/dtos/upload-asset.dto'
-import { JwtAuthGuard } from '@/shared-kernel/infrastructure/guards/jwt-auth.guard'
-import { OptionalJwtAuthGuard } from '@/shared-kernel/infrastructure/guards/optional-jwt-auth.guard'
+import { OptionalJwtAuthGuard } from '@/modules/auth/presentation/guards/optional-jwt-auth.guard'
+import { JwtAuthGuard } from '@/modules/auth/presentation/guards/jwt-auth.guard'
 
 @ApiTags('assets')
 @Controller('assets')

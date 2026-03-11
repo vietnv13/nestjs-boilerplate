@@ -60,7 +60,7 @@ Example (controller with multipart upload):
 import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 
-import { StorageService } from '@/shared-kernel/infrastructure/storage/storage.service'
+import { StorageService } from '@workspace/nestjs-storage'
 
 @Controller('v1/files')
 export class FilesController {

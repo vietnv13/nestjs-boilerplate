@@ -5,7 +5,7 @@ import { interval, merge, of } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 import { AdminGuard } from '@/modules/admin/presentation/guards/admin.guard'
-import { SseHubService } from '@/shared-kernel/infrastructure/sse/sse-hub.service'
+import { SseHubService } from '@workspace/nestjs-sse'
 
 import type { MessageEvent } from '@nestjs/common'
 

@@ -1,4 +1,4 @@
-import type { RoleType } from '@/shared-kernel/domain/value-objects/role.vo'
+export type Role = 'user' | 'admin'
 
 /**
  * User Role Repository token
@@ -14,20 +14,20 @@ export interface UserRoleRepository {
   /**
    * Set user role
    */
-  setRole(userId: string, role: RoleType | null): Promise<void>
+  setRole(userId: string, role: Role | null): Promise<void>
 
   /**
    * Get user role
    */
-  getRole(userId: string): Promise<RoleType | null>
+  getRole(userId: string): Promise<Role | null>
 
   /**
    * Check if user has specified role
    */
-  hasRole(userId: string, role: RoleType): Promise<boolean>
+  hasRole(userId: string, role: Role): Promise<boolean>
 
   /**
    * Get all user IDs with specified role
    */
-  getUserIdsByRole(role: RoleType): Promise<string[]>
+  getUserIdsByRole(role: Role): Promise<string[]>
 }

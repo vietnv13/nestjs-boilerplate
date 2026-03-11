@@ -19,11 +19,10 @@ SCHEDULER_ENABLED=true    # default is false
 ### 2. Create a job
 
 ```ts
-// src/modules/todo/application/jobs/archive-old-todos.job.ts
+// src/modules/todo/archive-old-todos.job.ts
 import { Injectable } from '@nestjs/common'
-import { BaseJob } from '@/shared-kernel/infrastructure/scheduler/base.job'
-import { SchedulerRegistry } from '@/shared-kernel/infrastructure/scheduler/scheduler.registry'
-import type { JobResult } from '@/shared-kernel/infrastructure/scheduler/types'
+import { BaseJob, SchedulerRegistry } from '@workspace/nestjs-scheduler'
+import type { JobResult } from '@workspace/nestjs-scheduler'
 
 @Injectable()
 export class ArchiveOldTodosJob extends BaseJob {
@@ -32,7 +31,7 @@ export class ArchiveOldTodosJob extends BaseJob {
   override readonly description = 'Archive todos older than 90 days'
 
   constructor(
-    private readonly todoRepo: TodoRepositoryImpl,
+    private readonly todoRepo: TodoRepository,
     registry: SchedulerRegistry, // always second arg, always named `registry`
   ) {
     super(registry)

@@ -1,11 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common'
 
 import { VERIFICATION_TOKEN_REPOSITORY } from '@/modules/auth/application/ports/verification-token.repository.port'
-import { BaseJob } from '@/shared-kernel/infrastructure/scheduler/base.job'
-import { SchedulerRegistry } from '@/shared-kernel/infrastructure/scheduler/scheduler.registry'
+import { BaseJob, SchedulerRegistry } from '@workspace/nestjs-scheduler'
 
 import type { VerificationTokenRepository } from '@/modules/auth/application/ports/verification-token.repository.port'
-import type { JobResult } from '@/shared-kernel/infrastructure/scheduler/types'
+import type { JobResult } from '@workspace/nestjs-scheduler'
 
 /**
  * CleanupExpiredTokensJob
