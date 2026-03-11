@@ -1,8 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
+import { Button } from '@workspace/ui/components/ui/button'
 import {
   Card,
   CardContent,
@@ -19,14 +18,18 @@ import {
   FieldLabel,
 } from '@workspace/ui/components/ui/field'
 import { Input } from '@workspace/ui/components/ui/input'
-import { Button } from '@workspace/ui/components/ui/button'
+import { Spinner } from '@workspace/ui/components/ui/spinner'
+import { useRouter } from 'next/navigation'
+import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import { Link } from '@/components/link'
 import { appPaths } from '@/config/app-paths'
 import { $api } from '@/lib/fetch-client'
-import { toast } from 'sonner'
-import { Spinner } from '@workspace/ui/components/ui/spinner'
-import { registerSchema, type RegisterFormData } from '../schemas'
+
+import { registerSchema } from '../schemas'
+
+import type { RegisterFormData } from '../schemas'
 
 const RegisterForm = () => {
   const router = useRouter()

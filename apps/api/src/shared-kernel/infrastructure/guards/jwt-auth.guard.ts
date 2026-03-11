@@ -2,16 +2,9 @@ import { Injectable } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 
 /**
- * JWT authentication guard
+ * JWT Authentication Guard (shared-kernel)
  *
- * Protects routes requiring authentication
- *
- * @example
- * @UseGuards(JwtAuthGuard)
- * @Get('profile')
- * getProfile(@Request() req) {
- *   return req.user;
- * }
+ * Modules cannot import each other (boundaries), so cross-cutting guards live in shared-kernel.
  */
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {}

@@ -41,7 +41,7 @@ module.exports = {
       // Restart strategy
       max_restarts: 10,
       min_uptime: '10s',
-      restart_delay: 2_000,
+      restart_delay: 2000,
       autorestart: true,
 
       // Memory ceiling — restart if a worker leaks past this.
@@ -49,7 +49,7 @@ module.exports = {
 
       // Health check — PM2 polls this URL; restarts the worker if it fails.
       health_check_interval: 30_000,
-      health_check_grace_period: 5_000,
+      health_check_grace_period: 5000,
 
       // Source-map support for readable stack traces in production.
       node_args: '--enable-source-maps',
@@ -83,7 +83,7 @@ module.exports = {
 
       max_restarts: 10,
       min_uptime: '10s',
-      restart_delay: 2_000,
+      restart_delay: 2000,
       autorestart: true,
       max_memory_restart: '512M',
 

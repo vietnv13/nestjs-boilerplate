@@ -1,8 +1,9 @@
-import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-import { AUTH_WRITE_ROUTES } from '@/lib/auth'
 import { env } from '@/config/env'
+import { AUTH_WRITE_ROUTES } from '@/lib/auth'
+
+import type { NextRequest } from 'next/server'
 
 /**
  * Next.js 16 Proxy Layer

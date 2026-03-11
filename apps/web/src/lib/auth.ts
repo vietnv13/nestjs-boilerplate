@@ -1,7 +1,7 @@
-import type { NextResponse } from 'next/server'
-
 import { env } from '@/config/env'
+
 import type { AuthTokens } from '@/types/auth'
+import type { NextResponse } from 'next/server'
 
 /**
  * Auth routes that need to set cookies

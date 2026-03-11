@@ -2,38 +2,38 @@
   "name": "@workspace/database",
   "version": "1.0.0",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./schemas": {
-      "import": "./dist/schemas/index.js",
-      "types": "./dist/schemas/index.d.ts"
+    "./auth": {
+      "import": "./dist/schemas/auth/index.js",
+      "types": "./dist/schemas/auth/index.d.ts"
     },
     "./relations": {
       "import": "./dist/relations.js",
       "types": "./dist/relations.d.ts"
     },
-    "./auth": {
-      "import": "./dist/schemas/auth/index.js",
-      "types": "./dist/schemas/auth/index.d.ts"
+    "./schemas": {
+      "import": "./dist/schemas/index.js",
+      "types": "./dist/schemas/index.d.ts"
     }
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -b tsconfig.schemas.json",
-    "dev": "tsc -b tsconfig.schemas.json --watch",
-    "format": "prettier --write \"src/**/*.ts\" \"scripts/**/*.ts\"",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
     "check-types": "tsc -p tsconfig.schemas.json --noEmit",
     "db:generate": "drizzle-kit generate --name $(date +%Y%m%d_%H%M%S)",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
+    "db:seed": "tsx scripts/seed.ts",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx scripts/seed.ts"
+    "dev": "tsc -b tsconfig.schemas.json --watch",
+    "format": "prettier --write \"src/**/*.ts\" \"scripts/**/*.ts\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "drizzle-orm": "0.44.7",

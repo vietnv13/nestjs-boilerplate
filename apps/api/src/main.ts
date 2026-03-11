@@ -1,5 +1,9 @@
+import path from 'node:path'
+
 import { RequestMethod } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { NestFactory, Reflector } from '@nestjs/core'
+import express from 'express'
 import { Logger } from 'nestjs-pino'
 
 import { corsConfig } from '@/app/config/security.config'
@@ -20,6 +24,8 @@ import { TransformInterceptor } from '@/app/interceptors/transform.interceptor'
 
 import { AppModule } from './app.module'
 
+import type { Env } from '@/app/config/env.schema'
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
@@ -30,6 +36,13 @@ async function bootstrap() {
   // Use Nest's built-in shutdown hooks (SIGTERM/SIGINT) instead of custom handlers.
   // This avoids noisy "shutdown" logs during `nest start --watch` restarts.
   app.enableShutdownHooks()
+
+  // Local storage: serve uploaded files from `/uploads/*`.
+  const config = app.get(ConfigService<Env, true>)
+  if (config.get('STORAGE_DRIVER', { infer: true }) === 'local') {
+    const localDir = config.get('STORAGE_LOCAL_DIR', { infer: true })
+    app.use('/uploads', express.static(path.resolve(localDir), { fallthrough: false }))
+  }
 
   app.enableCors(corsConfig)
 

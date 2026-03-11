@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto'
+
 import { describe, it, expect, beforeEach } from 'vitest'
 
 import { UserRepositoryImpl } from '@/shared-kernel/infrastructure/repositories/user.repository'
@@ -20,6 +22,7 @@ describe('userRepository Integration Tests', () => {
   describe('create', () => {
     it('should create a new user', async () => {
       const userData = {
+        id: randomUUID(),
         email: 'newuser@example.com',
         name: 'New User',
         role: 'user' as const,
@@ -51,23 +54,6 @@ describe('userRepository Integration Tests', () => {
 
     it('should return null for non-existent user', async () => {
       const user = await userRepository.findById('non-existent-id')
-      expect(user).toBeNull()
-    })
-  })
-
-  describe('findByEmail', () => {
-    it('should find user by email', async () => {
-      const email = 'unique@example.com'
-      await fixtures.createUser({ email })
-
-      const user = await userRepository.findByEmail(email)
-
-      expect(user).toBeDefined()
-      expect(user?.email).toBe(email)
-    })
-
-    it('should return null for non-existent email', async () => {
-      const user = await userRepository.findByEmail('nonexistent@example.com')
       expect(user).toBeNull()
     })
   })

@@ -17,7 +17,7 @@ vi.mock('@/config/env', () => ({
   },
 }))
 
-describe('AUTH_WRITE_ROUTES', () => {
+describe('aUTH_WRITE_ROUTES', () => {
   it('should contain all auth routes that modify cookies', () => {
     expect(AUTH_WRITE_ROUTES).toContain('/api/auth/login')
     expect(AUTH_WRITE_ROUTES).toContain('/api/auth/logout')
@@ -27,7 +27,7 @@ describe('AUTH_WRITE_ROUTES', () => {
   })
 })
 
-describe('AUTH_COOKIE_OPTIONS', () => {
+describe('aUTH_COOKIE_OPTIONS', () => {
   it('should have secure httpOnly cookies', () => {
     expect(AUTH_COOKIE_OPTIONS.httpOnly).toBe(true)
     expect(AUTH_COOKIE_OPTIONS.sameSite).toBe('lax')

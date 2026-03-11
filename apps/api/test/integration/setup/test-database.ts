@@ -5,11 +5,12 @@ import { migrate } from 'drizzle-orm/node-postgres/migrator'
 import { Pool } from 'pg'
 
 import type { StartedPostgreSqlContainer } from '@testcontainers/postgresql'
+import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 export class TestDatabase {
   private container: StartedPostgreSqlContainer | null = null
   private pool: Pool | null = null
-  public db: ReturnType<typeof drizzle> | null = null
+  public db: NodePgDatabase<typeof schema> | null = null
   public connectionString: string = ''
 
   async setup(): Promise<void> {

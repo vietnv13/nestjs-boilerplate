@@ -4,8 +4,10 @@ import { AppProvider } from '@/app/provide'
 
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
+
 import '@workspace/ui/globals.css'
 import { $api } from '@/lib/fetch-client'
+
 import { Toaster } from '@workspace/ui/components/ui/sonner'
 
 export const viewport: Viewport = {

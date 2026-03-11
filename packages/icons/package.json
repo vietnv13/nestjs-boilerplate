@@ -1,15 +1,15 @@
 {
   "name": "@workspace/icons",
   "version": "0.0.0",
-  "type": "module",
   "private": true,
-  "scripts": {
-    "generate": "rm -f src/icons/*.tsx && svgr --config-file svgr.config.mjs --filename-case kebab --ext tsx --no-index --out-dir src/icons -- src/svg",
-    "build": "pnpm generate && tsdown",
-    "dev": "tsdown --watch"
-  },
+  "type": "module",
   "exports": {
     ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "pnpm generate && tsdown",
+    "dev": "tsdown --watch",
+    "generate": "rm -f src/icons/*.tsx && svgr --config-file svgr.config.mjs --filename-case kebab --ext tsx --no-index --out-dir src/icons -- src/svg"
   },
   "dependencies": {
     "react": "^19.2.3"
@@ -17,8 +17,8 @@
   "devDependencies": {
     "@svgr/cli": "^8.1.0",
     "@types/react": "^19.2.7",
-    "@workspace/typescript-config": "workspace:*",
     "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
     "tsdown": "^0.15.12",
     "typescript": "^5.9.3"
   }

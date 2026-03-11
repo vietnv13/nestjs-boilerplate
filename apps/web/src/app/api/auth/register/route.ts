@@ -1,8 +1,9 @@
-import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 import { proxyAuthRequest, setAuthCookies } from '@/lib/auth'
+
 import type { AuthResponse, RegisterRequest } from '@/types/auth'
+import type { NextRequest } from 'next/server'
 
 /**
  * Register endpoint

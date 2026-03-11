@@ -17,7 +17,7 @@ import type { JobResult } from '@/shared-kernel/infrastructure/scheduler/types'
 @Injectable()
 export class CleanupExpiredTokensJob extends BaseJob {
   readonly jobName = 'auth.cleanup-expired-tokens'
-  override readonly defaultCron = '* * * * *'
+  override readonly defaultCron = '0 * * * *'
   override readonly description = 'Delete expired verification tokens from the database'
 
   constructor(

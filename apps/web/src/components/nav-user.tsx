@@ -1,5 +1,3 @@
-import { appPaths } from '@/config/app-paths'
-import { fetchClient } from '@/lib/fetch-client'
 import { useQueryClient } from '@tanstack/react-query'
 import { Button } from '@workspace/ui/components/ui/button'
 import {
@@ -10,6 +8,9 @@ import {
 } from '@workspace/ui/components/ui/dropdown-menu'
 import { UserIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+
+import { appPaths } from '@/config/app-paths'
+import { fetchClient } from '@/lib/fetch-client'
 
 const NavUser = ({ username }: { username: string | undefined }) => {
   const queryClient = useQueryClient()

@@ -1,14 +1,16 @@
 'use client'
 
-import { Header } from '@/components/layouts'
-import { ThemeToggle } from '@/components/theme-toggle'
-import { $api } from '@/lib/fetch-client'
 import { useQuery } from '@tanstack/react-query'
-
 import { Button } from '@workspace/ui/components/ui/button'
 import Link from 'next/link'
-import { NavUser } from './nav-user'
+
+import { Header } from '@/components/layouts'
 import { Logo } from '@/components/logo'
+import { ThemeToggle } from '@/components/theme-toggle'
+import { $api } from '@/lib/fetch-client'
+
+import { NavUser } from './nav-user'
+
 const Nav = () => {
   const sessionQuery = useQuery({
     ...$api.queryOptions('get', '/api/auth/session'),

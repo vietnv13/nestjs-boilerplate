@@ -1,7 +1,6 @@
+import { cn } from '@workspace/ui/lib/utils'
 import { cva } from 'class-variance-authority'
 import NextLink from 'next/link'
-
-import { cn } from '@workspace/ui/lib/utils'
 
 import type { VariantProps } from 'class-variance-authority'
 import type { LinkProps as NextLinkProperties } from 'next/link'

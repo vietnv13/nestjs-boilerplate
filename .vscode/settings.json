@@ -1,4 +1,4 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["initialised", "timestamptz", "varchar"]
+  "cSpell.words": ["initialised", "timestamptz", "traceparent", "varchar"]
 }

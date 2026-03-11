@@ -1,8 +1,9 @@
 import createFetchClient from 'openapi-fetch'
 import createClient from 'openapi-react-query'
 
-import { AUTH_WRITE_ROUTES } from '@/lib/auth'
 import { env } from '@/config/env'
+import { AUTH_WRITE_ROUTES } from '@/lib/auth'
+
 import type { paths } from '@/types/openapi'
 
 // ============================================================================

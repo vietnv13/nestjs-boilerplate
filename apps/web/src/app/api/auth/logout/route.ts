@@ -1,8 +1,9 @@
-import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-import { clearAuthCookies } from '@/lib/auth'
 import { env } from '@/config/env'
+import { clearAuthCookies } from '@/lib/auth'
+
+import type { NextRequest } from 'next/server'
 
 /**
  * Logout endpoint

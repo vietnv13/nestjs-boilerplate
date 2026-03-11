@@ -21,6 +21,7 @@ import { LoggerModule } from '@/app/logger/logger.module'
 import { ApiVersionMiddleware } from '@/app/middleware/api-version.middleware'
 import { ETagMiddleware } from '@/app/middleware/etag.middleware'
 import { SwaggerDevController } from '@/app/swagger/swagger-dev.controller'
+import { AssetModule } from '@/modules/asset/asset.module'
 import { AuthModule } from '@/modules/auth/auth.module'
 import { TodoModule } from '@/modules/todo/todo.module'
 import { UserModule } from '@/modules/user/user.module'
@@ -29,6 +30,7 @@ import { DrizzleModule } from '@/shared-kernel/infrastructure/db/db.module'
 import { DomainEventsModule } from '@/shared-kernel/infrastructure/events/domain-events.module'
 import { EventsModule } from '@/shared-kernel/infrastructure/events/events.module'
 import { SchedulerModule } from '@/shared-kernel/infrastructure/scheduler/scheduler.module'
+import { StorageModule } from '@/shared-kernel/infrastructure/storage/storage.module'
 
 import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
 
@@ -68,6 +70,8 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
     EventsModule,
     // Cache module: caching infrastructure
     CacheModule,
+    // Storage module: local/S3 file storage
+    StorageModule,
     // Scheduler module: distributed cron jobs with Redis locking
     SchedulerModule,
     // Rate limiting module: prevent API abuse
@@ -82,6 +86,7 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
     UserModule, // User management module (CQRS example)
     TodoModule, // Todo module (enhanced with events)
     AuthModule, // Auth module (authentication + DDD example)
+    AssetModule, // Asset module (file upload + linking + cleanup)
   ],
   controllers: [
     // Dev helper controller (dev only)

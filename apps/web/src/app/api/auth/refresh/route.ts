@@ -1,8 +1,9 @@
-import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 import { clearAuthCookies, proxyAuthRequest, setAuthCookies } from '@/lib/auth'
+
 import type { RefreshResponse } from '@/types/auth'
+import type { NextRequest } from 'next/server'
 
 /**
  * Token refresh endpoint

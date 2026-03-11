@@ -1,6 +1,9 @@
-import { usersTable } from '@workspace/database/schemas/auth'
+import { randomUUID } from 'node:crypto'
 
-import type { DrizzleDb } from '@/shared-kernel/infrastructure/db/db.port'
+import { usersTable } from '@workspace/database/auth'
+
+import type * as schema from '@workspace/database/schemas'
+import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 export interface CreateUserFixture {
   email?: string
@@ -10,12 +13,13 @@ export interface CreateUserFixture {
 }
 
 export class UserFixtures {
-  constructor(private readonly db: DrizzleDb) {}
+  constructor(private readonly db: NodePgDatabase<typeof schema>) {}
 
   async createUser(data: CreateUserFixture = {}) {
     const [user] = await this.db
       .insert(usersTable)
       .values({
+        id: randomUUID(),
         email: data.email ?? `test-${Date.now()}@example.com`,
         name: data.name ?? 'Test User',
         role: data.role ?? 'user',
@@ -25,6 +29,10 @@ export class UserFixtures {
         updatedAt: new Date(),
       })
       .returning()
+
+    if (!user) {
+      throw new Error('Failed to create user fixture')
+    }
 
     return user
   }

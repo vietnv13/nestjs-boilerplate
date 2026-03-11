@@ -1,7 +1,7 @@
-import { MoonIcon, SunIcon } from 'lucide-react'
-
 import { MobileNavigation } from '@workspace/ui/components/plus/mobile-navigation'
 import { Navigation } from '@workspace/ui/components/plus/navigation'
+import { MoonIcon, SunIcon } from 'lucide-react'
+
 import { Button } from '@workspace/ui/components/ui/button'
 
 import { Header, HeaderCenter, HeaderEnd, HeaderStart } from './header'

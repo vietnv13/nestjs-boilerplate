@@ -1,7 +1,7 @@
+import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { render, screen, waitFor } from '@/testing'
-import userEvent from '@testing-library/user-event'
 
 import { LoginForm } from '../components/login-form'
 
@@ -16,7 +16,7 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn() }),
 }))
 
-describe('LoginForm', () => {
+describe('loginForm', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })

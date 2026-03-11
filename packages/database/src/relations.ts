@@ -1,6 +1,13 @@
 import { relations } from 'drizzle-orm'
 
-import { accountsTable, profilesTable, sessionsTable, usersTable } from './schemas/index.js'
+import {
+  accountsTable,
+  assetLinksTable,
+  assetsTable,
+  profilesTable,
+  sessionsTable,
+  usersTable,
+} from './schemas/index.js'
 
 export const usersRelations = relations(usersTable, ({ one, many }) => ({
   profile: one(profilesTable, {
@@ -29,5 +36,20 @@ export const sessionsRelations = relations(sessionsTable, ({ one }) => ({
   user: one(usersTable, {
     fields: [sessionsTable.userId],
     references: [usersTable.id],
+  }),
+}))
+
+export const assetsRelations = relations(assetsTable, ({ many, one }) => ({
+  links: many(assetLinksTable),
+  creator: one(usersTable, {
+    fields: [assetsTable.creatorId],
+    references: [usersTable.id],
+  }),
+}))
+
+export const assetLinksRelations = relations(assetLinksTable, ({ one }) => ({
+  asset: one(assetsTable, {
+    fields: [assetLinksTable.assetId],
+    references: [assetsTable.id],
   }),
 }))
