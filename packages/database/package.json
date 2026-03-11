@@ -29,7 +29,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check-types": "tsc -p tsconfig.schemas.json --noEmit",
-    "db:generate": "drizzle-kit generate",
+    "db:generate": "drizzle-kit generate --name $(date +%Y%m%d_%H%M%S)",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
