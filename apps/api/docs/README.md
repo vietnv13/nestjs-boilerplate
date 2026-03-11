@@ -2,13 +2,14 @@
 
 ## Contents
 
-| Document                                   | Description                                             |
-| ------------------------------------------ | ------------------------------------------------------- |
-| [Architecture Overview](./architecture.md) | Layer structure, modules, request pipeline, env vars    |
-| [DDD Patterns](./ddd-patterns.md)          | Entities, aggregates, events, CQRS, repositories, sagas |
-| [API Usage Examples](./api-usage.md)       | HTTP request/response examples for each endpoint        |
-| [Error Codes Reference](./error-codes.md)  | Domain error codes and their HTTP mappings              |
-| [Testing Guide](./testing-guide.md)        | Unit, integration (Testcontainers), and E2E testing     |
+| Document                                         | Description                                             |
+| ------------------------------------------------ | ------------------------------------------------------- |
+| [Architecture Overview](./architecture.md)       | Layer structure, modules, request pipeline, env vars    |
+| [DDD Patterns](./ddd-patterns.md)                | Entities, aggregates, events, CQRS, repositories, sagas |
+| [API Usage Examples](./api-usage.md)             | HTTP request/response examples for each endpoint        |
+| [Error Codes Reference](./error-codes.md)        | Domain error codes and their HTTP mappings              |
+| [Testing Guide](./testing-guide.md)              | Unit, integration (Testcontainers), and E2E testing     |
+| [Production Error Checking](./error-checking.md) | How to check for errors in production                   |
 
 ## Quick Start
 
