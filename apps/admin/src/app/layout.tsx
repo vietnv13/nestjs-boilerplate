@@ -3,6 +3,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 import { Toaster } from 'sonner'
 
 import { AppProvider } from '@/app/provide'
+import { NavigationProgress } from '@/components/navigation-progress'
 import { $api } from '@/lib/fetch-client'
 
 import './globals.css'
@@ -35,6 +36,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
       <body>
         <AntdRegistry>
           <AppProvider>
+            <NavigationProgress />
             <HydrationBoundary state={dehydratedState}>
               {children}
               <Toaster />

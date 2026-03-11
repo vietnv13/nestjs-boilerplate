@@ -56,6 +56,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.90.11
         version: 5.90.21(react@19.2.4)
+      '@types/nprogress':
+        specifier: ^0.2.3
+        version: 0.2.3
       '@workspace/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -77,6 +80,9 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      nprogress:
+        specifier: ^0.2.0
+        version: 0.2.0
       openapi-fetch:
         specifier: ^0.17.0
         version: 0.17.0
@@ -7135,6 +7141,12 @@ packages:
         integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==,
       }
 
+  '@types/nprogress@0.2.3':
+    resolution:
+      {
+        integrity: sha512-k7kRA033QNtC+gLc4VPlfnue58CM1iQLgn1IMAU8VPHGOj7oIHPp9UlhedEnD/Gl8evoCjwkZjlBORtZ3JByUA==,
+      }
+
   '@types/passport-jwt@4.0.1':
     resolution:
       {
@@ -12443,6 +12455,12 @@ packages:
         integrity: sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==,
       }
     engines: { node: '>=8' }
+
+  nprogress@0.2.0:
+    resolution:
+      {
+        integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==,
+      }
 
   nth-check@2.1.1:
     resolution:
@@ -19977,6 +19995,8 @@ snapshots:
 
   '@types/normalize-package-data@2.4.4': {}
 
+  '@types/nprogress@0.2.3': {}
+
   '@types/passport-jwt@4.0.1':
     dependencies:
       '@types/jsonwebtoken': 9.0.10
@@ -23472,6 +23492,8 @@ snapshots:
   npm-run-path@4.0.1:
     dependencies:
       path-key: 3.1.1
+
+  nprogress@0.2.0: {}
 
   nth-check@2.1.1:
     dependencies:

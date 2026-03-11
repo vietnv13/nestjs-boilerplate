@@ -8,7 +8,7 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#f0f2f5',
+        background: '#002140',
         padding: '24px',
       }}
     >

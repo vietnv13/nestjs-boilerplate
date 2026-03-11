@@ -1,7 +1,7 @@
 'use client'
 
 import { LockOutlined, MailOutlined } from '@ant-design/icons'
-import { Button, Card, Form, Input, Typography } from 'antd'
+import { Button, Card, Divider, Form, Input, Typography } from 'antd'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
@@ -40,12 +40,32 @@ const LoginForm = () => {
   }
 
   return (
-    <Card style={{ width: '100%', maxWidth: 420 }}>
-      <div style={{ textAlign: 'center', marginBottom: 24 }}>
-        <Title level={3} style={{ margin: 0 }}>
-          Sign in
+    <Card
+      style={{ width: '100%', maxWidth: 400, boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
+      styles={{ body: { padding: '32px 40px' } }}
+    >
+      {/* Brand header */}
+      <div style={{ textAlign: 'center', marginBottom: 32 }}>
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 52,
+            height: 52,
+            background: '#002140',
+            borderRadius: 12,
+            marginBottom: 16,
+          }}
+        >
+          <Text strong style={{ color: '#ffffff', fontSize: 20, letterSpacing: 2 }}>
+            A
+          </Text>
+        </div>
+        <Title level={3} style={{ margin: 0, color: '#002140' }}>
+          Admin Panel
         </Title>
-        <Text type="secondary">Enter your credentials to access the admin panel</Text>
+        <Text type="secondary">Sign in to your account</Text>
       </div>
 
       <Form layout="vertical" onFinish={form.handleSubmit(onSubmit)}>
@@ -60,7 +80,8 @@ const LoginForm = () => {
             >
               <Input
                 {...field}
-                prefix={<MailOutlined />}
+                size="large"
+                prefix={<MailOutlined style={{ color: '#002140' }} />}
                 placeholder="Enter your email"
                 autoComplete="off"
               />
@@ -78,7 +99,8 @@ const LoginForm = () => {
             >
               <Input.Password
                 {...field}
-                prefix={<LockOutlined />}
+                size="large"
+                prefix={<LockOutlined style={{ color: '#002140' }} />}
                 placeholder="Enter your password"
                 autoComplete="off"
               />
@@ -86,15 +108,27 @@ const LoginForm = () => {
           )}
         />
 
-        <Form.Item style={{ marginBottom: 8 }}>
-          <Button type="primary" htmlType="submit" block loading={isPending}>
+        <Form.Item style={{ marginBottom: 16, marginTop: 8 }}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            block
+            size="large"
+            loading={isPending}
+            style={{ background: '#002140', borderColor: '#002140', height: 44 }}
+          >
             Sign in
           </Button>
         </Form.Item>
 
+        <Divider style={{ margin: '0 0 16px' }} />
+
         <div style={{ textAlign: 'center' }}>
-          <Text type="secondary">
-            Don&apos;t have an account? <Link href={appPaths.auth.register.getHref()}>Sign up</Link>
+          <Text type="secondary" style={{ fontSize: 13 }}>
+            Don&apos;t have an account?{' '}
+            <Link href={appPaths.auth.register.getHref()} style={{ color: '#002140' }}>
+              Sign up
+            </Link>
           </Text>
         </div>
       </Form>

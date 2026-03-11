@@ -61,14 +61,14 @@ export const envSchema = z
 
     JWT_EXPIRES_IN: z
       .string()
-      .default('15m')
+      .default('7d')
       .refine((value) => /^\d+[smhd]$/.test(value), {
         message: 'JWT_EXPIRES_IN format invalid (e.g., 60s, 15m, 2h, 7d)',
       }),
 
     JWT_REFRESH_EXPIRES_IN: z
       .string()
-      .default('7d')
+      .default('30d')
       .refine((value) => /^\d+[smhd]$/.test(value), {
         message: 'JWT_REFRESH_EXPIRES_IN format invalid (e.g., 60s, 15m, 2h, 7d)',
       }),
