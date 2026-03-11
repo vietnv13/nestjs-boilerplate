@@ -25,6 +25,12 @@ export class DomainExceptionFilter implements ExceptionFilter {
     const request = context.getRequest<Request>()
     const status = exception.statusCode
 
+    // Streaming responses (e.g., SSE) send headers immediately; don't attempt to write a JSON body.
+    if (response.headersSent) {
+      response.end()
+      return
+    }
+
     const problemDetails: ProblemDetailsDto = {
       type: this.getTypeUri(exception.code),
       title: this.getTitle(status),

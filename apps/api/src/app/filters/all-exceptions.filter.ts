@@ -26,6 +26,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const response = context.getResponse<Response>()
     const request = context.getRequest<Request>()
 
+    // Streaming responses (e.g., SSE) send headers immediately; don't attempt to write a JSON body.
+    if (response.headersSent) {
+      response.end()
+      return
+    }
+
     // Delegate HTTP exceptions to ProblemDetailsFilter
     if (exception instanceof HttpException && this.problemDetailsFilter) {
       return this.problemDetailsFilter.catch(exception, host)

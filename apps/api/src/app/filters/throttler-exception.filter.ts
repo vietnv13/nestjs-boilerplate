@@ -21,6 +21,12 @@ export class ThrottlerExceptionFilter implements ExceptionFilter {
     const response = context.getResponse<Response>()
     const request = context.getRequest<Request>()
 
+    // Streaming responses (e.g., SSE) send headers immediately; don't attempt to write a JSON body.
+    if (response.headersSent) {
+      response.end()
+      return
+    }
+
     const ttl = 60 // 60 seconds
     const limit = 10 // 10 requests per minute
     const resetTime = Math.floor(Date.now() / 1000) + ttl

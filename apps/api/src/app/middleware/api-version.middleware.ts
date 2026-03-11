@@ -36,7 +36,10 @@ export class ApiVersionMiddleware implements NestMiddleware {
     }
 
     ;(request as Request & { apiVersion?: string }).apiVersion = version
-    res.setHeader('API-Version', version)
+    // SSE may flush headers very early; avoid setting headers after streaming starts.
+    if (!res.headersSent) {
+      res.setHeader('API-Version', version)
+    }
 
     next()
   }

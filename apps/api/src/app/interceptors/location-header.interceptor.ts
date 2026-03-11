@@ -18,6 +18,11 @@ export class LocationHeaderInterceptor implements NestInterceptor {
         const response = httpContext.getResponse<Response>()
         const request = httpContext.getRequest<Request>()
 
+        // Streaming responses (e.g., SSE) send headers immediately.
+        if (response.headersSent) {
+          return
+        }
+
         // Only handle 201 Created responses
         if (response.statusCode !== 201) {
           return

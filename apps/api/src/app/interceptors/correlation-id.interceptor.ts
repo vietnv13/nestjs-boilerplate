@@ -20,7 +20,8 @@ export class CorrelationIdInterceptor implements NestInterceptor {
 
     const correlationId = this.cls.get<string>('correlationId')
 
-    if (correlationId) {
+    // SSE may flush headers very early; avoid setting headers after streaming starts.
+    if (correlationId && !response.headersSent) {
       response.setHeader('X-Correlation-Id', correlationId)
     }
 

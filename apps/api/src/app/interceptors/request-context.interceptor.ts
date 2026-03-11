@@ -20,7 +20,8 @@ export class RequestContextInterceptor implements NestInterceptor {
 
     const requestId = this.cls.getId()
 
-    if (requestId) {
+    // SSE may flush headers very early; avoid setting headers after streaming starts.
+    if (requestId && !response.headersSent) {
       response.setHeader('X-Request-Id', requestId)
     }
 

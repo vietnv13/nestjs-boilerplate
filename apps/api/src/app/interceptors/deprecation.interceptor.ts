@@ -25,6 +25,11 @@ export class DeprecationInterceptor implements NestInterceptor {
         const request = httpContext.getRequest<Request>()
         const response = httpContext.getResponse<Response>()
 
+        // Streaming responses (e.g., SSE) send headers immediately.
+        if (response.headersSent) {
+          return
+        }
+
         const apiVersion = (request as Request & { apiVersion?: string }).apiVersion
 
         if (!apiVersion) {

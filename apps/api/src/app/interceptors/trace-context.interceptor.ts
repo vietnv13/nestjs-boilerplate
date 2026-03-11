@@ -20,7 +20,8 @@ export class TraceContextInterceptor implements NestInterceptor {
 
     const traceId = this.cls.get<string>('traceId')
 
-    if (traceId) {
+    // SSE may flush headers very early; avoid setting headers after streaming starts.
+    if (traceId && !response.headersSent) {
       response.setHeader('Trace-Id', traceId)
     }
 

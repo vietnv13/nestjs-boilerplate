@@ -22,6 +22,11 @@ export class LinkHeaderInterceptor implements NestInterceptor {
         const response = httpContext.getResponse<Response>()
         const request = httpContext.getRequest<Request>()
 
+        // Streaming responses (e.g., SSE) send headers immediately.
+        if (response.headersSent) {
+          return
+        }
+
         const links = this.buildLinks(request, data)
         if (links.length > 0) {
           response.setHeader('Link', links.join(', '))

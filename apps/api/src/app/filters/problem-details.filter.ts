@@ -31,6 +31,12 @@ export class ProblemDetailsFilter implements ExceptionFilter {
     const status = exception.getStatus()
     const exceptionResponse = exception.getResponse()
 
+    // Streaming responses (e.g., SSE) send headers immediately; don't attempt to write a JSON body.
+    if (response.headersSent) {
+      response.end()
+      return
+    }
+
     // Silent handling for specific paths
     if (status === 404 && this.#silentPaths.includes(request.url)) {
       response.status(404).end()
