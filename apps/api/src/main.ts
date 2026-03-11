@@ -90,6 +90,24 @@ async function bootstrap() {
 └─────────────────────────────────────────────────────┘`
 
   logger.log(startupMessage)
+
+  // Signal PM2 (or any process manager) that the app is ready to receive traffic.
+  // Required for `wait_ready: true` in ecosystem.config.cjs so rolling reloads
+  // only cut over after the new worker is fully initialised.
+  if (process.send) {
+    process.send('ready')
+  }
+
+  // Graceful shutdown — drain in-flight requests before exiting.
+  // PM2 sends SIGINT on `pm2 reload`; the kill_timeout gives us 10 s to finish.
+  const shutdown = async (signal: string) => {
+    logger.log(`Received ${signal} — shutting down gracefully`)
+    await app.close()
+    process.exit(0)
+  }
+
+  process.on('SIGINT', () => shutdown('SIGINT'))
+  process.on('SIGTERM', () => shutdown('SIGTERM'))
 }
 
 await bootstrap()
