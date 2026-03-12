@@ -119,7 +119,7 @@ export class AssetService {
       assetId,
       ownerType: params.ownerType,
       ownerId: params.ownerId,
-      slot: trimmedSlot || undefined,
+      slot: trimmedSlot?.length ? trimmedSlot : undefined,
       deletedAt: new Date(),
     })
   }

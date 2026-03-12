@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger'
+import { JwtAuthGuard } from '@workspace/nestjs-auth'
 
 import { AuthService } from '@/auth/auth.service'
 import { LoginDto, LoginResponseDto } from '@/auth/dtos/login.dto'
@@ -9,7 +10,6 @@ import { RegisterDto, RegisterResponseDto } from '@/auth/dtos/register.dto'
 import { RevokeSessionDto, RevokeSessionResponseDto } from '@/auth/dtos/revoke-session.dto'
 import { SessionResponseDto } from '@/auth/dtos/session-response.dto'
 import { SessionsListResponseDto } from '@/auth/dtos/sessions-list-response.dto'
-import { JwtAuthGuard } from '@workspace/nestjs-auth'
 
 /**
  * Auth Controller v1

@@ -3,7 +3,6 @@ import { randomUUID } from 'node:crypto'
 import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
-
 import {
   AuthIdentityRepository,
   AuthSessionRepository,
@@ -13,9 +12,9 @@ import {
 
 import { UserRepository } from '@/user/repositories/user.repository'
 
-import type { JwtPayload, Role } from '@workspace/nestjs-auth'
 import type { Env } from '@/config/env.schema'
 import type { AccountDatabase, SessionDatabase } from '@workspace/database'
+import type { JwtPayload, Role } from '@workspace/nestjs-auth'
 
 /**
  * Device information interface

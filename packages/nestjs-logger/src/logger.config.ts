@@ -59,7 +59,7 @@ export function createLoggerConfig(config: ConfigService): Params {
       // Custom log properties from request headers
       customProps: (req: IncomingMessage) => ({
         correlationId: req.headers['x-correlation-id'],
-        traceId: extractTraceId(req.headers['traceparent'] as string | undefined),
+        traceId: extractTraceId(req.headers.traceparent as string | undefined),
       }),
 
       customSuccessMessage: (req: IncomingMessage, res: ServerResponse) => {

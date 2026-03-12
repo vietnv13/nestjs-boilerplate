@@ -16,7 +16,7 @@ export class SwaggerDevController {
    */
   @Get('swagger-credentials')
   getCredentials() {
-    if (process.env['NODE_ENV'] === 'production') {
+    if (process.env.NODE_ENV === 'production') {
       throw new NotFoundException()
     }
 

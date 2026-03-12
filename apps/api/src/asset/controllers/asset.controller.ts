@@ -21,13 +21,12 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger'
+import { JwtAuthGuard, OptionalJwtAuthGuard } from '@workspace/nestjs-auth'
+import { AssetService } from '@workspace/nestjs-core'
 import { memoryStorage } from 'multer'
 
-import { AssetService } from '@workspace/nestjs-core'
 import { AssetUploadResponseDto } from '@/asset/dtos/asset-upload-response.dto'
 import { UploadAssetDto } from '@/asset/dtos/upload-asset.dto'
-import { JwtAuthGuard } from '@workspace/nestjs-auth'
-import { OptionalJwtAuthGuard } from '@workspace/nestjs-auth'
 
 @ApiTags('assets')
 @Controller('assets')

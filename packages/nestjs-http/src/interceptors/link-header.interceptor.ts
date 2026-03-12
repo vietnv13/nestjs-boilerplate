@@ -68,7 +68,7 @@ export class LinkHeaderInterceptor implements NestInterceptor {
       'total' in data &&
       'page' in data &&
       'page_size' in data &&
-      typeof (data as Record<string, unknown>)['total'] === 'number'
+      typeof (data as Record<string, unknown>).total === 'number'
     )
   }
 
@@ -83,13 +83,13 @@ export class LinkHeaderInterceptor implements NestInterceptor {
     if ('next_cursor' in data) {
       if (
         'has_more' in data &&
-        data['has_more'] &&
+        data.has_more &&
         'next_cursor' in data &&
-        data['next_cursor'] &&
-        typeof data['next_cursor'] === 'string'
+        data.next_cursor &&
+        typeof data.next_cursor === 'string'
       ) {
         const nextUrl = this.buildUrl(baseUrl, request.query, {
-          cursor: data['next_cursor'] as string,
+          cursor: data.next_cursor,
         })
         links.push(`<${nextUrl}>; rel="next"`)
       }

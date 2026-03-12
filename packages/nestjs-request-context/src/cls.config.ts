@@ -43,7 +43,7 @@ function setupClsContext(cls: ClsService, request: Request) {
   cls.set('correlationId', correlationId)
 
   // W3C Trace Context for distributed tracing
-  const traceparent = request.headers['traceparent'] as string
+  const traceparent = request.headers.traceparent as string
   if (traceparent) {
     const traceContext = parseTraceparent(traceparent)
     if (traceContext) {
@@ -54,7 +54,7 @@ function setupClsContext(cls: ClsService, request: Request) {
   }
 
   // Optional tracestate
-  const tracestate = request.headers['tracestate'] as string
+  const tracestate = request.headers.tracestate as string
   if (tracestate) {
     cls.set('tracestate', tracestate)
   }

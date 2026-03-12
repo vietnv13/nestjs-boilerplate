@@ -84,7 +84,7 @@ export class ProblemDetailsFilter implements ExceptionFilter {
    * Generate problem type URI (RFC 9457 §3.1.1)
    */
   private getTypeUri(status: number): string {
-    const baseUrl = process.env['API_BASE_URL'] ?? 'https://api.example.com'
+    const baseUrl = process.env.API_BASE_URL ?? 'https://api.example.com'
     const errorType = this.getErrorType(status)
     return `${baseUrl}/errors/${errorType}`
   }
@@ -159,7 +159,7 @@ export class ProblemDetailsFilter implements ExceptionFilter {
     }
 
     if (typeof exceptionResponse === 'object' && 'message' in exceptionResponse) {
-      const message = exceptionResponse['message']
+      const message = exceptionResponse.message
       if (Array.isArray(message)) {
         return this.formatValidationErrors(message)
       }
@@ -201,9 +201,9 @@ export class ProblemDetailsFilter implements ExceptionFilter {
     if (
       typeof exceptionResponse === 'object' &&
       'message' in exceptionResponse &&
-      Array.isArray(exceptionResponse['message'])
+      Array.isArray(exceptionResponse.message)
     ) {
-      const message = exceptionResponse['message']
+      const message = exceptionResponse.message
       const errors: FieldError[] = []
 
       for (const item of message) {

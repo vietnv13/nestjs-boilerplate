@@ -18,15 +18,15 @@ import { ProblemDetailsFilter } from '@workspace/nestjs-problem-details'
 import { QueueModule } from '@workspace/nestjs-queue'
 import { createClsConfig } from '@workspace/nestjs-request-context'
 import { SchedulerModule } from '@workspace/nestjs-scheduler'
-import { SwaggerDevController } from '@workspace/nestjs-swagger'
 import { StorageModule } from '@workspace/nestjs-storage'
+import { SwaggerDevController } from '@workspace/nestjs-swagger'
 import { ClsMiddleware, ClsModule } from 'nestjs-cls'
 
-import { validateEnv } from '@/config/env.schema'
-import { throttlerConfig } from '@/config/security.config'
 import { AdminModule } from '@/admin/admin.module'
 import { AssetModule } from '@/asset/asset.module'
 import { AuthModule } from '@/auth/auth.module'
+import { validateEnv } from '@/config/env.schema'
+import { throttlerConfig } from '@/config/security.config'
 import { TodoModule } from '@/todo/todo.module'
 import { UserModule } from '@/user/user.module'
 
@@ -77,7 +77,7 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
   ],
   controllers: [
     // Dev helper controller (dev only)
-    ...(process.env['NODE_ENV'] === 'production' ? [] : [SwaggerDevController]),
+    ...(process.env.NODE_ENV === 'production' ? [] : [SwaggerDevController]),
   ],
   providers: [
     // Global rate limiting guard

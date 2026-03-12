@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common'
+import { AssetService } from '@workspace/nestjs-core'
 import { BaseJob, SchedulerRegistry } from '@workspace/nestjs-scheduler'
 import dayjs from 'dayjs'
-
-import { AssetService } from '@workspace/nestjs-core'
 
 import type { JobResult } from '@workspace/nestjs-scheduler'
 

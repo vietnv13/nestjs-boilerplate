@@ -12,8 +12,8 @@ export interface SwaggerSetupOptions {
   title: string
   description: string
   version: string
-  tags?: Array<{ name: string; description: string }>
-  servers?: Array<{ url: string; description: string }>
+  tags?: { name: string; description: string }[]
+  servers?: { url: string; description: string }[]
 }
 
 const swaggerCustomOptions: SwaggerCustomOptions = {
@@ -44,8 +44,8 @@ function addDefaultErrorResponses(document: OpenAPIObject): void {
       }
 
       // Skip if default response already defined
-      if (operation.responses && !operation.responses['default']) {
-        operation.responses['default'] = {
+      if (operation.responses && !operation.responses.default) {
+        operation.responses.default = {
           description: 'Error response (400/401/403/404/422/429/500 etc.)',
           content: {
             'application/problem+json': {

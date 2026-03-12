@@ -15,7 +15,7 @@ export function createDrizzleInstance(options: DrizzleModuleOptions) {
     max: options.pool?.max ?? 10,
     min: options.pool?.min ?? 2,
     idleTimeoutMillis: options.pool?.idleTimeoutMillis ?? 30_000,
-    connectionTimeoutMillis: options.pool?.connectionTimeoutMillis ?? 5_000,
+    connectionTimeoutMillis: options.pool?.connectionTimeoutMillis ?? 5000,
   })
 
   return drizzle({ client: pool, schema })

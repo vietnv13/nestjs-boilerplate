@@ -28,7 +28,7 @@ import type { DynamicModule } from '@nestjs/common'
 @Module({})
 export class QueueModule {
   static register(): DynamicModule {
-    const driver = (process.env['QUEUE_DRIVER'] ?? 'sync').toLowerCase()
+    const driver = (process.env.QUEUE_DRIVER ?? 'sync').toLowerCase()
     const isRedis = driver === 'redis'
 
     if (!isRedis) {
