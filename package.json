@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate",
+  "name": "nest-boilerplate",
   "type": "module",
   "scripts": {
     "dev": "turbo run dev --concurrency 100",

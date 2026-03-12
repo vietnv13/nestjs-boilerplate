@@ -63,6 +63,7 @@ export class SchedulerService implements OnApplicationBootstrap, OnModuleDestroy
       job.jobName,
       job.defaultCron,
       job.defaultTimeoutMs,
+      job.defaultEnabled,
       job.description,
     )
 
@@ -89,6 +90,7 @@ export class SchedulerService implements OnApplicationBootstrap, OnModuleDestroy
         job.jobName,
         job.defaultCron,
         job.defaultTimeoutMs,
+        job.defaultEnabled,
         job.description,
       )
 

@@ -62,17 +62,16 @@ podman compose --file docker-compose.yml up --detach
 
 ```bash
 # Run database migrations
-cd packages/database
-pnpm db:generate && pnpm db:migrate
+pnpm --filter @workspace/database db:generate && db:migrate
 
 # (Optional) Seed initial data
-pnpm db:seed
+pnpm --filter @workspace/database db:seed
 ```
 
-> Note: After changing the schema, run `pnpm db:generate`, then `pnpm db:migrate`.
+> Note: After changing the schema, run `pnpm --filter @workspace/database db:generate`, then `pnpm --filter @workspace/database db:migrate`.
 
 ### Start the Development Servers
 
 ```bash
-pnpm start
+pnpm dev
 ```

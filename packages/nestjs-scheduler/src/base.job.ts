@@ -56,6 +56,13 @@ export abstract class BaseJob implements OnModuleInit {
   readonly defaultTimeoutMs: number = 30_000
 
   /**
+   * Default enabled state used when the DB row does not exist yet.
+   * Override in subclass to disable a job by default.
+   * @example `readonly defaultEnabled = false` — job starts disabled until manually enabled in DB
+   */
+  readonly defaultEnabled: boolean = true
+
+  /**
    * Optional human-readable description stored in the DB row.
    */
   readonly description?: string
