@@ -1,8 +1,9 @@
 import { randomUUID } from 'node:crypto'
 
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
+import { createHttpException, ErrorCode } from '@workspace/error-code'
 import {
   AuthIdentityRepository,
   AuthSessionRepository,
@@ -52,16 +53,16 @@ export class AuthService {
     // 1. Find authentication identity by email
     const identity = await this.authIdentityRepo.findByProviderAndIdentifier('email', email)
     if (!identity) {
-      throw new UnauthorizedException('Invalid email or password')
+      throw createHttpException(ErrorCode.AUTH_INVALID_EMAIL_OR_PASSWORD)
     }
 
     // 2. Verify password
     if (!identity.password) {
-      throw new UnauthorizedException('Invalid email or password')
+      throw createHttpException(ErrorCode.AUTH_INVALID_EMAIL_OR_PASSWORD)
     }
     const isValid = await this.passwordHasher.verify(password, identity.password)
     if (!isValid) {
-      throw new UnauthorizedException('Invalid email or password')
+      throw createHttpException(ErrorCode.AUTH_INVALID_EMAIL_OR_PASSWORD)
     }
 
     // 3. Save authentication identity (update updatedAt)
@@ -87,7 +88,7 @@ export class AuthService {
     // 1. Check if email already exists
     const exists = await this.authIdentityRepo.existsByIdentifier(email)
     if (exists) {
-      throw new ConflictException('Email already registered')
+      throw createHttpException(ErrorCode.AUTH_EMAIL_ALREADY_REGISTERED)
     }
 
     // 2. Create user
@@ -130,7 +131,7 @@ export class AuthService {
     // 1. Find session
     const session = await this.authSessionRepo.findByToken(refreshToken)
     if (!session || session.expiresAt <= new Date()) {
-      throw new UnauthorizedException('Invalid refresh token')
+      throw createHttpException(ErrorCode.AUTH_INVALID_REFRESH_TOKEN)
     }
 
     // 2. Delete old session
@@ -212,7 +213,7 @@ export class AuthService {
   async getSession(sessionId: string, userId: string, email: string, role: string | null) {
     const session = await this.authSessionRepo.findById(sessionId)
     if (session?.userId !== userId) {
-      throw new UnauthorizedException('Session not found or expired')
+      throw createHttpException(ErrorCode.AUTH_SESSION_NOT_FOUND_OR_EXPIRED)
     }
 
     return {
@@ -258,16 +259,16 @@ export class AuthService {
     // 1. Find email authentication identity
     const identity = await this.authIdentityRepo.findByUserIdAndProvider(userId, 'email')
     if (!identity) {
-      throw new UnauthorizedException('Email authentication not found')
+      throw createHttpException(ErrorCode.AUTH_EMAIL_AUTHENTICATION_NOT_FOUND)
     }
 
     // 2. Verify current password
     if (!identity.password) {
-      throw new UnauthorizedException('Invalid current password')
+      throw createHttpException(ErrorCode.AUTH_INVALID_CURRENT_PASSWORD)
     }
     const isValid = await this.passwordHasher.verify(currentPassword, identity.password)
     if (!isValid) {
-      throw new UnauthorizedException('Invalid current password')
+      throw createHttpException(ErrorCode.AUTH_INVALID_CURRENT_PASSWORD)
     }
 
     // 3. Change password

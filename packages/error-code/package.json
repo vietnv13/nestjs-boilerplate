@@ -1,5 +1,5 @@
 {
-  "name": "@workspace/nestjs-core",
+  "name": "@workspace/error-code",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -19,12 +19,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@nestjs/common": "^11.1.9",
-    "@workspace/database": "workspace:*",
-    "@workspace/error-code": "workspace:*",
-    "@workspace/nestjs-drizzle": "workspace:*",
-    "@workspace/nestjs-storage": "workspace:*",
-    "drizzle-orm": "0.44.7"
+    "@nestjs/common": "^11.1.9"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",

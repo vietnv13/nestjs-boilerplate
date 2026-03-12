@@ -1,5 +1,6 @@
-import { Body, Controller, ForbiddenException, Get, Post, Request, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { createHttpException, ErrorCode } from '@workspace/error-code'
 
 import { AdminGuard } from '@/admin/guards/admin.guard'
 import { AuthService } from '@/auth/auth.service'
@@ -39,7 +40,7 @@ export class AdminAuthController {
 
     if (result.user.role?.toUpperCase() !== 'ADMIN') {
       await this.authService.logout(result.refreshToken)
-      throw new ForbiddenException('Admin access required')
+      throw createHttpException(ErrorCode.ADMIN_ACCESS_REQUIRED)
     }
 
     return result

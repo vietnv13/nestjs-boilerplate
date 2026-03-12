@@ -1,9 +1,5 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
+import { createHttpException, ErrorCode } from '@workspace/error-code'
 import { StorageService } from '@workspace/nestjs-storage'
 
 import { AssetRepository } from './asset.repository.js'
@@ -38,11 +34,11 @@ export class AssetService {
 
   async createAsset(params: CreateAssetParams): Promise<CreateAssetResult> {
     if (!params.isPublic && !params.creatorId) {
-      throw new BadRequestException('Authenticated upload is required for non-public assets')
+      throw createHttpException(ErrorCode.ASSET_UPLOAD_AUTH_REQUIRED)
     }
 
     if (params.isPublic && params.creatorId) {
-      throw new BadRequestException('Public assets cannot have a creator')
+      throw createHttpException(ErrorCode.ASSET_PUBLIC_CANNOT_HAVE_CREATOR)
     }
 
     const datePath = buildDatePath()
@@ -70,7 +66,7 @@ export class AssetService {
   async linkAsset(assetId: string, params: LinkAssetParams): Promise<AssetLinkDatabase> {
     const asset = await this.repo.findAssetById(assetId)
     if (!asset || asset.deletedAt) {
-      throw new NotFoundException('Asset not found')
+      throw createHttpException(ErrorCode.ASSET_NOT_FOUND)
     }
 
     const slot = normalizeSlot(params.slot)
@@ -89,7 +85,7 @@ export class AssetService {
   ): Promise<AssetLinkDatabase> {
     const asset = await this.repo.findAssetById(assetId)
     if (!asset || asset.deletedAt) {
-      throw new NotFoundException('Asset not found')
+      throw createHttpException(ErrorCode.ASSET_NOT_FOUND)
     }
 
     const slot = normalizeSlot(params.slot)
@@ -111,7 +107,7 @@ export class AssetService {
   async unlinkAsset(assetId: string, params: LinkAssetParams): Promise<number> {
     const asset = await this.repo.findAssetById(assetId)
     if (!asset) {
-      throw new NotFoundException('Asset not found')
+      throw createHttpException(ErrorCode.ASSET_NOT_FOUND)
     }
 
     const trimmedSlot = params.slot?.trim()
@@ -127,7 +123,7 @@ export class AssetService {
   async getAssetUrl(assetId: string): Promise<string | undefined> {
     const asset = await this.repo.findAssetById(assetId)
     if (!asset || asset.deletedAt) {
-      throw new NotFoundException('Asset not found')
+      throw createHttpException(ErrorCode.ASSET_NOT_FOUND)
     }
     return this.storage.getUrl(asset.key)
   }
@@ -135,15 +131,15 @@ export class AssetService {
   async softDeleteAsset(assetId: string, actorId: string): Promise<void> {
     const asset = await this.repo.findAssetById(assetId)
     if (!asset) {
-      throw new NotFoundException('Asset not found')
+      throw createHttpException(ErrorCode.ASSET_NOT_FOUND)
     }
 
     if (!asset.creatorId) {
-      throw new ForbiddenException('Only creator-owned assets can be deleted via API')
+      throw createHttpException(ErrorCode.ASSET_DELETE_CREATOR_ONLY)
     }
 
     if (asset.creatorId !== actorId) {
-      throw new ForbiddenException('You do not have permission to delete this asset')
+      throw createHttpException(ErrorCode.ASSET_DELETE_FORBIDDEN)
     }
 
     if (asset.deletedAt) {

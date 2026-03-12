@@ -1,5 +1,6 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
+import { createHttpException, ErrorCode } from '@workspace/error-code'
 
 /**
  * Admin Guard
@@ -16,7 +17,7 @@ export class AdminGuard extends AuthGuard('jwt') {
     }
     const isAdmin = user.roles?.some((r) => r.toUpperCase() === 'ADMIN')
     if (!isAdmin) {
-      throw new ForbiddenException('Admin access required')
+      throw createHttpException(ErrorCode.ADMIN_ACCESS_REQUIRED)
     }
     return user
   }

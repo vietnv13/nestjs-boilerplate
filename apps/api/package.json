@@ -44,6 +44,7 @@
     "@opentelemetry/sdk-node": "^0.54.2",
     "@redis/client": "^5.11.0",
     "@workspace/database": "workspace:*",
+    "@workspace/error-code": "workspace:*",
     "@workspace/nestjs-auth": "workspace:*",
     "@workspace/nestjs-cache": "workspace:*",
     "@workspace/nestjs-core": "workspace:*",

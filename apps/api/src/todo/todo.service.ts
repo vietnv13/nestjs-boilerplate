@@ -1,4 +1,5 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
+import { createHttpException, ErrorCode } from '@workspace/error-code'
 
 import { TodoRepository } from '@/todo/repositories/todo.repository'
 
@@ -15,14 +16,14 @@ export class TodoService {
   async findById(id: string): Promise<Todo> {
     const todo = await this.todos.findById(id)
     if (!todo) {
-      throw new NotFoundException('Todo not found')
+      throw createHttpException(ErrorCode.TODO_NOT_FOUND)
     }
     return todo
   }
 
   async create(data: Pick<InsertTodo, 'title' | 'description'>): Promise<Todo> {
     if (!data.title?.trim()) {
-      throw new BadRequestException('title is required')
+      throw createHttpException(ErrorCode.TODO_TITLE_REQUIRED)
     }
     return this.todos.create({
       title: data.title.trim(),
@@ -42,7 +43,7 @@ export class TodoService {
     })
 
     if (!updated) {
-      throw new NotFoundException('Todo not found')
+      throw createHttpException(ErrorCode.TODO_NOT_FOUND)
     }
     return updated
   }
@@ -50,7 +51,7 @@ export class TodoService {
   async delete(id: string): Promise<void> {
     const deleted = await this.todos.delete(id)
     if (!deleted) {
-      throw new NotFoundException('Todo not found')
+      throw createHttpException(ErrorCode.TODO_NOT_FOUND)
     }
   }
 }

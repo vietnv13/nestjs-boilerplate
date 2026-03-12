@@ -53,6 +53,14 @@ export class ProblemDetailsFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
     }
 
+    const errorCodeAndMetadata = this.extractErrorCodeAndMetadata(exceptionResponse)
+    if (errorCodeAndMetadata.code) {
+      problemDetails.code = errorCodeAndMetadata.code
+    }
+    if (errorCodeAndMetadata.metadata) {
+      problemDetails.metadata = errorCodeAndMetadata.metadata
+    }
+
     // Add field-level errors for validation failures
     if (status === 400 || status === 422) {
       const errors = this.extractValidationErrors(
@@ -276,5 +284,29 @@ export class ProblemDetailsFilter implements ExceptionFilter {
     }
 
     return 'VALIDATION_ERROR'
+  }
+
+  private extractErrorCodeAndMetadata(exceptionResponse: unknown): {
+    code?: string
+    metadata?: Record<string, unknown>
+  } {
+    if (typeof exceptionResponse !== 'object' || exceptionResponse === null) {
+      return {}
+    }
+
+    const code =
+      'code' in exceptionResponse && typeof exceptionResponse.code === 'string'
+        ? exceptionResponse.code
+        : undefined
+
+    const metadata =
+      'metadata' in exceptionResponse &&
+      typeof exceptionResponse.metadata === 'object' &&
+      exceptionResponse.metadata !== null &&
+      !Array.isArray(exceptionResponse.metadata)
+        ? (exceptionResponse.metadata as Record<string, unknown>)
+        : undefined
+
+    return { code, metadata }
   }
 }

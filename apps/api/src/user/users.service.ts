@@ -1,9 +1,5 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
+import { createHttpException, ErrorCode } from '@workspace/error-code'
 
 import { UserRepository } from '@/user/repositories/user.repository'
 
@@ -23,12 +19,12 @@ export class UsersService {
 
   async create(dto: CreateUserDto): Promise<UserResponseDto> {
     if (!dto.email?.trim()) {
-      throw new BadRequestException('email is required')
+      throw createHttpException(ErrorCode.USER_EMAIL_REQUIRED)
     }
 
     const exists = await this.users.existsByEmail(dto.email)
     if (exists) {
-      throw new ConflictException('User already exists')
+      throw createHttpException(ErrorCode.USER_ALREADY_EXISTS)
     }
 
     const user = await this.users.create({
@@ -47,24 +43,24 @@ export class UsersService {
 
   async findById(id: string): Promise<UserResponseDto> {
     const user = await this.users.findById(id)
-    if (!user) throw new NotFoundException('User not found')
+    if (!user) throw createHttpException(ErrorCode.USER_NOT_FOUND)
     return this.toResponseDto(user)
   }
 
   async findByEmail(email: string): Promise<UserResponseDto> {
     const user = await this.users.findByEmail(email)
-    if (!user) throw new NotFoundException('User not found')
+    if (!user) throw createHttpException(ErrorCode.USER_NOT_FOUND)
     return this.toResponseDto(user)
   }
 
   async update(id: string, dto: UpdateUserDto): Promise<UserResponseDto> {
     const user = await this.users.update(id, dto)
-    if (!user) throw new NotFoundException('User not found')
+    if (!user) throw createHttpException(ErrorCode.USER_NOT_FOUND)
     return this.toResponseDto(user)
   }
 
   async delete(id: string): Promise<void> {
     const deleted = await this.users.delete(id)
-    if (!deleted) throw new NotFoundException('User not found')
+    if (!deleted) throw createHttpException(ErrorCode.USER_NOT_FOUND)
   }
 }

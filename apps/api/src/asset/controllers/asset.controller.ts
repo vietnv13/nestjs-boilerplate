@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -21,6 +20,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger'
+import { createHttpException, ErrorCode } from '@workspace/error-code'
 import { JwtAuthGuard, OptionalJwtAuthGuard } from '@workspace/nestjs-auth'
 import { AssetService } from '@workspace/nestjs-core'
 import { memoryStorage } from 'multer'
@@ -66,7 +66,7 @@ export class AssetController {
     },
   ): Promise<AssetUploadResponseDto> {
     if (!file) {
-      throw new BadRequestException('file is required')
+      throw createHttpException(ErrorCode.API_ASSET_FILE_REQUIRED)
     }
 
     const isPublic = dto.isPublic ?? true
