@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 
 import { describe, it, expect, beforeEach } from 'vitest'
 
-import { UserRepository } from '@/modules/user/repositories/user.repository'
+import { UserRepository } from '@/user/repositories/user.repository'
 
 import { UserFixtures } from '../../fixtures/user.fixtures'
 import { testDb } from '../setup/test-database'

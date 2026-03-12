@@ -18,11 +18,11 @@ import { setupSwagger } from '@workspace/nestjs-swagger'
 import express from 'express'
 import { Logger } from 'nestjs-pino'
 
-import { corsConfig } from '@/app/config/security.config'
+import { corsConfig } from '@/config/security.config'
 
 import { AppModule } from './app.module'
 
-import type { Env } from '@/app/config/env.schema'
+import type { Env } from '@/config/env.schema'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
