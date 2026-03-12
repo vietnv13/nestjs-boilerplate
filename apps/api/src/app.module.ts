@@ -20,7 +20,7 @@ import { createClsConfig } from '@workspace/nestjs-request-context'
 import { SchedulerModule } from '@workspace/nestjs-scheduler'
 import { SwaggerDevController } from '@workspace/nestjs-swagger'
 import { StorageModule } from '@workspace/nestjs-storage'
-import { ClsModule } from 'nestjs-cls'
+import { ClsMiddleware, ClsModule } from 'nestjs-cls'
 
 import { validateEnv } from '@/config/env.schema'
 import { throttlerConfig } from '@/config/security.config'
@@ -96,8 +96,12 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     // Register global middleware
+    // ClsMiddleware must be first — sets up the async context for all downstream middleware.
+    // Mounted explicitly with '*path' (Express 5 named wildcard) to avoid nestjs-cls
+    // auto-detection registering a bare '*' wildcard that triggers LegacyRouteConverter warnings.
     consumer
       .apply(
+        ClsMiddleware,
         ApiVersionMiddleware, // API versioning (must be before ETag)
         ETagMiddleware, // ETag and 304 Not Modified support
       )

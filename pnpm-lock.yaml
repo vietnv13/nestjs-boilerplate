@@ -843,6 +843,9 @@ importers:
       '@nestjs/config':
         specifier: 4.0.3
         version: 4.0.3(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@workspace/nestjs-redis':
+        specifier: workspace:*
+        version: link:../nestjs-redis
       cache-manager:
         specifier: ^7.2.5
         version: 7.2.8
@@ -1001,6 +1004,9 @@ importers:
       '@redis/client':
         specifier: ^5.11.0
         version: 5.11.0
+      '@workspace/nestjs-redis':
+        specifier: workspace:*
+        version: link:../nestjs-redis
     devDependencies:
       '@workspace/eslint-config':
         specifier: workspace:*
@@ -1082,6 +1088,9 @@ importers:
       '@redis/client':
         specifier: ^5.11.0
         version: 5.11.0
+      '@workspace/nestjs-redis':
+        specifier: workspace:*
+        version: link:../nestjs-redis
     devDependencies:
       '@workspace/eslint-config':
         specifier: workspace:*
@@ -1119,6 +1128,31 @@ importers:
       drizzle-orm:
         specifier: 0.44.7
         version: 0.44.7(@opentelemetry/api@1.9.0)(@types/pg@8.18.0)(pg@8.20.0)
+    devDependencies:
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      eslint:
+        specifier: ^9.39.2
+        version: 9.39.4(jiti@2.6.1)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/nestjs-redis:
+    dependencies:
+      '@nestjs/common':
+        specifier: ^11.1.9
+        version: 11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/config':
+        specifier: 4.0.3
+        version: 4.0.3(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@redis/client':
+        specifier: ^5.11.0
+        version: 5.11.0
     devDependencies:
       '@workspace/eslint-config':
         specifier: workspace:*

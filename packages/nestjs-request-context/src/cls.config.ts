@@ -13,7 +13,11 @@ export function createClsConfig(): ClsModuleOptions {
   return {
     global: true,
     middleware: {
-      mount: true,
+      // mount: false — auto-mount is disabled because nestjs-cls uses a bare '*'
+      // wildcard as the mount path for Express 4 and '/' for Express 5, and the
+      // Express version detection can fail before the HTTP adapter is fully ready.
+      // Mount ClsMiddleware explicitly via AppModule.configure() with '*path' instead.
+      mount: false,
       generateId: true,
       idGenerator: (request: Request) => {
         // Use client X-Request-Id or generate new UUID

@@ -21,7 +21,8 @@
   "dependencies": {
     "@nestjs/common": "^11.1.9",
     "@nestjs/config": "4.0.3",
-    "@redis/client": "^5.11.0"
+    "@redis/client": "^5.11.0",
+    "@workspace/nestjs-redis": "workspace:*"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",

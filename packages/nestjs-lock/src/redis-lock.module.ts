@@ -1,11 +1,11 @@
 import { Global, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { createClient } from '@redis/client'
+import { buildRedisUrl, createRedisClient } from '@workspace/nestjs-redis'
 
 import { REDIS_LOCK_CLIENT } from './redis-lock.constants.js'
 import { RedisLockService } from './redis-lock.service.js'
 
-import type { RedisClientType } from '@redis/client'
+import type { RedisClientType } from '@workspace/nestjs-redis'
 
 /**
  * RedisLockModule
@@ -19,14 +19,8 @@ import type { RedisClientType } from '@redis/client'
     {
       provide: REDIS_LOCK_CLIENT,
       inject: [ConfigService],
-      useFactory: (config: ConfigService): RedisClientType => {
-        const host = config.getOrThrow<string>('REDIS_HOST')
-        const port = config.get<number>('REDIS_PORT') ?? 6379
-        const password = config.get<string>('REDIS_PASSWORD')
-
-        const url = password ? `redis://:${password}@${host}:${port}` : `redis://${host}:${port}`
-        return createClient({ url }) as RedisClientType
-      },
+      useFactory: (config: ConfigService): RedisClientType =>
+        createRedisClient(buildRedisUrl(config)),
     },
     RedisLockService,
   ],

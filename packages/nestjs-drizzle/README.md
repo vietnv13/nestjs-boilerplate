@@ -17,7 +17,7 @@ import { DrizzleModule } from '@workspace/nestjs-drizzle'
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // must be registered before DrizzleModule
-    DrizzleModule.forRoot(),                   // reads env vars automatically
+    DrizzleModule.forRoot(), // reads env vars automatically
   ],
 })
 export class AppModule {}
@@ -82,13 +82,13 @@ DrizzleModule.forRootAsync({
 
 ## Environment variables
 
-| Variable                     | Required | Default | Description                              |
-| ---------------------------- | -------- | ------- | ---------------------------------------- |
-| `DATABASE_URL`               | yes      | —       | Full PostgreSQL connection string        |
-| `DB_POOL_MAX`                | no       | `10`    | Max pool connections                     |
-| `DB_POOL_MIN`                | no       | `2`     | Min pool connections kept alive          |
-| `DB_POOL_IDLE_TIMEOUT`       | no       | `30000` | Idle connection timeout (ms)             |
-| `DB_POOL_CONNECTION_TIMEOUT` | no       | `5000`  | Connection acquisition timeout (ms)      |
+| Variable                     | Required | Default | Description                         |
+| ---------------------------- | -------- | ------- | ----------------------------------- |
+| `DATABASE_URL`               | yes      | —       | Full PostgreSQL connection string   |
+| `DB_POOL_MAX`                | no       | `10`    | Max pool connections                |
+| `DB_POOL_MIN`                | no       | `2`     | Min pool connections kept alive     |
+| `DB_POOL_IDLE_TIMEOUT`       | no       | `30000` | Idle connection timeout (ms)        |
+| `DB_POOL_CONNECTION_TIMEOUT` | no       | `5000`  | Connection acquisition timeout (ms) |
 
 ---
 
@@ -162,9 +162,9 @@ export class AppModule {}
 
 ## SOLID design notes
 
-| Principle | Applied |
-| --- | --- |
-| **Single Responsibility** | Each file has one job: token, types, factory, and module wiring are all separate |
-| **Open/Closed** | `forRootAsync` lets you swap any config source without modifying the module |
+| Principle                 | Applied                                                                                  |
+| ------------------------- | ---------------------------------------------------------------------------------------- |
+| **Single Responsibility** | Each file has one job: token, types, factory, and module wiring are all separate         |
+| **Open/Closed**           | `forRootAsync` lets you swap any config source without modifying the module              |
 | **Interface Segregation** | `DrizzlePoolOptions` is separate from `DrizzleModuleOptions` — import only what you need |
-| **Dependency Inversion** | Consumers inject `DB_TOKEN` (abstraction) — never `Pool` or Drizzle internals directly |
+| **Dependency Inversion**  | Consumers inject `DB_TOKEN` (abstraction) — never `Pool` or Drizzle internals directly   |

@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { createClient } from '@redis/client'
+import { buildRedisUrl, createRedisClient } from '@workspace/nestjs-redis'
 
 import type { OnModuleDestroy, OnModuleInit } from '@nestjs/common'
-import type { RedisClientType } from '@redis/client'
+import type { RedisClientType } from '@workspace/nestjs-redis'
 
 type PatternHandler = (message: string, channel: string) => void
 
@@ -26,14 +26,9 @@ export class RedisPubSubService implements OnModuleInit, OnModuleDestroy {
   private isReady = false
 
   constructor(config: ConfigService) {
-    const host = config.getOrThrow<string>('REDIS_HOST')
-    const port = config.get<number>('REDIS_PORT') ?? 6379
-    const password = config.get<string>('REDIS_PASSWORD')
-    const url = password ? `redis://:${password}@${host}:${port}` : `redis://${host}:${port}`
-
-    this.publisher = createClient({ url }) as RedisClientType
-    this.subscriber =
-      (this.publisher.duplicate() as RedisClientType) ?? (createClient({ url }) as RedisClientType)
+    const url = buildRedisUrl(config)
+    this.publisher = createRedisClient(url)
+    this.subscriber = (this.publisher.duplicate() as RedisClientType) ?? createRedisClient(url)
   }
 
   /**

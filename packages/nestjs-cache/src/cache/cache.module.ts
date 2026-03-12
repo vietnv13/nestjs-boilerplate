@@ -2,6 +2,7 @@ import KeyvRedis from '@keyv/redis'
 import { CacheModule as NestCacheModule, type CacheModuleOptions } from '@nestjs/cache-manager'
 import { Global, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { buildRedisUrl } from '@workspace/nestjs-redis'
 
 import { CacheService } from './cache.service.js'
 
@@ -26,12 +27,7 @@ import { CacheService } from './cache.service.js'
           return { ttl, namespace: 'api' }
         }
 
-        const port = configService.get<number>('REDIS_PORT') ?? 6379
-        const password = configService.get<string>('REDIS_PASSWORD')
-
-        const redisUrl = password
-          ? `redis://:${password}@${host}:${port}`
-          : `redis://${host}:${port}`
+        const redisUrl = buildRedisUrl(configService)
 
         // Pass the adapter (not a Keyv instance) so @nestjs/cache-manager can wrap it correctly.
         // This avoids `instanceof Keyv` mismatches between ESM/CJS entrypoints that can lead to

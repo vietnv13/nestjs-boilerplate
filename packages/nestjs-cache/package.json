@@ -23,6 +23,7 @@
     "@nestjs/cache-manager": "^3.0.1",
     "@nestjs/common": "^11.1.9",
     "@nestjs/config": "4.0.3",
+    "@workspace/nestjs-redis": "workspace:*",
     "cache-manager": "^7.2.5"
   },
   "devDependencies": {
