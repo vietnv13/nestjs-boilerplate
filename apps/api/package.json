@@ -46,6 +46,7 @@
     "@workspace/database": "workspace:*",
     "@workspace/nestjs-auth": "workspace:*",
     "@workspace/nestjs-cache": "workspace:*",
+    "@workspace/nestjs-core": "workspace:*",
     "@workspace/nestjs-drizzle": "workspace:*",
     "@workspace/nestjs-health": "workspace:*",
     "@workspace/nestjs-http": "workspace:*",

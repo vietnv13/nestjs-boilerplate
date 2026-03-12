@@ -85,12 +85,10 @@ export class AssetRepository {
       conditions.push(eq(assetLinksTable.slot, params.slot))
     }
 
-    const where = and(...conditions)
-
     const result = await this.db
       .update(assetLinksTable)
       .set({ deletedAt: params.deletedAt })
-      .where(where)
+      .where(and(...conditions))
     return result.rowCount ?? 0
   }
 
@@ -130,21 +128,19 @@ export class AssetRepository {
       conditions.push(eq(assetLinksTable.slot, params.slot))
     }
 
-    return await this.db
+    return this.db
       .select()
       .from(assetLinksTable)
       .where(and(...conditions))
   }
 
   async findPurgeCandidates(cutoff: Date, limit: number): Promise<PurgeCandidate[]> {
-    const rows = await this.db
+    return this.db
       .select({ id: assetsTable.id, key: assetsTable.key })
       .from(assetsTable)
       .where(
         or(
-          // Soft deleted long ago
           sql`${assetsTable.deletedAt} IS NOT NULL AND ${assetsTable.deletedAt} < ${cutoff}`,
-          // Never linked and old enough
           and(
             isNull(assetsTable.deletedAt),
             lt(assetsTable.createdAt, cutoff),
@@ -158,8 +154,6 @@ export class AssetRepository {
         ),
       )
       .limit(limit)
-
-    return rows
   }
 
   async hardDeleteAsset(id: string): Promise<boolean> {

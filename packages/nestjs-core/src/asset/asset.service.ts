@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 import { StorageService } from '@workspace/nestjs-storage'
 
-import { AssetRepository } from '@/asset/repositories/asset.repository'
+import { AssetRepository } from './asset.repository.js'
 
 import type { AssetDatabase, AssetLinkDatabase } from '@workspace/database'
 
@@ -75,7 +75,7 @@ export class AssetService {
 
     const slot = normalizeSlot(params.slot)
 
-    return await this.repo.createLink({
+    return this.repo.createLink({
       assetId: asset.id,
       ownerType: params.ownerType,
       ownerId: params.ownerId,
@@ -100,7 +100,7 @@ export class AssetService {
       deletedAt: new Date(),
     })
 
-    return await this.repo.createLink({
+    return this.repo.createLink({
       assetId: asset.id,
       ownerType: params.ownerType,
       ownerId: params.ownerId,
@@ -115,13 +115,11 @@ export class AssetService {
     }
 
     const trimmedSlot = params.slot?.trim()
-    let slot: string | undefined
-    if (trimmedSlot) slot = trimmedSlot
-    return await this.repo.softDeleteLinksByOwner({
+    return this.repo.softDeleteLinksByOwner({
       assetId,
       ownerType: params.ownerType,
       ownerId: params.ownerId,
-      slot,
+      slot: trimmedSlot || undefined,
       deletedAt: new Date(),
     })
   }
@@ -131,7 +129,7 @@ export class AssetService {
     if (!asset || asset.deletedAt) {
       throw new NotFoundException('Asset not found')
     }
-    return await this.storage.getUrl(asset.key)
+    return this.storage.getUrl(asset.key)
   }
 
   async softDeleteAsset(assetId: string, actorId: string): Promise<void> {
@@ -162,7 +160,7 @@ export class AssetService {
     ownerId: string
     slot?: string
   }): Promise<AssetLinkDatabase[]> {
-    return await this.repo.findLinksByOwner(params)
+    return this.repo.findLinksByOwner(params)
   }
 
   async getUrlForOwnerSlot(params: {
@@ -174,7 +172,7 @@ export class AssetService {
     if (!link) return undefined
     const asset = await this.repo.findAssetById(link.assetId)
     if (!asset || asset.deletedAt) return undefined
-    return await this.storage.getUrl(asset.key)
+    return this.storage.getUrl(asset.key)
   }
 
   async purgeExpiredAssets(params: {

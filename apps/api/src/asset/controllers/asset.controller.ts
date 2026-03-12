@@ -23,7 +23,7 @@ import {
 } from '@nestjs/swagger'
 import { memoryStorage } from 'multer'
 
-import { AssetService } from '@/asset/asset.service'
+import { AssetService } from '@workspace/nestjs-core'
 import { AssetUploadResponseDto } from '@/asset/dtos/asset-upload-response.dto'
 import { UploadAssetDto } from '@/asset/dtos/upload-asset.dto'
 import { JwtAuthGuard } from '@workspace/nestjs-auth'
