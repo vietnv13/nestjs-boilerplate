@@ -52,12 +52,12 @@ export class CleanupModule {}
 
 ## BaseJob overridable properties
 
-| Property | Default | Description |
-| --- | --- | --- |
-| `defaultCron` | `'*/5 * * * *'` | Initial cron expression written to the DB row on first startup. Operators can change it via the DB. |
-| `defaultTimeoutMs` | `30000` | Initial timeout (ms) written to the DB row on first startup. |
-| `defaultEnabled` | `true` | Initial enabled state written to the DB row on first startup. When overridden to `false`, the scheduler enforces `enabled = false` in the DB on every startup (see note below). |
-| `description` | `undefined` | Optional human-readable description stored in the DB row. |
+| Property           | Default         | Description                                                                                                                                                                     |
+| ------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `defaultCron`      | `'*/5 * * * *'` | Initial cron expression written to the DB row on first startup. Operators can change it via the DB.                                                                             |
+| `defaultTimeoutMs` | `30000`         | Initial timeout (ms) written to the DB row on first startup.                                                                                                                    |
+| `defaultEnabled`   | `true`          | Initial enabled state written to the DB row on first startup. When overridden to `false`, the scheduler enforces `enabled = false` in the DB on every startup (see note below). |
+| `description`      | `undefined`     | Optional human-readable description stored in the DB row.                                                                                                                       |
 
 > **`defaultEnabled` behaviour:**
 >
@@ -69,15 +69,38 @@ export class CleanupModule {}
 ```text
 onModuleInit  (each BaseJob)
   └─ SchedulerRegistry.register()
-       └─ skip if SCHEDULER_ENABLED != true  ← new: no-op on disabled workers
+       └─ skip if SCHEDULER_ENABLED != true  — no-op on disabled workers
 
 onApplicationBootstrap  (SchedulerService)
-  └─ SchedulerRegistry.initializeJobs()       ← new: DB check is centralised here
+  └─ SchedulerRegistry.initializeJobs()  — DB check centralised here
        ├─ ensureExists()  — insert defaults if row is missing
        ├─ enforce enabled=false when defaultEnabled=false
        └─ return only DB-enabled jobs
   └─ schedule Croner cron job for each active job
+
+onModuleDestroy / SIGTERM  (SchedulerService)
+  ├─ isShuttingDown = true  — reject any tick in the race window
+  ├─ cronJob.stop()         — no new ticks scheduled
+  └─ await Promise.allSettled(activeRuns)  — drain in-flight jobs
 ```
+
+## Graceful shutdown
+
+On deploy, restart, or kill the scheduler stops cleanly:
+
+1. `isShuttingDown` is raised — any cron tick that fires in the narrow window before the Croner timer is fully cancelled is discarded.
+2. All Croner schedulers are stopped — no new ticks will be scheduled.
+3. The service waits for every in-flight `runJob` to settle (success, failure, or its own timeout) before the process exits.
+
+**Required in `main.ts`** — NestJS only forwards OS signals to lifecycle hooks when shutdown hooks are enabled:
+
+```ts
+const app = await NestFactory.create(AppModule)
+app.enableShutdownHooks() // ← required for graceful shutdown
+await app.listen(3000)
+```
+
+Without this, `SIGTERM` (sent by PM2 on restart/stop) will kill the process immediately without waiting for running jobs to finish.
 
 ## PM2 cluster
 
@@ -94,9 +117,9 @@ Multiple workers starting simultaneously produce the same result without race co
 
 ## Environment variables
 
-| Variable | Default | Description |
-| --- | --- | --- |
+| Variable            | Default | Description                                                    |
+| ------------------- | ------- | -------------------------------------------------------------- |
 | `SCHEDULER_ENABLED` | `false` | Set to `true` on the worker(s) that should run scheduled jobs. |
-| `REDIS_HOST` | — | Redis host for distributed locking. |
-| `REDIS_PORT` | — | Redis port. |
-| `REDIS_PASSWORD` | — | Redis password (if required). |
+| `REDIS_HOST`        | —       | Redis host for distributed locking.                            |
+| `REDIS_PORT`        | —       | Redis port.                                                    |
+| `REDIS_PASSWORD`    | —       | Redis password (if required).                                  |

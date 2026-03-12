@@ -31,11 +31,32 @@ class JobTimeoutError extends Error {
  *   2. Run job.run() wrapped in a timeout.
  *   3. Write execution record (success / failed / timeout) to `job_executions`.
  *   4. Release the Redis lock.
+ *
+ * Graceful shutdown (deploy / restart / SIGTERM):
+ *   onModuleDestroy stops all cron schedulers first (no new ticks) then waits
+ *   for every in-flight runJob promise to settle before returning, so the
+ *   process is never killed mid-execution. Requires `app.enableShutdownHooks()`
+ *   in main.ts so NestJS forwards OS signals to the lifecycle hooks.
  */
 @Injectable()
 export class SchedulerService implements OnApplicationBootstrap, OnModuleDestroy {
   private readonly logger = new Logger(SchedulerService.name)
   private readonly cronJobs: Croner[] = []
+
+  /**
+   * Tracks promises for all currently-executing job runs.
+   * Populated on every cron tick and cleared when the run settles.
+   * `onModuleDestroy` awaits this set to guarantee graceful shutdown.
+   */
+  private readonly activeRuns = new Set<Promise<void>>()
+
+  /**
+   * Set to `true` as the very first step of shutdown.
+   * Guards the narrow race window between calling `job.stop()` on each
+   * Croner and its internal timer being fully cancelled, ensuring no new
+   * run is started after we begin draining `activeRuns`.
+   */
+  private isShuttingDown = false
 
   /**
    * Stable identifier for this PM2 worker across restarts within the same host.
@@ -78,7 +99,9 @@ export class SchedulerService implements OnApplicationBootstrap, OnModuleDestroy
     }
 
     const registeredCount = this.registry.getAll().length
-    this.logger.log(`Initializing ${registeredCount} scheduled job(s) [instance=${this.instanceId}]`)
+    this.logger.log(
+      `Initializing ${registeredCount} scheduled job(s) [instance=${this.instanceId}]`,
+    )
     if (registeredCount === 0) {
       this.logger.warn(
         'No scheduled jobs registered. Ensure job providers are included in their feature module providers array.',
@@ -92,10 +115,14 @@ export class SchedulerService implements OnApplicationBootstrap, OnModuleDestroy
         config.cron,
         { protect: true }, // prevent overlapping runs on the same instance
         () => {
-          // Croner callback can be async; always catch so errors never become silent unhandled rejections.
-          void this.runJob(job.jobName, config.timeoutMs).catch((error: unknown) => {
+          if (this.isShuttingDown) return
+
+          const run = this.runJob(job.jobName, config.timeoutMs).catch((error: unknown) => {
             this.logger.error(`[${job.jobName}] scheduler tick failed`, { error })
           })
+
+          this.activeRuns.add(run)
+          void run.finally(() => this.activeRuns.delete(run))
         },
       )
 
@@ -107,14 +134,22 @@ export class SchedulerService implements OnApplicationBootstrap, OnModuleDestroy
     }
   }
 
-  onModuleDestroy(): void {
-    if (this.cronJobs.length === 0) {
-      return
-    }
+  async onModuleDestroy(): Promise<void> {
+    // Raise the flag first so any tick firing in the narrow window between
+    // here and job.stop() is discarded before it can start a new run.
+    this.isShuttingDown = true
 
     for (const job of this.cronJobs) {
       job.stop()
     }
+
+    if (this.activeRuns.size > 0) {
+      this.logger.log(
+        `Graceful shutdown: waiting for ${this.activeRuns.size} active job(s) to finish [instance=${this.instanceId}]`,
+      )
+      await Promise.allSettled([...this.activeRuns])
+    }
+
     this.logger.log(
       `Scheduler stopped (${this.cronJobs.length} cron job(s)) [instance=${this.instanceId}]`,
     )
