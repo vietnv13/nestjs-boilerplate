@@ -6,31 +6,20 @@ import type { INestApplication } from '@nestjs/common'
 import type { OpenAPIObject, SwaggerCustomOptions } from '@nestjs/swagger'
 
 /**
- * Swagger base config
+ * Options for configuring the Swagger/Scalar documentation
  */
-export const swaggerConfig = {
-  title: 'NestJS API',
-  description: 'NestJS modular layered architecture API',
-  version: '1.0',
+export interface SwaggerSetupOptions {
+  title: string
+  description: string
+  version: string
+  tags?: Array<{ name: string; description: string }>
+  servers?: Array<{ url: string; description: string }>
 }
 
-/**
- * Swagger UI custom options
- */
-export const swaggerCustomOptions: SwaggerCustomOptions = {
+const swaggerCustomOptions: SwaggerCustomOptions = {
   swaggerOptions: {
     persistAuthorization: true,
   },
-}
-
-/**
- * API version header config
- */
-export const apiVersionConfig = {
-  type: 'apiKey' as const,
-  name: 'API-Version',
-  in: 'header' as const,
-  description: 'Optional API version header (e.g., 2024-11-01)',
 }
 
 /**
@@ -55,8 +44,8 @@ function addDefaultErrorResponses(document: OpenAPIObject): void {
       }
 
       // Skip if default response already defined
-      if (operation.responses && !operation.responses.default) {
-        operation.responses.default = {
+      if (operation.responses && !operation.responses['default']) {
+        operation.responses['default'] = {
           description: 'Error response (400/401/403/404/422/429/500 etc.)',
           content: {
             'application/problem+json': {
@@ -73,24 +62,32 @@ function addDefaultErrorResponses(document: OpenAPIObject): void {
 
 /**
  * Setup API documentation
- * - /docs - Scalar API docs (default)
- * - /swagger - Swagger UI (fallback)
+ * - /docs  — Scalar API reference (default)
+ * - /swagger — Swagger UI (fallback)
+ * - /openapi.yaml — Raw OpenAPI spec
  */
-export async function setupSwagger(app: INestApplication): Promise<void> {
+export async function setupSwagger(
+  app: INestApplication,
+  options: SwaggerSetupOptions,
+): Promise<void> {
   await Promise.resolve()
 
-  const config = new DocumentBuilder()
-    .setTitle(swaggerConfig.title)
-    .setDescription(swaggerConfig.description)
-    .setVersion(swaggerConfig.version)
+  const builder = new DocumentBuilder()
+    .setTitle(options.title)
+    .setDescription(options.description)
+    .setVersion(options.version)
     .setLicense('MIT', 'https://opensource.org/licenses/MIT')
-    .addServer('http://localhost:3000', 'Development')
-    .addTag('health', 'Health check endpoints')
-    .addTag('auth', 'Authentication endpoints')
-    .addTag('todos', 'Todo management endpoints')
-    .addTag('articles', 'Article management endpoints')
     .addBearerAuth()
-    .build()
+
+  for (const server of options.servers ?? []) {
+    builder.addServer(server.url, server.description)
+  }
+
+  for (const tag of options.tags ?? []) {
+    builder.addTag(tag.name, tag.description)
+  }
+
+  const config = builder.build()
 
   const document = SwaggerModule.createDocument(app, config, {
     include: [],

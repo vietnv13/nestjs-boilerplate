@@ -55,8 +55,8 @@
     "isolatedDeclarations": true,
     // Isolated declaration generation, works with bundler to generate .d.ts
 
-    "noPropertyAccessFromIndexSignature": true
-    // Force bracket notation for index signature property access
+    "noPropertyAccessFromIndexSignature": false
+    // Disabled: bracket notation not required for index signature access
 
     // Note: outDir/rootDir determined by each project's bundler config
   }

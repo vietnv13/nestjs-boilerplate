@@ -159,7 +159,7 @@ export class ProblemDetailsFilter implements ExceptionFilter {
     }
 
     if (typeof exceptionResponse === 'object' && 'message' in exceptionResponse) {
-      const message = exceptionResponse.message
+      const message = exceptionResponse['message']
       if (Array.isArray(message)) {
         return this.formatValidationErrors(message)
       }

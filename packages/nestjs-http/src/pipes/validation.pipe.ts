@@ -1,7 +1,7 @@
 import { ValidationPipe, UnprocessableEntityException, HttpStatus } from '@nestjs/common'
 
 /**
- * Global validation pipe config
+ * Global validation pipe factory
  * - whitelist: Remove non-whitelisted properties
  * - forbidNonWhitelisted: Throw 422 for unknown properties
  * - transform: Auto-convert types (string → number)

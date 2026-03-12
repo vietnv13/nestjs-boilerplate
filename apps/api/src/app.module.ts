@@ -4,24 +4,26 @@ import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
 import { CacheModule } from '@workspace/nestjs-cache'
 import { DrizzleModule } from '@workspace/nestjs-drizzle'
+import { HealthModule } from '@workspace/nestjs-health'
+import {
+  ApiVersionMiddleware,
+  CorrelationIdInterceptor,
+  DeprecationInterceptor,
+  ETagMiddleware,
+  RequestContextInterceptor,
+  TraceContextInterceptor,
+} from '@workspace/nestjs-http'
 import { LoggerModule } from '@workspace/nestjs-logger'
 import { ProblemDetailsFilter } from '@workspace/nestjs-problem-details'
 import { QueueModule } from '@workspace/nestjs-queue'
 import { createClsConfig } from '@workspace/nestjs-request-context'
 import { SchedulerModule } from '@workspace/nestjs-scheduler'
+import { SwaggerDevController } from '@workspace/nestjs-swagger'
 import { StorageModule } from '@workspace/nestjs-storage'
 import { ClsModule } from 'nestjs-cls'
 
 import { validateEnv } from '@/app/config/env.schema'
 import { throttlerConfig } from '@/app/config/security.config'
-import { HealthModule } from '@/app/health/health.module'
-import { CorrelationIdInterceptor } from '@/app/interceptors/correlation-id.interceptor'
-import { DeprecationInterceptor } from '@/app/interceptors/deprecation.interceptor'
-import { RequestContextInterceptor } from '@/app/interceptors/request-context.interceptor'
-import { TraceContextInterceptor } from '@/app/interceptors/trace-context.interceptor'
-import { ApiVersionMiddleware } from '@/app/middleware/api-version.middleware'
-import { ETagMiddleware } from '@/app/middleware/etag.middleware'
-import { SwaggerDevController } from '@/app/swagger/swagger-dev.controller'
 import { AdminModule } from '@/modules/admin/admin.module'
 import { AssetModule } from '@/modules/asset/asset.module'
 import { AuthModule } from '@/modules/auth/auth.module'
@@ -75,7 +77,7 @@ import type { NestModule, MiddlewareConsumer } from '@nestjs/common'
   ],
   controllers: [
     // Dev helper controller (dev only)
-    ...(process.env.NODE_ENV === 'production' ? [] : [SwaggerDevController]),
+    ...(process.env['NODE_ENV'] === 'production' ? [] : [SwaggerDevController]),
   ],
   providers: [
     // Global rate limiting guard

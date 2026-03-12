@@ -49,7 +49,7 @@ export class ApiVersionMiddleware implements NestMiddleware {
    */
   private handleUnsupportedVersion(request: Request, res: Response, version: string) {
     const problemDetails: ProblemDetailsDto = {
-      type: `${process.env.API_BASE_URL ?? 'https://api.example.com'}/errors/unsupported-api-version`,
+      type: `${process.env['API_BASE_URL'] ?? 'https://api.example.com'}/errors/unsupported-api-version`,
       title: 'Unsupported API Version',
       status: 400,
       detail: `API version ${version} is not supported. Please use a supported version.`,
@@ -72,7 +72,7 @@ export class ApiVersionMiddleware implements NestMiddleware {
    */
   private handleRetiredVersion(request: Request, res: Response, version: string) {
     const problemDetails: ProblemDetailsDto = {
-      type: `${process.env.API_BASE_URL ?? 'https://api.example.com'}/errors/version-retired`,
+      type: `${process.env['API_BASE_URL'] ?? 'https://api.example.com'}/errors/version-retired`,
       title: 'API Version Retired',
       status: 410,
       detail: `API version ${version} has been permanently retired.`,
@@ -87,7 +87,7 @@ export class ApiVersionMiddleware implements NestMiddleware {
     }
     extendedDetails.retired_version = version
     extendedDetails.current_version = this.DEFAULT_VERSION
-    extendedDetails.migration_guide = `${process.env.API_BASE_URL ?? 'https://api.example.com'}/migration/${version}-to-${this.DEFAULT_VERSION}`
+    extendedDetails.migration_guide = `${process.env['API_BASE_URL'] ?? 'https://api.example.com'}/migration/${version}-to-${this.DEFAULT_VERSION}`
 
     res.status(410).setHeader('Content-Type', 'application/problem+json').json(problemDetails)
   }

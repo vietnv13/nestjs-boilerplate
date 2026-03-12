@@ -8,7 +8,7 @@ import {
 } from '@nestjs/terminus'
 import { SkipThrottle } from '@nestjs/throttler'
 
-import { DrizzleHealthIndicator } from '@/app/health/drizzle.health'
+import { DrizzleHealthIndicator } from './drizzle.health.js'
 
 /**
  * Health check controller for Kubernetes probes and load balancers
@@ -83,7 +83,7 @@ export class HealthController {
     } catch (error) {
       if (error instanceof ServiceUnavailableException) {
         const response = error.getResponse() as Record<string, unknown>
-        const detail = this.formatHealthCheckErrors(response.error)
+        const detail = this.formatHealthCheckErrors(response['error'])
         throw new ServiceUnavailableException(detail)
       }
       throw error
@@ -111,7 +111,7 @@ export class HealthController {
     } catch (error) {
       if (error instanceof ServiceUnavailableException) {
         const response = error.getResponse() as Record<string, unknown>
-        const detail = this.formatHealthCheckErrors(response.error)
+        const detail = this.formatHealthCheckErrors(response['error'])
         throw new ServiceUnavailableException(detail)
       }
       throw error
@@ -140,7 +140,7 @@ export class HealthController {
     } catch (error) {
       if (error instanceof ServiceUnavailableException) {
         const response = error.getResponse() as Record<string, unknown>
-        const detail = this.formatHealthCheckErrors(response.error)
+        const detail = this.formatHealthCheckErrors(response['error'])
         throw new ServiceUnavailableException(detail)
       }
       throw error
@@ -159,7 +159,7 @@ export class HealthController {
     for (const [key, value] of Object.entries(errors)) {
       if (typeof value === 'object' && value !== null) {
         const info = value as Record<string, unknown>
-        const rawMessage = info.message ?? info.error ?? 'check failed'
+        const rawMessage = info['message'] ?? info['error'] ?? 'check failed'
         const message = typeof rawMessage === 'string' ? rawMessage : JSON.stringify(rawMessage)
         details.push(`${key}: ${message}`)
       }

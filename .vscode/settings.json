@@ -1,5 +1,13 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["initialised", "Millis", "timestamptz", "traceparent", "tracestate", "varchar"],
+  "cSpell.words": [
+    "dtos",
+    "initialised",
+    "Millis",
+    "timestamptz",
+    "traceparent",
+    "tracestate",
+    "varchar"
+  ],
   "eslint.enable": false
 }

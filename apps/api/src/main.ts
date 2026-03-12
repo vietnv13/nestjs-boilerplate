@@ -3,20 +3,22 @@ import path from 'node:path'
 import { RequestMethod } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
+import {
+  CorrelationIdInterceptor,
+  DeprecationInterceptor,
+  LinkHeaderInterceptor,
+  LocationHeaderInterceptor,
+  RequestContextInterceptor,
+  TimeoutInterceptor,
+  TraceContextInterceptor,
+  createValidationPipe,
+} from '@workspace/nestjs-http'
 import { ProblemDetailsFilter } from '@workspace/nestjs-problem-details'
+import { setupSwagger } from '@workspace/nestjs-swagger'
 import express from 'express'
 import { Logger } from 'nestjs-pino'
 
 import { corsConfig } from '@/app/config/security.config'
-import { setupSwagger } from '@/app/config/swagger.config'
-import { createValidationPipe } from '@/app/config/validation.config'
-import { CorrelationIdInterceptor } from '@/app/interceptors/correlation-id.interceptor'
-import { DeprecationInterceptor } from '@/app/interceptors/deprecation.interceptor'
-import { LinkHeaderInterceptor } from '@/app/interceptors/link-header.interceptor'
-import { LocationHeaderInterceptor } from '@/app/interceptors/location-header.interceptor'
-import { RequestContextInterceptor } from '@/app/interceptors/request-context.interceptor'
-import { TimeoutInterceptor } from '@/app/interceptors/timeout.interceptor'
-import { TraceContextInterceptor } from '@/app/interceptors/trace-context.interceptor'
 
 import { AppModule } from './app.module'
 
@@ -69,7 +71,18 @@ async function bootstrap() {
 
   app.useGlobalPipes(createValidationPipe())
 
-  await setupSwagger(app)
+  await setupSwagger(app, {
+    title: 'NestJS API',
+    description: 'NestJS modular layered architecture API',
+    version: '1.0',
+    servers: [{ url: 'http://localhost:3000', description: 'Development' }],
+    tags: [
+      { name: 'health', description: 'Health check endpoints' },
+      { name: 'auth', description: 'Authentication endpoints' },
+      { name: 'todos', description: 'Todo management endpoints' },
+      { name: 'articles', description: 'Article management endpoints' },
+    ],
+  })
 
   const port = process.env.PORT ?? 3000
   await app.listen(port)

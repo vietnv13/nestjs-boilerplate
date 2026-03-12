@@ -270,6 +270,12 @@ importers:
       '@workspace/nestjs-drizzle':
         specifier: workspace:*
         version: link:../../packages/nestjs-drizzle
+      '@workspace/nestjs-health':
+        specifier: workspace:*
+        version: link:../../packages/nestjs-health
+      '@workspace/nestjs-http':
+        specifier: workspace:*
+        version: link:../../packages/nestjs-http
       '@workspace/nestjs-logger':
         specifier: workspace:*
         version: link:../../packages/nestjs-logger
@@ -291,6 +297,9 @@ importers:
       '@workspace/nestjs-storage':
         specifier: workspace:*
         version: link:../../packages/nestjs-storage
+      '@workspace/nestjs-swagger':
+        specifier: workspace:*
+        version: link:../../packages/nestjs-swagger
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
@@ -833,6 +842,71 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  packages/nestjs-health:
+    dependencies:
+      '@nestjs/common':
+        specifier: ^11.1.9
+        version: 11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/swagger':
+        specifier: 11.2.6
+        version: 11.2.6(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.16)(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)
+      '@nestjs/terminus':
+        specifier: ^11.0.0
+        version: 11.1.1(@grpc/grpc-js@1.14.3)(@grpc/proto-loader@0.8.0)(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.16)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/throttler':
+        specifier: ^6.4.0
+        version: 6.5.0(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.16)(reflect-metadata@0.2.2)
+      '@workspace/nestjs-drizzle':
+        specifier: workspace:*
+        version: link:../nestjs-drizzle
+      drizzle-orm:
+        specifier: 0.44.7
+        version: 0.44.7(@opentelemetry/api@1.9.0)(@types/pg@8.18.0)(pg@8.20.0)
+    devDependencies:
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      eslint:
+        specifier: ^9.39.2
+        version: 9.39.4(jiti@2.6.1)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/nestjs-http:
+    dependencies:
+      '@nestjs/common':
+        specifier: ^11.1.9
+        version: 11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@workspace/nestjs-problem-details':
+        specifier: workspace:*
+        version: link:../nestjs-problem-details
+      nestjs-cls:
+        specifier: ^6.1.0
+        version: 6.2.0(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.16)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      rxjs:
+        specifier: ^7.8.2
+        version: 7.8.2
+    devDependencies:
+      '@types/express':
+        specifier: ^5.0.5
+        version: 5.0.6
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      eslint:
+        specifier: ^9.39.2
+        version: 9.39.4(jiti@2.6.1)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   packages/nestjs-logger:
     dependencies:
       '@nestjs/common':
@@ -1027,6 +1101,37 @@ importers:
       '@nestjs/config':
         specifier: 4.0.3
         version: 4.0.3(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
+    devDependencies:
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      eslint:
+        specifier: ^9.39.2
+        version: 9.39.4(jiti@2.6.1)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/nestjs-swagger:
+    dependencies:
+      '@nestjs/common':
+        specifier: ^11.1.9
+        version: 11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/config':
+        specifier: 4.0.3
+        version: 4.0.3(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@nestjs/swagger':
+        specifier: 11.2.6
+        version: 11.2.6(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.16)(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)
+      '@scalar/nestjs-api-reference':
+        specifier: ^1.1.2
+        version: 1.1.2
+      '@workspace/nestjs-problem-details':
+        specifier: workspace:*
+        version: link:../nestjs-problem-details
     devDependencies:
       '@workspace/eslint-config':
         specifier: workspace:*
