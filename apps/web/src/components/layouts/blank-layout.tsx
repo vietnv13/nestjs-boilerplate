@@ -1,4 +1,4 @@
-import { cn } from '@workspace/ui/lib/utils'
+import { cn } from '@workspace/shadcn-ui/lib/utils'
 
 export interface BlankLayoutProps extends React.ComponentProps<'div'> {
   bordered?: boolean

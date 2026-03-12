@@ -7,7 +7,7 @@
   // ============================================================
   // Use cases:
   //   - React component library development
-  //   - UI component libraries (e.g., packages/ui)
+  //   - UI component libraries (e.g., packages/shadcn-ui)
   //   - Publishable React packages
   //
   // Key features:

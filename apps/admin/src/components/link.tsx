@@ -1,4 +1,4 @@
-import { cn } from '@workspace/ui/lib/utils'
+import { cn } from '@workspace/shadcn-ui/lib/utils'
 import { cva } from 'class-variance-authority'
 import NextLink from 'next/link'
 

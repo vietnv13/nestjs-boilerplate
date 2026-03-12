@@ -1,6 +1,7 @@
 import { cn } from '@workspace/shadcn-ui/lib/utils'
 
 export interface BlankLayoutProps extends React.ComponentProps<'div'> {
+  /** Show grid borders (desktop only) */
   bordered?: boolean
 }
 
@@ -36,7 +37,7 @@ function BlankLayout({ bordered = false, className, children, ...props }: BlankL
       className={cn('relative z-0', bordered && 'lg:px-12', className)}
       {...props}
     >
-      {/* Horizontal borders */}
+      {/* Horizontal border lines */}
       {bordered && (
         <>
           <BlankLayoutBorder position="top" />
@@ -47,9 +48,12 @@ function BlankLayout({ bordered = false, className, children, ...props }: BlankL
       {/* Content container */}
       <div
         data-slot="blank-layout-container"
-        className={cn('relative mx-auto flex min-h-dvh max-w-332 flex-col', bordered && 'lg:pt-12')}
+        className={cn(
+          'relative mx-auto flex min-h-dvh max-w-[83rem] flex-col',
+          bordered && 'lg:pt-12',
+        )}
       >
-        {/* Vertical borders */}
+        {/* Vertical border lines */}
         {bordered && (
           <>
             <BlankLayoutBorder position="left" />
@@ -57,12 +61,12 @@ function BlankLayout({ bordered = false, className, children, ...props }: BlankL
           </>
         )}
 
-        {/* Main content */}
+        {/* Main content area */}
         <div data-slot="blank-layout-content" className="flex flex-1 flex-col bg-card">
           {children}
         </div>
 
-        {/* Footer spacer */}
+        {/* Bottom spacer */}
         {bordered && (
           <span
             data-slot="blank-layout-footer"

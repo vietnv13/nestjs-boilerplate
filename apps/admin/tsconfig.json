@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@workspace/ui/*": ["../../packages/ui/src/*"]
+      "@workspace/shadcn-ui/globals.css": ["../../packages/shadcn-ui/src/styles/index.css"],
+      "@workspace/shadcn-ui/*": ["../../packages/shadcn-ui/src/*"]
     }
   },
   "include": [

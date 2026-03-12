@@ -1,4 +1,4 @@
-import { Button } from '@workspace/ui/components/ui/button'
+import { Button } from '@workspace/shadcn-ui/components/ui/button'
 
 export const MainErrorFallback = () => {
   return (

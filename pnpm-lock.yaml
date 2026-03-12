@@ -59,9 +59,9 @@ importers:
       '@types/nprogress':
         specifier: ^0.2.3
         version: 0.2.3
-      '@workspace/ui':
+      '@workspace/shadcn-ui':
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/shadcn-ui
       antd:
         specifier: ^6.3.2
         version: 6.3.2(date-fns@4.1.0)(luxon@3.7.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -147,7 +147,7 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^4.0.15
         version: 4.0.18(@vitest/browser@4.0.18(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.18))(vitest@4.0.18)
-      '@vitest/ui':
+      '@vitest/shadcn-ui':
         specifier: ^4.0.15
         version: 4.0.18(vitest@4.0.18)
       '@workspace/eslint-config':
@@ -203,7 +203,7 @@ importers:
         version: 5.1.4(typescript@5.9.3)(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
       vitest:
         specifier: ^4.0.15
-        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
 
   apps/api:
     dependencies:
@@ -418,7 +418,7 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^4.0.15
         version: 4.0.18(@vitest/browser@4.0.18(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.18))(vitest@4.0.18)
-      '@vitest/ui':
+      '@vitest/shadcn-ui':
         specifier: ^4.0.15
         version: 4.0.18(vitest@4.0.18)
       '@workspace/eslint-config':
@@ -453,7 +453,7 @@ importers:
         version: 5.1.4(typescript@5.9.3)(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
       vitest:
         specifier: ^4.0.15
-        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
 
   apps/web:
     dependencies:
@@ -469,9 +469,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.90.11
         version: 5.90.21(react@19.2.4)
-      '@workspace/ui':
+      '@workspace/shadcn-ui':
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/shadcn-ui
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -551,7 +551,7 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^4.0.15
         version: 4.0.18(@vitest/browser@4.0.18(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.18))(vitest@4.0.18)
-      '@vitest/ui':
+      '@vitest/shadcn-ui':
         specifier: ^4.0.15
         version: 4.0.18(vitest@4.0.18)
       '@workspace/eslint-config':
@@ -607,7 +607,7 @@ importers:
         version: 5.1.4(typescript@5.9.3)(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
       vitest:
         specifier: ^4.0.15
-        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
 
   packages/database:
     dependencies:
@@ -752,7 +752,7 @@ importers:
       '@types/node':
         specifier: ^24.10.2
         version: 24.10.2
-      '@vitest/ui':
+      '@vitest/shadcn-ui':
         specifier: ^4.0.15
         version: 4.0.18(vitest@4.0.18)
       '@workspace/typescript-config':
@@ -778,7 +778,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.0.15
-        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
 
   packages/icons:
     dependencies:
@@ -1340,7 +1340,7 @@ importers:
 
   packages/typescript-config: {}
 
-  packages/ui:
+  packages/shadcn-ui:
     dependencies:
       '@dnd-kit/core':
         specifier: ^6.3.1
@@ -1468,7 +1468,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.0.15
-        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
 
 packages:
   '@acemir/cssom@0.9.31':
@@ -6552,7 +6552,7 @@ packages:
   '@smithy/eventstream-serde-universal@4.2.11':
     resolution:
       {
-        integrity: sha512-MJ7HcI+jEkqoWT5vp+uoVaAjBrmxBtKhZTeynDRG/seEjJfqyg3SiqMMqyPnAMzmIfLaeJ/uiuSDP/l9AnMy/Q==,
+        integrity: sha512-MJ7HcI+jEkqoWT5vp+uoVaAjBrmxBtKhZTeynDRG/seEjJfqyg3SiqMMqyPnAMzmIfLaeJ/shadcn-uiuSDP/l9AnMy/Q==,
       }
     engines: { node: '>=18.0.0' }
 
@@ -8292,7 +8292,7 @@ packages:
         integrity: sha512-cbQt3PTSD7P2OARdVW3qWER5EGq7PHlvE+QfzSC0lbwO+xnt7+XH06ZzFjFRgzUX//JmpxrCu92VdwvEPlWSNw==,
       }
 
-  '@vitest/ui@4.0.18':
+  '@vitest/shadcn-ui@4.0.18':
     resolution:
       {
         integrity: sha512-CGJ25bc8fRi8Lod/3GHSvXRKi7nBo3kxh0ApW4yCjmrWmRmlT53B5E08XRSZRliygG0aVNxLrBEqPYdz/KcCtQ==,
@@ -14128,7 +14128,7 @@ packages:
   redis-parser@3.0.0:
     resolution:
       {
-        integrity: sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==,
+        integrity: sha512-DJnGAeenTdpMEH6uAJRK/shadcn-uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==,
       }
     engines: { node: '>=4' }
 
@@ -15957,7 +15957,7 @@ packages:
       '@vitest/browser-playwright': 4.0.18
       '@vitest/browser-preview': 4.0.18
       '@vitest/browser-webdriverio': 4.0.18
-      '@vitest/ui': 4.0.18
+      '@vitest/shadcn-ui': 4.0.18
       happy-dom: '*'
       jsdom: '*'
     peerDependenciesMeta:
@@ -15973,7 +15973,7 @@ packages:
         optional: true
       '@vitest/browser-webdriverio':
         optional: true
-      '@vitest/ui':
+      '@vitest/shadcn-ui':
         optional: true
       happy-dom:
         optional: true
@@ -20181,7 +20181,7 @@ snapshots:
       '@vitest/browser': 4.0.18(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.18)
       '@vitest/browser-playwright': 4.0.18(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(playwright@1.58.2)(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.18)
       '@vitest/runner': 4.0.18
-      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - react
       - react-dom
@@ -21011,7 +21011,7 @@ snapshots:
       '@vitest/mocker': 4.0.18(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
       playwright: 1.58.2
       tinyrainbow: 3.0.3
-      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - bufferutil
       - msw
@@ -21027,7 +21027,7 @@ snapshots:
       pngjs: 7.0.0
       sirv: 3.0.2
       tinyrainbow: 3.0.3
-      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
       ws: 8.19.0
     transitivePeerDependencies:
       - bufferutil
@@ -21047,7 +21047,7 @@ snapshots:
       obug: 2.1.1
       std-env: 3.10.0
       tinyrainbow: 3.0.3
-      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
     optionalDependencies:
       '@vitest/browser': 4.0.18(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.18)
 
@@ -21058,7 +21058,7 @@ snapshots:
       eslint: 9.39.4(jiti@2.6.1)
     optionalDependencies:
       typescript: 5.9.3
-      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -21113,7 +21113,7 @@ snapshots:
 
   '@vitest/spy@4.0.18': {}
 
-  '@vitest/ui@4.0.18(vitest@4.0.18)':
+  '@vitest/shadcn-ui@4.0.18(vitest@4.0.18)':
     dependencies:
       '@vitest/utils': 4.0.18
       fflate: 0.8.2
@@ -21122,7 +21122,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
 
   '@vitest/utils@3.2.4':
     dependencies:
@@ -26156,7 +26156,7 @@ snapshots:
       tsx: 4.21.0
       yaml: 2.8.2
 
-  vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2):
+  vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.2)(@vitest/browser-playwright@4.0.18)(@vitest/shadcn-ui@4.0.18)(jiti@2.6.1)(jsdom@27.4.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
       '@vitest/expect': 4.0.18
       '@vitest/mocker': 4.0.18(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
@@ -26182,7 +26182,7 @@ snapshots:
       '@opentelemetry/api': 1.9.0
       '@types/node': 24.10.2
       '@vitest/browser-playwright': 4.0.18(msw@2.12.10(@types/node@24.10.2)(typescript@5.9.3))(playwright@1.58.2)(vite@7.3.1(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.0.18)
-      '@vitest/ui': 4.0.18(vitest@4.0.18)
+      '@vitest/shadcn-ui': 4.0.18(vitest@4.0.18)
       jsdom: 27.4.0(@noble/hashes@1.8.0)
     transitivePeerDependencies:
       - jiti

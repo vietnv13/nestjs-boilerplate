@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '@workspace/ui/components/ui/button'
+import { Button } from '@workspace/shadcn-ui/components/ui/button'
 import {
   Card,
   CardContent,
@@ -9,16 +9,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@workspace/ui/components/ui/card'
+} from '@workspace/shadcn-ui/components/ui/card'
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from '@workspace/ui/components/ui/field'
-import { Input } from '@workspace/ui/components/ui/input'
-import { Spinner } from '@workspace/ui/components/ui/spinner'
+} from '@workspace/shadcn-ui/components/ui/field'
+import { Input } from '@workspace/shadcn-ui/components/ui/input'
+import { Spinner } from '@workspace/shadcn-ui/components/ui/spinner'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'

@@ -1,11 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { Button } from '@workspace/ui/components/ui/button'
+import { Button } from '@workspace/shadcn-ui/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@workspace/ui/components/ui/dropdown-menu'
+} from '@workspace/shadcn-ui/components/ui/dropdown-menu'
 import { UserIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 

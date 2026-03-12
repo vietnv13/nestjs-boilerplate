@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { Button } from '@workspace/ui/components/ui/button'
+import { Button } from '@workspace/shadcn-ui/components/ui/button'
 import Link from 'next/link'
 
 import { Header } from '@/components/layouts'

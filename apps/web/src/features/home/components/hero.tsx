@@ -5,7 +5,7 @@ import {
   Typescript as TypescriptIcon,
   Github as GithubIcon,
 } from '@workspace/icons'
-import { Button } from '@workspace/ui/components/ui/button'
+import { Button } from '@workspace/shadcn-ui/components/ui/button'
 import Link from 'next/link'
 
 const stackItems = [
