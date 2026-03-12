@@ -9,8 +9,8 @@ import type { DrizzleDb } from '@workspace/nestjs-drizzle'
 /**
  * Drizzle AuthIdentity Repository implementation
  *
- * Manages persistence of multi-method authentication identities
- * Compatible with better-auth accounts table
+ * Manages persistence of multi-method authentication identities.
+ * Compatible with better-auth accounts table.
  */
 @Injectable()
 export class AuthIdentityRepository {
@@ -41,20 +41,11 @@ export class AuthIdentityRepository {
       .where(eq(accountsTable.id, id))
       .limit(1)
 
-    if (result.length === 0) {
-      return null
-    }
-
-    return result[0]!
+    return result[0] ?? null
   }
 
   async findByUserId(userId: string): Promise<AccountDatabase[]> {
-    const results = await this.db
-      .select()
-      .from(accountsTable)
-      .where(eq(accountsTable.userId, userId))
-
-    return results
+    return this.db.select().from(accountsTable).where(eq(accountsTable.userId, userId))
   }
 
   async findByUserIdAndProvider(
@@ -67,11 +58,7 @@ export class AuthIdentityRepository {
       .where(and(eq(accountsTable.userId, userId), eq(accountsTable.providerId, provider)))
       .limit(1)
 
-    if (result.length === 0) {
-      return null
-    }
-
-    return result[0]!
+    return result[0] ?? null
   }
 
   async findByProviderAndIdentifier(
@@ -89,11 +76,7 @@ export class AuthIdentityRepository {
       )
       .limit(1)
 
-    if (result.length === 0) {
-      return null
-    }
-
-    return result[0]!
+    return result[0] ?? null
   }
 
   async existsByIdentifier(accountId: string): Promise<boolean> {
@@ -108,13 +91,11 @@ export class AuthIdentityRepository {
 
   async delete(id: string): Promise<boolean> {
     const result = await this.db.delete(accountsTable).where(eq(accountsTable.id, id))
-
     return (result.rowCount ?? 0) > 0
   }
 
   async deleteByUserId(userId: string): Promise<number> {
     const result = await this.db.delete(accountsTable).where(eq(accountsTable.userId, userId))
-
     return result.rowCount ?? 0
   }
 }

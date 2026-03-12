@@ -2,16 +2,18 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
+import {
+  AuthIdentityRepository,
+  AuthSessionRepository,
+  BcryptPasswordHasher,
+  JwtStrategy,
+  UserRoleRepository,
+  VerificationTokenRepository,
+} from '@workspace/nestjs-auth'
 
 import { AuthService } from '@/auth/auth.service'
 import { AuthController } from '@/auth/controllers/auth.controller'
 import { CleanupExpiredTokensJob } from '@/auth/jobs/cleanup-expired-tokens.job'
-import { AuthIdentityRepository } from '@/auth/repositories/auth-identity.repository'
-import { AuthSessionRepository } from '@/auth/repositories/auth-session.repository'
-import { UserRoleRepository } from '@/auth/repositories/user-role.repository'
-import { VerificationTokenRepository } from '@/auth/repositories/verification-token.repository'
-import { BcryptPasswordHasher } from '@/auth/services/bcrypt-password-hasher'
-import { JwtStrategy } from '@/auth/strategies/jwt.strategy'
 import { UserModule } from '@/user/user.module'
 
 import type { Env } from '@/config/env.schema'

@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt'
 const BCRYPT_ROUNDS = 12
 
 /**
- * Bcrypt password hasher implementation
+ * Bcrypt password hasher
  */
 @Injectable()
 export class BcryptPasswordHasher {

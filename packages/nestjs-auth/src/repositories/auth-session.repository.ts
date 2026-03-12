@@ -6,6 +6,12 @@ import { eq, lt } from 'drizzle-orm'
 import type { SessionDatabase } from '@workspace/database'
 import type { DrizzleDb } from '@workspace/nestjs-drizzle'
 
+/**
+ * Drizzle AuthSession Repository implementation
+ *
+ * Manages persistence of user sessions (refresh tokens).
+ * Compatible with better-auth sessions table.
+ */
 @Injectable()
 export class AuthSessionRepository {
   constructor(
@@ -14,28 +20,23 @@ export class AuthSessionRepository {
   ) {}
 
   async save(session: SessionDatabase): Promise<void> {
-    const data = {
-      id: session.id,
-      userId: session.userId,
-      token: session.token,
-      expiresAt: session.expiresAt,
-      ipAddress: session.ipAddress,
-      userAgent: session.userAgent,
-      createdAt: session.createdAt,
-      updatedAt: new Date(),
-    }
-
     const existing = await this.findById(session.id)
 
     await (existing
       ? this.db
           .update(sessionsTable)
-          .set({
-            expiresAt: session.expiresAt,
-            updatedAt: new Date(),
-          })
+          .set({ expiresAt: session.expiresAt, updatedAt: new Date() })
           .where(eq(sessionsTable.id, session.id))
-      : this.db.insert(sessionsTable).values(data))
+      : this.db.insert(sessionsTable).values({
+          id: session.id,
+          userId: session.userId,
+          token: session.token,
+          expiresAt: session.expiresAt,
+          ipAddress: session.ipAddress,
+          userAgent: session.userAgent,
+          createdAt: session.createdAt,
+          updatedAt: new Date(),
+        }))
   }
 
   async findById(id: string): Promise<SessionDatabase | null> {
@@ -45,11 +46,7 @@ export class AuthSessionRepository {
       .where(eq(sessionsTable.id, id))
       .limit(1)
 
-    if (result.length === 0) {
-      return null
-    }
-
-    return result[0]!
+    return result[0] ?? null
   }
 
   async findByToken(token: string): Promise<SessionDatabase | null> {
@@ -59,11 +56,7 @@ export class AuthSessionRepository {
       .where(eq(sessionsTable.token, token))
       .limit(1)
 
-    if (result.length === 0) {
-      return null
-    }
-
-    return result[0]!
+    return result[0] ?? null
   }
 
   async findActiveByUserId(userId: string): Promise<SessionDatabase[]> {
@@ -77,23 +70,16 @@ export class AuthSessionRepository {
   }
 
   async findAllByUserId(userId: string): Promise<SessionDatabase[]> {
-    const results = await this.db
-      .select()
-      .from(sessionsTable)
-      .where(eq(sessionsTable.userId, userId))
-
-    return results
+    return this.db.select().from(sessionsTable).where(eq(sessionsTable.userId, userId))
   }
 
   async delete(id: string): Promise<boolean> {
     const result = await this.db.delete(sessionsTable).where(eq(sessionsTable.id, id))
-
     return (result.rowCount ?? 0) > 0
   }
 
   async deleteAllByUserId(userId: string): Promise<number> {
     const result = await this.db.delete(sessionsTable).where(eq(sessionsTable.userId, userId))
-
     return result.rowCount ?? 0
   }
 

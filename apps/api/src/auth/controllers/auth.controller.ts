@@ -9,7 +9,7 @@ import { RegisterDto, RegisterResponseDto } from '@/auth/dtos/register.dto'
 import { RevokeSessionDto, RevokeSessionResponseDto } from '@/auth/dtos/revoke-session.dto'
 import { SessionResponseDto } from '@/auth/dtos/session-response.dto'
 import { SessionsListResponseDto } from '@/auth/dtos/sessions-list-response.dto'
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard'
+import { JwtAuthGuard } from '@workspace/nestjs-auth'
 
 /**
  * Auth Controller v1

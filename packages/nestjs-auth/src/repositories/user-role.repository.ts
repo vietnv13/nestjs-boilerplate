@@ -10,7 +10,7 @@ export type Role = 'user' | 'admin'
 /**
  * Drizzle UserRole Repository implementation
  *
- * Single role management (compatible with better-auth usersTable.role field)
+ * Single role management compatible with better-auth usersTable.role field.
  */
 @Injectable()
 export class UserRoleRepository {
@@ -22,10 +22,7 @@ export class UserRoleRepository {
   async setRole(userId: string, role: Role | null): Promise<void> {
     await this.db
       .update(usersTable)
-      .set({
-        role,
-        updatedAt: new Date(),
-      })
+      .set({ role, updatedAt: new Date() })
       .where(eq(usersTable.id, userId))
   }
 
@@ -36,11 +33,7 @@ export class UserRoleRepository {
       .where(eq(usersTable.id, userId))
       .limit(1)
 
-    if (result.length === 0) {
-      return null
-    }
-
-    return result[0]!.role as Role | null
+    return (result[0]?.role as Role | null) ?? null
   }
 
   async hasRole(userId: string, role: Role): Promise<boolean> {

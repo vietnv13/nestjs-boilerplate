@@ -4,15 +4,17 @@ import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/co
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 
-import { AuthIdentityRepository } from '@/auth/repositories/auth-identity.repository'
-import { AuthSessionRepository } from '@/auth/repositories/auth-session.repository'
-import { UserRoleRepository } from '@/auth/repositories/user-role.repository'
-import { BcryptPasswordHasher } from '@/auth/services/bcrypt-password-hasher'
+import {
+  AuthIdentityRepository,
+  AuthSessionRepository,
+  BcryptPasswordHasher,
+  UserRoleRepository,
+} from '@workspace/nestjs-auth'
+
 import { UserRepository } from '@/user/repositories/user.repository'
 
+import type { JwtPayload, Role } from '@workspace/nestjs-auth'
 import type { Env } from '@/config/env.schema'
-import type { Role } from '@/auth/repositories/user-role.repository'
-import type { JwtPayload } from '@/auth/strategies/jwt.strategy'
 import type { AccountDatabase, SessionDatabase } from '@workspace/database'
 
 /**

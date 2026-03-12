@@ -264,6 +264,9 @@ importers:
       '@workspace/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@workspace/nestjs-auth':
+        specifier: workspace:*
+        version: link:../../packages/nestjs-auth
       '@workspace/nestjs-cache':
         specifier: workspace:*
         version: link:../../packages/nestjs-cache
@@ -773,6 +776,52 @@ importers:
       tsdown:
         specifier: ^0.15.12
         version: 0.15.12(typescript@5.9.3)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/nestjs-auth:
+    dependencies:
+      '@nestjs/common':
+        specifier: ^11.1.9
+        version: 11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/config':
+        specifier: 4.0.3
+        version: 4.0.3(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@nestjs/passport':
+        specifier: ^11.0.5
+        version: 11.0.5(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(passport@0.7.0)
+      '@workspace/database':
+        specifier: workspace:*
+        version: link:../database
+      '@workspace/nestjs-drizzle':
+        specifier: workspace:*
+        version: link:../nestjs-drizzle
+      bcrypt:
+        specifier: ^6.0.0
+        version: 6.0.0
+      drizzle-orm:
+        specifier: 0.44.7
+        version: 0.44.7(@opentelemetry/api@1.9.0)(@types/pg@8.18.0)(pg@8.20.0)
+      passport-jwt:
+        specifier: ^4.0.1
+        version: 4.0.1
+    devDependencies:
+      '@types/bcrypt':
+        specifier: ^6.0.0
+        version: 6.0.0
+      '@types/passport-jwt':
+        specifier: ^4.0.1
+        version: 4.0.1
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      eslint:
+        specifier: ^9.39.2
+        version: 9.39.4(jiti@2.6.1)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3

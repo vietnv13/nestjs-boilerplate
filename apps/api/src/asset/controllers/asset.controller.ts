@@ -26,8 +26,8 @@ import { memoryStorage } from 'multer'
 import { AssetService } from '@/asset/asset.service'
 import { AssetUploadResponseDto } from '@/asset/dtos/asset-upload-response.dto'
 import { UploadAssetDto } from '@/asset/dtos/upload-asset.dto'
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard'
-import { OptionalJwtAuthGuard } from '@/auth/guards/optional-jwt-auth.guard'
+import { JwtAuthGuard } from '@workspace/nestjs-auth'
+import { OptionalJwtAuthGuard } from '@workspace/nestjs-auth'
 
 @ApiTags('assets')
 @Controller('assets')

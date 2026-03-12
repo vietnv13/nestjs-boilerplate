@@ -3,10 +3,8 @@ import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
-import type { Env } from '@/config/env.schema'
-
 /**
- * JWT payload
+ * JWT payload - standard claims for this boilerplate's auth pattern
  */
 export interface JwtPayload {
   sub: string // User ID
@@ -18,23 +16,22 @@ export interface JwtPayload {
 /**
  * JWT Strategy
  *
- * Validates JWT Token and extracts user information
+ * Validates JWT token and extracts user information.
+ * Reads JWT_SECRET from ConfigService.
  */
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(configService: ConfigService<Env, true>) {
+  constructor(configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get('JWT_SECRET', { infer: true }),
+      secretOrKey: configService.get<string>('JWT_SECRET') ?? '',
     })
   }
 
   /**
-   * Validate JWT payload
-   *
-   * Passport automatically validates signature and expiration
-   * Just return user information here
+   * Validate JWT payload.
+   * Passport verifies signature and expiration before calling this.
    */
   validate(payload: JwtPayload) {
     return {

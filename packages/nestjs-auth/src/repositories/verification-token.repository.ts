@@ -8,6 +8,12 @@ import { eq, lt } from 'drizzle-orm'
 import type { VerificationTokenDatabase } from '@workspace/database'
 import type { DrizzleDb } from '@workspace/nestjs-drizzle'
 
+/**
+ * Drizzle VerificationToken Repository implementation
+ *
+ * Manages temporary verification tokens (email verification, password reset).
+ * Compatible with better-auth verifications table.
+ */
 @Injectable()
 export class VerificationTokenRepository {
   constructor(
@@ -20,10 +26,8 @@ export class VerificationTokenRepository {
     value: string
     expiresAt: Date
   }): Promise<VerificationTokenDatabase> {
-    // Delete old token for same identifier first
     await this.deleteByIdentifier(data.identifier)
 
-    // Create new token
     const result = await this.db
       .insert(verificationsTable)
       .values({
@@ -36,8 +40,7 @@ export class VerificationTokenRepository {
       })
       .returning()
 
-    const record = result[0]!
-    return record
+    return result[0]!
   }
 
   async findByValue(value: string): Promise<VerificationTokenDatabase | null> {
@@ -47,11 +50,7 @@ export class VerificationTokenRepository {
       .where(eq(verificationsTable.value, value))
       .limit(1)
 
-    if (result.length === 0) {
-      return null
-    }
-
-    return result[0]!
+    return result[0] ?? null
   }
 
   async findByIdentifier(identifier: string): Promise<VerificationTokenDatabase | null> {
@@ -61,16 +60,11 @@ export class VerificationTokenRepository {
       .where(eq(verificationsTable.identifier, identifier.toLowerCase()))
       .limit(1)
 
-    if (result.length === 0) {
-      return null
-    }
-
-    return result[0]!
+    return result[0] ?? null
   }
 
   async delete(id: string): Promise<boolean> {
     const result = await this.db.delete(verificationsTable).where(eq(verificationsTable.id, id))
-
     return (result.rowCount ?? 0) > 0
   }
 
@@ -92,9 +86,6 @@ export class VerificationTokenRepository {
 
   async isValid(value: string): Promise<boolean> {
     const record = await this.findByValue(value)
-    if (!record) {
-      return false
-    }
-    return record.expiresAt > new Date()
+    return record !== null && record.expiresAt > new Date()
   }
 }

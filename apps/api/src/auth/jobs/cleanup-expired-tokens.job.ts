@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { BaseJob, SchedulerRegistry } from '@workspace/nestjs-scheduler'
 
-import { VerificationTokenRepository } from '@/auth/repositories/verification-token.repository'
+import { VerificationTokenRepository } from '@workspace/nestjs-auth'
 
 import type { JobResult } from '@workspace/nestjs-scheduler'
 

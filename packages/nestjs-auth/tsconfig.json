@@ -1,0 +1,7 @@
+{
+  "extends": "@workspace/typescript-config/tsconfig.nestjs.json",
+  "compilerOptions": {
+    "baseUrl": "./src"
+  },
+  "include": ["src/**/*", "eslint.config.mts"]
+}
