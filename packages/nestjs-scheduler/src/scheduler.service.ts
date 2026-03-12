@@ -77,28 +77,17 @@ export class SchedulerService implements OnApplicationBootstrap, OnModuleDestroy
       return
     }
 
-    const jobs = this.registry.getAll()
-    this.logger.log(`Initializing ${jobs.length} scheduled job(s) [instance=${this.instanceId}]`)
-    if (jobs.length === 0) {
+    const registeredCount = this.registry.getAll().length
+    this.logger.log(`Initializing ${registeredCount} scheduled job(s) [instance=${this.instanceId}]`)
+    if (registeredCount === 0) {
       this.logger.warn(
         'No scheduled jobs registered. Ensure job providers are included in their feature module providers array.',
       )
     }
 
-    for (const job of jobs) {
-      const config = await this.scheduledJobRepo.ensureExists(
-        job.jobName,
-        job.defaultCron,
-        job.defaultTimeoutMs,
-        job.defaultEnabled,
-        job.description,
-      )
+    const activeJobs = await this.registry.initializeJobs()
 
-      if (!config.enabled) {
-        this.logger.log(`  ⏸  ${job.jobName} — disabled in DB, skipping`)
-        continue
-      }
-
+    for (const { job, config } of activeJobs) {
       const cronJob = new Croner(
         config.cron,
         { protect: true }, // prevent overlapping runs on the same instance
