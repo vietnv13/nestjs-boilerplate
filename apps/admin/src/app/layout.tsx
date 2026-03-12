@@ -41,7 +41,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
       <body>
         <AntdRegistry>
           <AppProvider>
-            <SseProvider>
+            <SseProvider url="/api/admin/sse/stream">
               <NavigationProgress />
               <HydrationBoundary state={dehydratedState}>
                 {children}

@@ -5,7 +5,9 @@
     "paths": {
       "@/*": ["./src/*"],
       "@workspace/shadcn-ui/globals.css": ["../../packages/shadcn-ui/src/styles/index.css"],
-      "@workspace/shadcn-ui/*": ["../../packages/shadcn-ui/src/*"]
+      "@workspace/shadcn-ui/*": ["../../packages/shadcn-ui/src/*"],
+      "@workspace/ui-helper": ["../../packages/ui-helper/src/index.ts"],
+      "@workspace/ui-helper/*": ["../../packages/ui-helper/src/*"]
     }
   },
   "include": [
