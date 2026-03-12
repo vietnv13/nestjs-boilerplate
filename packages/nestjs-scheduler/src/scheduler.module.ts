@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common'
 
-import { RedisLockModule } from '../locks/redis-lock.module.js'
+import { RedisLockModule } from '@workspace/nestjs-lock'
 
 import { JobExecutionRepository } from './job-execution.repository.js'
 import { ScheduledJobRepository } from './scheduled-job.repository.js'

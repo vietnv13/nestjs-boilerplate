@@ -1,0 +1,17 @@
+{
+  "extends": "@workspace/typescript-config/tsconfig.library.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmit": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "declaration": true,
+    "declarationMap": true,
+    "isolatedDeclarations": false
+  },
+  "include": ["src/**/*"]
+}

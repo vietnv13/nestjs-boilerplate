@@ -4,7 +4,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { Subject } from 'rxjs'
 import { finalize } from 'rxjs/operators'
 
-import { RedisPubSubService } from '../pubsub/redis-pubsub.service.js'
+import { RedisPubSubService } from '@workspace/nestjs-pubsub'
 import { SSE_REDIS_CHANNEL_PREFIX } from './sse.constants.js'
 
 import type { MessageEvent, OnModuleInit } from '@nestjs/common'

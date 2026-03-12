@@ -4,7 +4,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Cron as Croner } from 'croner'
 
-import { RedisLockService } from '../locks/redis-lock.service.js'
+import { RedisLockService } from '@workspace/nestjs-lock'
 
 import { JobExecutionRepository } from './job-execution.repository.js'
 import { ScheduledJobRepository } from './scheduled-job.repository.js'

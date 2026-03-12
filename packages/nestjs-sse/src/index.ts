@@ -1,2 +1,2 @@
-export { SseModule } from './sse/sse.module.js'
-export { SseHubService } from './sse/sse-hub.service.js'
+export { SseModule } from './sse.module.js'
+export { SseHubService } from './sse-hub.service.js'

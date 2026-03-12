@@ -1,5 +1,5 @@
 {
-  "name": "@workspace/nestjs-scheduler",
+  "name": "@workspace/nestjs-pubsub",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -21,11 +21,7 @@
   "dependencies": {
     "@nestjs/common": "^11.1.9",
     "@nestjs/config": "4.0.3",
-    "@workspace/database": "workspace:*",
-    "@workspace/nestjs-drizzle": "workspace:*",
-    "@workspace/nestjs-lock": "workspace:*",
-    "croner": "^10.0.1",
-    "drizzle-orm": "0.44.7"
+    "@redis/client": "^5.11.0"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",

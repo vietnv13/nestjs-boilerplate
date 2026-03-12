@@ -956,6 +956,31 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  packages/nestjs-lock:
+    dependencies:
+      '@nestjs/common':
+        specifier: ^11.1.9
+        version: 11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/config':
+        specifier: 4.0.3
+        version: 4.0.3(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@redis/client':
+        specifier: ^5.11.0
+        version: 5.11.0
+    devDependencies:
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      eslint:
+        specifier: ^9.39.2
+        version: 9.39.4(jiti@2.6.1)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   packages/nestjs-logger:
     dependencies:
       '@nestjs/common':
@@ -999,6 +1024,31 @@ importers:
       '@types/express':
         specifier: ^5.0.5
         version: 5.0.6
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      eslint:
+        specifier: ^9.39.2
+        version: 9.39.4(jiti@2.6.1)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/nestjs-pubsub:
+    dependencies:
+      '@nestjs/common':
+        specifier: ^11.1.9
+        version: 11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/config':
+        specifier: 4.0.3
+        version: 4.0.3(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@redis/client':
+        specifier: ^5.11.0
+        version: 5.11.0
+    devDependencies:
       '@workspace/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
@@ -1079,15 +1129,15 @@ importers:
       '@nestjs/config':
         specifier: 4.0.3
         version: 4.0.3(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@redis/client':
-        specifier: ^5.11.0
-        version: 5.11.0
       '@workspace/database':
         specifier: workspace:*
         version: link:../database
       '@workspace/nestjs-drizzle':
         specifier: workspace:*
         version: link:../nestjs-drizzle
+      '@workspace/nestjs-lock':
+        specifier: workspace:*
+        version: link:../nestjs-lock
       croner:
         specifier: ^10.0.1
         version: 10.0.1
@@ -1116,9 +1166,9 @@ importers:
       '@nestjs/config':
         specifier: 4.0.3
         version: 4.0.3(@nestjs/common@11.1.16(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@redis/client':
-        specifier: ^5.11.0
-        version: 5.11.0
+      '@workspace/nestjs-pubsub':
+        specifier: workspace:*
+        version: link:../nestjs-pubsub
       rxjs:
         specifier: ^7.8.2
         version: 7.8.2

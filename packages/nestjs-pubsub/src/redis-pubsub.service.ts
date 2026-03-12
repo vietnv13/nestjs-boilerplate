@@ -7,6 +7,17 @@ import type { RedisClientType } from '@redis/client'
 
 type PatternHandler = (message: string, channel: string) => void
 
+/**
+ * RedisPubSubService
+ *
+ * General-purpose Redis pub/sub backed by a dedicated publisher + subscriber
+ * client pair. Designed for fan-out messaging across multiple app instances.
+ *
+ * Features:
+ * - Best-effort connect: stays in no-op mode when Redis is unavailable.
+ * - `publish` / `publishJson` for sending messages.
+ * - `pSubscribe` for glob-pattern subscriptions.
+ */
 @Injectable()
 export class RedisPubSubService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(RedisPubSubService.name)
@@ -26,7 +37,7 @@ export class RedisPubSubService implements OnModuleInit, OnModuleDestroy {
   }
 
   /**
-   * Best-effort connect. If Redis is unavailable, this service stays disabled (no-ops).
+   * Best-effort connect. If Redis is unavailable, the service stays disabled (no-ops).
    */
   async init(): Promise<void> {
     if (this.isReady) return
@@ -77,7 +88,7 @@ export class RedisPubSubService implements OnModuleInit, OnModuleDestroy {
   }
 
   /**
-   * Pattern subscription (glob). Handler is called with (message, channel).
+   * Pattern subscription (glob). Handler receives (message, channel).
    */
   async pSubscribe(pattern: string, handler: PatternHandler): Promise<boolean> {
     if (!this.isReady) return false
